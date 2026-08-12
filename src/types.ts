@@ -109,3 +109,66 @@ export interface ConceptExplanation {
   commonPitfalls?: string[];
   relatedTerms?: string[];
 }
+
+export type QuestionType = 'choice' | 'fill' | 'solution';
+
+export interface QuestionBankItem {
+  id: string;
+  subject: string; // e.g. '数学', '物理', '化学', '英语', '语文', '生物'
+  gradeStage: '初中' | '高中';
+  gradeLevel: '初一' | '初二' | '初三/中考' | '高一' | '高二' | '高三/高考';
+  topic: string; // e.g. '动量守恒', '勾股定理', '函数的单调性'
+  question: string;
+  options?: string[]; // for choice questions
+  correctIndex?: number; // for choice questions
+  correctAnswerText?: string; // for fill/solution questions
+  explanation: string;
+  questionType: QuestionType;
+  difficulty: 'easy' | 'medium' | 'hard';
+  keyPoints: string[];
+  isSavedToMistakes?: boolean;
+  userNote?: string;
+}
+
+export interface PhotoQuestionAnalysis {
+  ocrText: string;
+  subject: string;
+  grade: string;
+  topic: string;
+  difficulty?: string;
+  keyPoints: string[];
+  stepByStepSolution: string[];
+  commonMistakes: string[];
+  similarQuestion?: {
+    question: string;
+    options?: string[];
+    correctAnswer: string;
+    explanation: string;
+  };
+}
+
+export interface CoursePreviewGuide {
+  id: string;
+  title: string;
+  subject: string;
+  gradeLevel: string; // e.g. '初中', '高中'
+  publisher?: string; // e.g. '人教版', '沪教版'
+  overview: string;
+  estimatedTimeMinutes: number;
+  learningObjectives: string[];
+  prerequisites: string[];
+  coreDefinitions: Array<{
+    name: string;
+    explanation: string;
+    keyFormula?: string;
+  }>;
+  selfCheckQuiz: Array<{
+    id?: string;
+    question: string;
+    options: string[];
+    correctIndex: number;
+    explanation: string;
+  }>;
+  questionsToAskTeacher: string[];
+}
+

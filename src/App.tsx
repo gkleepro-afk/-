@@ -5,6 +5,9 @@ import { PlanGenerator } from './components/PlanGenerator';
 import { FlashcardsView } from './components/FlashcardsView';
 import { QuizView } from './components/QuizView';
 import { AnalyticsView } from './components/AnalyticsView';
+import { PhotoSolveView } from './components/PhotoSolveView';
+import { QuestionBankView } from './components/QuestionBankView';
+import { CoursePreviewView } from './components/CoursePreviewView';
 import { ConceptModal } from './components/ConceptModal';
 import { PomodoroModal } from './components/PomodoroModal';
 
@@ -19,10 +22,14 @@ import {
   saveQuizzes, 
   getStoredStats, 
   saveStats,
+  getStoredQuestionBank,
+  saveQuestionBank,
+  getStoredCoursePreviews,
+  saveCoursePreviews,
   updateCardReview
 } from './utils/storage';
 
-import { GeneratedStudyPlan, StudyTask, Flashcard, QuizQuestion, UserStats } from './types';
+import { GeneratedStudyPlan, StudyTask, Flashcard, QuizQuestion, UserStats, QuestionBankItem, CoursePreviewGuide } from './types';
 import { UILanguage } from './utils/translations';
 
 export default function App() {
@@ -35,6 +42,8 @@ export default function App() {
   const [cards, setCards] = useState<Flashcard[]>(getStoredFlashcards);
   const [quizzes, setQuizzes] = useState<QuizQuestion[]>(getStoredQuizzes);
   const [stats, setStats] = useState<UserStats>(getStoredStats);
+  const [questionBank, setQuestionBank] = useState<QuestionBankItem[]>(getStoredQuestionBank);
+  const [coursePreviews, setCoursePreviews] = useState<CoursePreviewGuide[]>(getStoredCoursePreviews);
 
   // Modal States
   const [activeConceptTerm, setActiveConceptTerm] = useState<string | null>(null);
@@ -60,6 +69,21 @@ export default function App() {
   useEffect(() => {
     saveStats(stats);
   }, [stats]);
+
+  useEffect(() => {
+    saveQuestionBank(questionBank);
+  }, [questionBank]);
+
+  useEffect(() => {
+    saveCoursePreviews(coursePreviews);
+  }, [coursePreviews]);
+
+  // Handlers
+  const handleSaveToMistakeLog = (item: QuestionBankItem) => {
+    setQuestionBank((prev) => [item, ...prev]);
+    setActiveTab('qbank');
+  };
+
 
   // Handlers
   const handleToggleTask = (taskId: string) => {
@@ -271,7 +295,7 @@ export default function App() {
         stats={stats}
         onOpenPomodoro={() => setShowPomodoro(true)}
         uiLang={uiLang}
-        onSelectUiLang={setUiLang}
+        onChangeLang={setUiLang}
       />
 
       {/* Main View Area */}
@@ -296,6 +320,32 @@ export default function App() {
               setActiveTab('roadmap');
             }}
             uiLang={uiLang}
+          />
+        )}
+
+        {activeTab === 'photosolve' && (
+          <PhotoSolveView
+            uiLang={uiLang}
+            onSaveToMistakes={handleSaveToMistakeLog}
+            onExplainConcept={(term) => setActiveConceptTerm(term)}
+          />
+        )}
+
+        {activeTab === 'qbank' && (
+          <QuestionBankView
+            questions={questionBank}
+            uiLang={uiLang}
+            onUpdateQuestions={setQuestionBank}
+            onExplainConcept={(term) => setActiveConceptTerm(term)}
+          />
+        )}
+
+        {activeTab === 'preview' && (
+          <CoursePreviewView
+            previews={coursePreviews}
+            uiLang={uiLang}
+            onUpdatePreviews={setCoursePreviews}
+            onExplainConcept={(term) => setActiveConceptTerm(term)}
           />
         )}
 

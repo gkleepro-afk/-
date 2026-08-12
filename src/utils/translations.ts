@@ -32,6 +32,21 @@ export const TRANSLATIONS = {
     en: 'Quiz & Diagnostics',
     bilingual: '智能巩固测试 / Quiz Diagnostics',
   },
+  navQuestionBank: {
+    zh: '初高中全科题库',
+    en: 'Question Bank & Mistake Log',
+    bilingual: '初高中全科题库 / Question Bank & Mistakes',
+  },
+  navPhotoSolve: {
+    zh: 'AI 拍题/图片解题',
+    en: 'Photo Snap & Solve',
+    bilingual: 'AI 拍题图片解题 / Snap & Solve',
+  },
+  navCoursePreview: {
+    zh: '预习新课指南',
+    en: 'Course Pre-Learning',
+    bilingual: '预习新课指南 / Course Pre-Learning',
+  },
   navAnalytics: {
     zh: '记忆力与总览',
     en: 'Recall & Analytics',
@@ -212,6 +227,16 @@ export const TRANSLATIONS = {
     en: 'Quiz & Diagnostics',
     bilingual: '智能巩固测试 / Quiz Diagnostics',
   },
+  quizzesTitle: {
+    zh: '智能巩固测试',
+    en: 'Quiz & Diagnostics',
+    bilingual: '智能巩固测试 / Quiz Diagnostics',
+  },
+  quizzesDesc: {
+    zh: '诊断薄弱环节，定向巩固考点',
+    en: 'Diagnose weak areas and reinforce key concepts',
+    bilingual: '诊断薄弱考点 / Diagnose weak areas',
+  },
   scoreAccuracy: {
     zh: '准确率得分',
     en: 'Score Accuracy',
@@ -238,11 +263,63 @@ export const TRANSLATIONS = {
     bilingual: '重新测试 / Restart Quiz',
   },
 
+  // Flashcards
+  flashcardsTitle: {
+    zh: '多语言卡片库',
+    en: 'Language Deck',
+    bilingual: '多语言卡片库 / Language Deck',
+  },
+  flashcardsDesc: {
+    zh: '艾宾浩斯记忆法，复习高效不遗忘',
+    en: 'Spaced repetition flashcards for smart retention',
+    bilingual: '艾宾浩斯卡片复习 / Spaced Repetition',
+  },
+  aiGenerateCardBtn: {
+    zh: 'AI 材料一键成卡',
+    en: 'Auto AI Cards',
+    bilingual: 'AI 材料成卡 / Auto AI Cards',
+  },
+  flipToSeeBack: {
+    zh: '点击翻转卡片',
+    en: 'Click to Flip',
+    bilingual: '点击翻转卡片 / Click to Flip',
+  },
+  recallLevelLabel: {
+    zh: '记忆难度评级',
+    en: 'Recall Rating',
+    bilingual: '记忆难度评级 / Recall Rating',
+  },
+  recallAgain: {
+    zh: '不记得',
+    en: 'Again',
+    bilingual: '不记得 / Again',
+  },
+  recallHard: {
+    zh: '费力',
+    en: 'Hard',
+    bilingual: '费力 / Hard',
+  },
+  recallGood: {
+    zh: '熟练',
+    en: 'Good',
+    bilingual: '熟练 / Good',
+  },
+  recallEasy: {
+    zh: '简单',
+    en: 'Easy',
+    bilingual: '简单 / Easy',
+  },
+
   // Analytics
   analyticsTitle: {
     zh: '记忆力与学习总览',
     en: 'Recall & Learning Analytics',
     bilingual: '记忆力与总览 / Recall Analytics',
+  },
+  analyticsDesc: {
+    zh: '追踪认知留存率与学科掌握度',
+    en: 'Track memory retention and subject performance',
+    bilingual: '记忆留存与学科进度 / Memory & Progress',
   },
   subjectMastery: {
     zh: '各学科掌握度',

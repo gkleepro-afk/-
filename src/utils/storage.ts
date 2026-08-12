@@ -1,5 +1,5 @@
-import { StudyTask, Flashcard, QuizQuestion, GeneratedStudyPlan, UserStats } from '../types';
-import { INITIAL_PLANS, INITIAL_TASKS, INITIAL_FLASHCARDS, INITIAL_QUIZZES } from '../data/templates';
+import { StudyTask, Flashcard, QuizQuestion, GeneratedStudyPlan, UserStats, QuestionBankItem, CoursePreviewGuide } from '../types';
+import { INITIAL_PLANS, INITIAL_TASKS, INITIAL_FLASHCARDS, INITIAL_QUIZZES, INITIAL_QUESTION_BANK, INITIAL_COURSE_PREVIEWS } from '../data/templates';
 
 const KEYS = {
   TASKS: 'zhixue_study_tasks_v1',
@@ -7,7 +7,36 @@ const KEYS = {
   QUIZZES: 'zhixue_quizzes_v1',
   PLANS: 'zhixue_plans_v1',
   STATS: 'zhixue_user_stats_v1',
+  QUESTION_BANK: 'zhixue_question_bank_v1',
+  COURSE_PREVIEWS: 'zhixue_course_previews_v1',
 };
+
+export const getStoredQuestionBank = (): QuestionBankItem[] => {
+  try {
+    const raw = localStorage.getItem(KEYS.QUESTION_BANK);
+    return raw ? JSON.parse(raw) : INITIAL_QUESTION_BANK;
+  } catch {
+    return INITIAL_QUESTION_BANK;
+  }
+};
+
+export const saveQuestionBank = (questions: QuestionBankItem[]) => {
+  localStorage.setItem(KEYS.QUESTION_BANK, JSON.stringify(questions));
+};
+
+export const getStoredCoursePreviews = (): CoursePreviewGuide[] => {
+  try {
+    const raw = localStorage.getItem(KEYS.COURSE_PREVIEWS);
+    return raw ? JSON.parse(raw) : INITIAL_COURSE_PREVIEWS;
+  } catch {
+    return INITIAL_COURSE_PREVIEWS;
+  }
+};
+
+export const saveCoursePreviews = (guides: CoursePreviewGuide[]) => {
+  localStorage.setItem(KEYS.COURSE_PREVIEWS, JSON.stringify(guides));
+};
+
 
 export const getStoredPlans = (): GeneratedStudyPlan[] => {
   try {

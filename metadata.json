@@ -1,6 +1,6 @@
 {
-  "name": "智学星 - AI 智能复习与每日学习助手",
-  "description": "智能自动生成针对性复习计划、安排每日任务、管理学习进度，支持多语言知识卡片与互动测验。",
-  "requestFramePermissions": [],
+  "name": "智学星 - 初高中 AI 智能复习与解题预习助手",
+  "description": "专为初高中（中考/高考）打造的 AI 智能学习系统，集成拍题搜题、预习新课、全科题库错题本、每日复习计划与艾宾浩斯卡片。",
+  "requestFramePermissions": ["camera"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

@@ -10,7 +10,9 @@ import {
   Clock, 
   Brain,
   Flame,
-  Globe
+  Globe,
+  Camera,
+  Compass
 } from 'lucide-react';
 import { UserStats } from '../types';
 import { UILanguage, TRANSLATIONS } from '../utils/translations';
@@ -37,10 +39,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const navItems = [
     { id: 'roadmap', label: t('navRoadmap'), icon: Calendar, badge: `${stats.completedTasksCount}` },
     { id: 'generator', label: t('navGenerator'), icon: Sparkles, isHighlight: true },
+    { id: 'photosolve', label: t('navPhotoSolve'), icon: Camera, isNew: true },
+    { id: 'qbank', label: t('navQuestionBank'), icon: BookOpen },
+    { id: 'preview', label: t('navCoursePreview'), icon: Compass },
     { id: 'flashcards', label: t('navFlashcards'), icon: Languages, badge: `${stats.reviewedCardsCount}` },
     { id: 'quiz', label: t('navQuiz'), icon: HelpCircle },
     { id: 'analytics', label: t('navAnalytics'), icon: BarChart3 },
   ];
+
 
   return (
     <aside className="w-72 bg-white border-r border-slate-200 flex flex-col p-6 h-screen sticky top-0 shrink-0 z-20">

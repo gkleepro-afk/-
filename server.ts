@@ -218,6 +218,248 @@ app.post("/api/explain-concept", async (req, res) => {
   }
 });
 
+// API Endpoint: Analyze Image Question (Photo Snap & Solve)
+app.post("/api/analyze-image-question", async (req, res) => {
+  try {
+    const { imageBase64, mimeType = "image/jpeg", userNotes = "" } = req.body;
+
+    if (!imageBase64) {
+      return res.status(400).json({ error: "Missing imageBase64 data" });
+    }
+
+    const ai = getGeminiClient();
+
+    // Clean base64 string if it contains data URL prefix
+    const cleanBase64 = imageBase64.replace(/^data:image\/\w+;base64,/, "");
+
+    const promptText = `你是一位初高中（中考/高考）全科金牌特级教师。请仔细识别并解读书生上传的题目图片。
+学生补充说明：${userNotes || "无"}
+
+请分析图片中的题目并以严格的 JSON 格式输出：
+1. 完整识别题干内容与公式（ocrText）。
+2. 判断所属学科与适用年级/阶段（subject, grade, topic）。
+3. 提供详尽的分步推导解答（stepByStepSolution），包含解题思路和步骤。
+4. 列出核心解题公式与考点（keyPoints）。
+5. 给出易错警示与避坑指南（commonMistakes）。
+6. 提供一道举一反三的同类变式练习题（similarQuestion）。
+`;
+
+    // Try gemini-3.1-pro-preview or gemini-3.6-flash
+    const modelName = "gemini-3.1-pro-preview";
+
+    const response = await ai.models.generateContent({
+      model: modelName,
+      contents: [
+        {
+          role: "user",
+          parts: [
+            { text: promptText },
+            {
+              inlineData: {
+                mimeType,
+                data: cleanBase64,
+              },
+            },
+          ],
+        },
+      ],
+      config: {
+        systemInstruction: "你是一个精通初高中全科解答的 AI 金牌特级名师。",
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            ocrText: { type: Type.STRING, description: "识别出的完整题目文字与符号" },
+            subject: { type: Type.STRING, description: "学科，如：高中物理、初中数学、高中化学" },
+            grade: { type: Type.STRING, description: "适用年级或考试类型（中考/高考/初二/高一等）" },
+            topic: { type: Type.STRING, description: "核心考点，如：动量守恒定理、勾股定理" },
+            difficulty: { type: Type.STRING, description: "难度等级：基础, 中等, 压轴" },
+            keyPoints: {
+              type: Type.ARRAY,
+              items: { type: Type.STRING },
+              description: "用到的公式或定理",
+            },
+            stepByStepSolution: {
+              type: Type.ARRAY,
+              items: { type: Type.STRING },
+              description: "步骤一、步骤二...的分步推导过程",
+            },
+            commonMistakes: {
+              type: Type.ARRAY,
+              items: { type: Type.STRING },
+              description: "学生常犯错误陷阱提醒",
+            },
+            similarQuestion: {
+              type: Type.OBJECT,
+              properties: {
+                question: { type: Type.STRING, description: "举一反三变式练习题干" },
+                options: {
+                  type: Type.ARRAY,
+                  items: { type: Type.STRING },
+                  description: "选项列表（如有）",
+                },
+                correctAnswer: { type: Type.STRING, description: "正确答案" },
+                explanation: { type: Type.STRING, description: "变式题简明解析" },
+              },
+              required: ["question", "correctAnswer", "explanation"],
+            },
+          },
+          required: ["ocrText", "subject", "topic", "keyPoints", "stepByStepSolution", "commonMistakes"],
+        },
+      },
+    });
+
+    const data = JSON.parse(response.text || "{}");
+    res.json({ success: true, analysis: data });
+  } catch (error: any) {
+    console.error("Error analyzing image question:", error);
+    res.status(500).json({ success: false, error: error.message || "Failed to analyze question image" });
+  }
+});
+
+// API Endpoint: Generate Course Preview (预习新课 Guide)
+app.post("/api/generate-course-preview", async (req, res) => {
+  try {
+    const { chapterTitle, subject, gradeLevel = "高中", publisher = "人教版" } = req.body;
+
+    if (!chapterTitle) {
+      return res.status(400).json({ error: "Chapter title is required" });
+    }
+
+    const ai = getGeminiClient();
+
+    const prompt = `请为初高中学生编写一份高质量、启发式的《新课预习指南》（预习案）。
+【预习章节/课题】：${chapterTitle}
+【学科与年级】：${subject} (${gradeLevel})
+【教材版本】：${publisher}
+
+请输出严格的 JSON 格式：
+1. 预习主题与导言（title, overview）。
+2. 预习学习目标（learningObjectives）。
+3. 课前衔接旧知温故（prerequisites）。
+4. 核心概念与公式精讲（coreDefinitions: [{name, explanation, keyFormula}]）。
+5. 预习任务自测小题（selfCheckQuiz: [{question, options, correctIndex, explanation}]）。
+6. 课堂带疑提问建议（questionsToAskTeacher）。
+`;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-3.6-flash",
+      contents: prompt,
+      config: {
+        systemInstruction: "你是一位擅长设计高效预习案的名师，注重启发式教学与概念直观透视。",
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            title: { type: Type.STRING },
+            overview: { type: Type.STRING },
+            estimatedTimeMinutes: { type: Type.INTEGER },
+            learningObjectives: {
+              type: Type.ARRAY,
+              items: { type: Type.STRING },
+            },
+            prerequisites: {
+              type: Type.ARRAY,
+              items: { type: Type.STRING },
+            },
+            coreDefinitions: {
+              type: Type.ARRAY,
+              items: {
+                type: Type.OBJECT,
+                properties: {
+                  name: { type: Type.STRING },
+                  explanation: { type: Type.STRING },
+                  keyFormula: { type: Type.STRING },
+                },
+                required: ["name", "explanation"],
+              },
+            },
+            selfCheckQuiz: {
+              type: Type.ARRAY,
+              items: {
+                type: Type.OBJECT,
+                properties: {
+                  question: { type: Type.STRING },
+                  options: {
+                    type: Type.ARRAY,
+                    items: { type: Type.STRING },
+                  },
+                  correctIndex: { type: Type.INTEGER },
+                  explanation: { type: Type.STRING },
+                },
+                required: ["question", "options", "correctIndex", "explanation"],
+              },
+            },
+            questionsToAskTeacher: {
+              type: Type.ARRAY,
+              items: { type: Type.STRING },
+            },
+          },
+          required: ["title", "overview", "learningObjectives", "coreDefinitions", "selfCheckQuiz", "questionsToAskTeacher"],
+        },
+      },
+    });
+
+    const data = JSON.parse(response.text || "{}");
+    res.json({ success: true, previewGuide: data });
+  } catch (error: any) {
+    console.error("Error generating course preview:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// API Endpoint: Generate Custom Question Sets for Question Bank
+app.post("/api/generate-questions", async (req, res) => {
+  try {
+    const { subject, gradeLevel, topic, count = 3, difficulty = "中等" } = req.body;
+    const ai = getGeminiClient();
+
+    const prompt = `请为初高中学生（${gradeLevel}）生成 ${count} 道针对【${subject} - ${topic}】的高质量中考/高考类型训练题（难度：${difficulty}）。
+请严格输出 JSON 格式，包含详细考点分析与解题步骤。`;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-3.6-flash",
+      contents: prompt,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            questions: {
+              type: Type.ARRAY,
+              items: {
+                type: Type.OBJECT,
+                properties: {
+                  question: { type: Type.STRING },
+                  options: {
+                    type: Type.ARRAY,
+                    items: { type: Type.STRING },
+                  },
+                  correctIndex: { type: Type.INTEGER },
+                  explanation: { type: Type.STRING },
+                  questionType: { type: Type.STRING, description: "单选题 / 填空题 / 解答题" },
+                  keyPoints: {
+                    type: Type.ARRAY,
+                    items: { type: Type.STRING },
+                  },
+                  difficulty: { type: Type.STRING },
+                },
+                required: ["question", "options", "correctIndex", "explanation"],
+              },
+            },
+          },
+          required: ["questions"],
+        },
+      },
+    });
+
+    const data = JSON.parse(response.text || "{}");
+    res.json({ success: true, questions: data.questions || [] });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // API Endpoint: Quick Generate Flashcards
 app.post("/api/generate-cards", async (req, res) => {
   try {
