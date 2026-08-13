@@ -181,11 +181,15 @@ export interface QuestionBankItem {
   gradeLevel: string;
   semester?: string; // e.g. '上学期', '下学期', '全学年'
   topic: string;
+  topicEn?: string;
   question: string;
+  questionEn?: string;
   options?: string[];
+  optionsEn?: string[];
   correctIndex?: number;
   correctAnswerText?: string;
   explanation: string;
+  explanationEn?: string;
   questionType: QuestionType;
   difficulty: QuestionDifficulty;
   isSavedToMistakes?: boolean;
@@ -196,29 +200,38 @@ export interface QuestionBankItem {
 
 export interface ClassroomSection {
   sectionTitle: string;
+  sectionTitleEn?: string;
   content: string;
+  contentEn?: string;
   keyTakeaway: string;
+  keyTakeawayEn?: string;
 }
 
 export interface ClassroomLesson {
   id: string;
   subject: string;
   topic: string;
+  topicEn?: string;
   gradeLevel: string;
   semester?: string;
   countryRegion?: string;
   educationSystem?: string;
   teacherName: string;
+  teacherNameEn?: string;
   lectureTitle: string;
+  lectureTitleEn?: string;
   lectureSections: ClassroomSection[];
   simplifiedExplanation: string;
+  simplifiedExplanationEn?: string;
   checkQuestionPrompt: string;
+  checkQuestionPromptEn?: string;
   homeworkQuiz: QuestionBankItem[];
 }
 
 export interface ExamPaperItem {
   id: string;
   title: string;
+  titleEn?: string;
   subject: string;
   gradeLevel: string;
   semester?: string;
@@ -228,6 +241,7 @@ export interface ExamPaperItem {
   totalScore: number;
   passingScore: number;
   description: string;
+  descriptionEn?: string;
   questions: QuestionBankItem[];
 }
 

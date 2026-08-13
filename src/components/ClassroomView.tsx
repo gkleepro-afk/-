@@ -76,6 +76,12 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 }) => {
   const t = (key: keyof typeof TRANSLATIONS) => TRANSLATIONS[key][uiLang] || TRANSLATIONS[key].bilingual;
 
+  const getText = (zh: string, en?: string) => {
+    if (uiLang === 'en' && en) return en;
+    if (uiLang === 'bilingual' && en && en !== zh) return `${zh} / ${en}`;
+    return zh;
+  };
+
   const currentGrade = userProfile?.gradeLevel || '高一';
   const currentSemester = userProfile?.semester || '上学期';
   const currentRegion = userProfile?.countryRegion || '中国大陆';
@@ -446,7 +452,13 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             <div className="flex items-center gap-2">
               <span className="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold rounded-lg flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 text-emerald-600" />
-                <span>全屏年级锁：仅呈现【{currentGrade}】讲堂 ({filteredLessons.length} 门)</span>
+                <span>
+                  {uiLang === 'en'
+                    ? `Grade Lock: Grade 【${currentGrade}】 Lessons (${filteredLessons.length})`
+                    : uiLang === 'bilingual'
+                    ? `年级锁：【${currentGrade}】讲堂 (${filteredLessons.length}) / Grade Lock`
+                    : `全屏年级锁：仅呈现【${currentGrade}】讲堂 (${filteredLessons.length} 门)`}
+                </span>
               </span>
             </div>
           </div>
@@ -471,25 +483,31 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                         : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200'
                     }`}
                   >
-                    <p className="line-clamp-1">{l.lectureTitle}</p>
+                    <p className="line-clamp-1">{getText(l.lectureTitle, l.lectureTitleEn)}</p>
                     <span
                       className={`text-[10px] block mt-1 ${
                         isActive ? 'text-blue-100' : 'text-slate-400'
                       }`}
                     >
-                      {l.subject} · {l.gradeLevel} · {l.teacherName}
+                      {l.subject} · {l.gradeLevel} · {getText(l.teacherName, l.teacherNameEn)}
                     </span>
                   </button>
                 );
               })
             ) : (
               <div className="text-center py-4 text-xs text-slate-400 w-full flex items-center justify-center gap-2">
-                <span>暂无完全符合【{currentGrade}】的预设讲堂，可以点击右上角使用 AI 自动生成！</span>
+                <span>
+                  {uiLang === 'en'
+                    ? `No default lessons for 【${currentGrade}】. Click AI Generate!`
+                    : uiLang === 'bilingual'
+                    ? `暂无【${currentGrade}】讲堂，请使用 AI 生成 / No lessons, click AI Generate`
+                    : `暂无完全符合【${currentGrade}】的预设讲堂，可以点击右上角使用 AI 自动生成！`}
+                </span>
                 <button
                   onClick={() => setShowGenModal(true)}
                   className="text-blue-600 font-bold underline"
                 >
-                  本地生成
+                  {t('goToAiGenBtn')}
                 </button>
               </div>
             )}
@@ -512,7 +530,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                       {activeLesson.gradeLevel} · {activeLesson.semester || '上学期'}
                     </span>
                     <span className="px-3 py-1 bg-amber-500/20 text-amber-300 rounded-lg text-xs font-bold border border-amber-500/30">
-                      👨‍🏫 {activeLesson.teacherName}
+                      👨‍🏫 {getText(activeLesson.teacherName, activeLesson.teacherNameEn)}
                     </span>
                   </div>
 
@@ -520,7 +538,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                   <div className="flex flex-wrap items-center gap-2 bg-slate-800/90 p-2 rounded-xl border border-slate-700">
                     <span className="text-[11px] text-slate-300 font-bold px-2 flex items-center gap-1.5">
                       <Volume2 className="w-4 h-4 text-blue-400" />
-                      名师原声授课 (TTS)
+                      {t('ttsLabel')}
                     </span>
 
                     {!isSpeaking ? (
@@ -529,7 +547,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                         className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-lg flex items-center gap-1.5 transition cursor-pointer shadow-xs"
                       >
                         <Play className="w-3.5 h-3.5 fill-white" />
-                        <span>播放完整讲堂</span>
+                        <span>{t('playFullLecture')}</span>
                       </button>
                     ) : (
                       <>
@@ -538,7 +556,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                           className="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold rounded-lg flex items-center gap-1 transition cursor-pointer"
                         >
                           {isPaused ? <Play className="w-3.5 h-3.5" /> : <Pause className="w-3.5 h-3.5" />}
-                          <span>{isPaused ? '继续' : '暂停'}</span>
+                          <span>{isPaused ? t('resumeSpeech') : t('pauseSpeech')}</span>
                         </button>
 
                         <button
@@ -546,7 +564,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                           className="px-3 py-1.5 bg-red-600/80 hover:bg-red-600 text-white text-xs font-bold rounded-lg flex items-center gap-1 transition cursor-pointer"
                         >
                           <Square className="w-3.5 h-3.5 fill-white" />
-                          <span>停止</span>
+                          <span>{t('stopSpeech')}</span>
                         </button>
                       </>
                     )}
@@ -557,7 +575,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                         value={selectedVoiceURI}
                         onChange={(e) => setSelectedVoiceURI(e.target.value)}
                         className="bg-slate-900 border border-slate-700 text-slate-300 rounded-lg px-2 py-1 text-[11px] font-bold focus:outline-none max-w-[130px] truncate"
-                        title="选择讲课发音人"
+                        title="Voice"
                       >
                         {availableVoices.map((v) => (
                           <option key={v.voiceURI} value={v.voiceURI}>
@@ -573,10 +591,10 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                       onChange={(e) => setSpeechRate(Number(e.target.value))}
                       className="bg-slate-900 border border-slate-700 text-slate-300 rounded-lg px-2 py-1 text-[11px] font-bold focus:outline-none"
                     >
-                      <option value={0.8}>0.8x 语速</option>
-                      <option value={1.0}>1.0x 标准</option>
-                      <option value={1.25}>1.25x 快速</option>
-                      <option value={1.5}>1.5x 高速</option>
+                      <option value={0.8}>0.8x {uiLang === 'en' ? 'Speed' : '语速'}</option>
+                      <option value={1.0}>1.0x {uiLang === 'en' ? 'Standard' : '标准'}</option>
+                      <option value={1.25}>1.25x {uiLang === 'en' ? 'Fast' : '快速'}</option>
+                      <option value={1.5}>1.5x {uiLang === 'en' ? 'Hi-Speed' : '高速'}</option>
                     </select>
 
                     {/* Pitch Select */}
@@ -585,15 +603,15 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                       onChange={(e) => setSpeechPitch(Number(e.target.value))}
                       className="bg-slate-900 border border-slate-700 text-slate-300 rounded-lg px-2 py-1 text-[11px] font-bold focus:outline-none"
                     >
-                      <option value={0.9}>沉稳名师音</option>
-                      <option value={1.0}>标准教案音</option>
-                      <option value={1.15}>生动高亢音</option>
+                      <option value={0.9}>{uiLang === 'en' ? 'Calm Voice' : '沉稳名师音'}</option>
+                      <option value={1.0}>{uiLang === 'en' ? 'Standard Voice' : '标准教案音'}</option>
+                      <option value={1.15}>{uiLang === 'en' ? 'Lively Voice' : '生动高亢音'}</option>
                     </select>
                   </div>
                 </div>
 
                 <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-3">
-                  {activeLesson.lectureTitle}
+                  {getText(activeLesson.lectureTitle, activeLesson.lectureTitleEn)}
                 </h3>
 
                 {isSpeaking && (
@@ -602,16 +620,22 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                       <span className="w-2.5 h-2.5 rounded-full bg-blue-400 animate-ping" />
                       <span>
                         {activeSectionIdx === -1
-                          ? '🎙️ 名师开场问候与课题引入中...'
+                          ? uiLang === 'en'
+                            ? '🎙️ Teacher intro & greeting...'
+                            : '🎙️ 名师开场问候与课题引入中...'
                           : activeSectionIdx !== null && activeSectionIdx >= 0
-                          ? `🎙️ 名师正在精讲第 ${activeSectionIdx + 1} 节，请结合屏幕文本听讲...`
+                          ? uiLang === 'en'
+                            ? `🎙️ Teacher presenting Section ${activeSectionIdx + 1}...`
+                            : `🎙️ 名师正在精讲第 ${activeSectionIdx + 1} 节，请结合屏幕文本听讲...`
+                          : uiLang === 'en'
+                          ? '🎙️ Interactive Q&A lecture...'
                           : '🎙️ 正在进行课堂互动问询讲解...'}
                       </span>
                     </div>
 
                     <div className="flex items-center gap-1 text-[10px] text-blue-200">
                       <Radio className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
-                      <span>原声分段播放中</span>
+                      <span>{uiLang === 'en' ? 'Audio playing' : '原声分段播放中'}</span>
                     </div>
                   </div>
                 )}
@@ -621,6 +645,9 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
               <div className="p-6 sm:p-8 space-y-8">
                 {activeLesson.lectureSections.map((sec, idx) => {
                   const isCurrentSpeaking = activeSectionIdx === idx;
+                  const secTitle = getText(sec.sectionTitle, sec.sectionTitleEn);
+                  const secContent = getText(sec.content, sec.contentEn);
+                  const secTakeaway = getText(sec.keyTakeaway, sec.keyTakeawayEn);
 
                   return (
                     <div
@@ -644,7 +671,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                             {idx + 1}
                           </span>
                           <h4 className="text-base font-bold text-slate-900">
-                            {sec.sectionTitle}
+                            {secTitle}
                           </h4>
                         </div>
 
@@ -652,38 +679,38 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                           {isCurrentSpeaking && (
                             <span className="text-[11px] font-bold text-blue-700 bg-blue-100 px-2.5 py-0.5 rounded-full border border-blue-200 flex items-center gap-1 animate-pulse">
                               <Volume2 className="w-3.5 h-3.5" />
-                              正在讲授此段
+                              {t('speakingThisSection')}
                             </span>
                           )}
 
                           <button
                             onClick={() =>
                               handleSpeakSnippet(
-                                `${sec.sectionTitle}。${sec.content}。核心结论：${sec.keyTakeaway}`,
+                                `${secTitle}。${secContent}。${t('keyTakeawayHeader')}${secTakeaway}`,
                                 idx
                               )
                             }
                             className="text-xs font-bold text-slate-600 hover:text-blue-600 bg-slate-100 hover:bg-blue-50 px-3 py-1.5 rounded-lg border border-slate-200 transition flex items-center gap-1 cursor-pointer"
-                            title="单独播放本段讲课"
+                            title="Read section"
                           >
                             <Volume2 className="w-3.5 h-3.5" />
-                            <span>朗读本段</span>
+                            <span>{t('speakSnippet')}</span>
                           </button>
                         </div>
                       </div>
 
                       <div className="text-slate-700 text-sm leading-relaxed whitespace-pre-line pl-1 sm:pl-9">
-                        {sec.content}
+                        {secContent}
                       </div>
 
                       <div className="sm:ml-9 bg-amber-50 border border-amber-200/80 rounded-xl p-3.5 flex items-start gap-3">
                         <Lightbulb className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                         <div>
                           <span className="text-xs font-bold text-amber-800 uppercase tracking-wider block">
-                            核心结论 / 记忆秘籍：
+                            {t('keyTakeawayHeader')}
                           </span>
                           <p className="text-xs text-amber-900 font-medium mt-0.5">
-                            {sec.keyTakeaway}
+                            {secTakeaway}
                           </p>
                         </div>
                       </div>
@@ -703,16 +730,18 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-bold text-blue-600 bg-blue-100/80 px-2.5 py-0.5 rounded-full">
-                        名师互动问询
+                        {t('interactiveAskTitle')}
                       </span>
                       <span className="text-xs text-slate-400">Phase 2 Checkpoint</span>
                     </div>
                     <h4 className="text-base sm:text-lg font-bold text-slate-900 mt-1">
-                      {activeLesson.checkQuestionPrompt ||
-                        `同学们，上面关于《${activeLesson.topic}》的推导与讲解，你听懂了吗？`}
+                      {getText(
+                        activeLesson.checkQuestionPrompt || `同学们，上面关于《${activeLesson.topic}》的推导与讲解，你听懂了吗？`,
+                        activeLesson.checkQuestionPromptEn
+                      )}
                     </h4>
                     <p className="text-xs text-slate-500 mt-0.5">
-                      请如实反馈。听懂即可解锁课后练习，若没太懂名师将为你进行更通俗的生动拆解。
+                      {t('checkPromptGuidance')}
                     </p>
                   </div>
                 </div>
@@ -720,15 +749,17 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                 <button
                   onClick={() =>
                     handleSpeakSnippet(
-                      activeLesson.checkQuestionPrompt ||
-                        `同学们，上面关于${activeLesson.topic}的推导与讲解，你听懂了吗？`,
+                      getText(
+                        activeLesson.checkQuestionPrompt || `同学们，上面关于${activeLesson.topic}的推导与讲解，你听懂了吗？`,
+                        activeLesson.checkQuestionPromptEn
+                      ),
                       -2
                     )
                   }
                   className="px-3 py-1.5 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold rounded-xl border border-slate-200 transition flex items-center gap-1 cursor-pointer shrink-0"
                 >
                   <Volume2 className="w-3.5 h-3.5 text-blue-600" />
-                  <span>语音问询</span>
+                  <span>{t('voicePromptBtn')}</span>
                 </button>
               </div>
 
@@ -744,7 +775,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                 >
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    <span>💡 完全听懂了，去做课后练习！</span>
+                    <span>{t('optionUnderstood')}</span>
                   </div>
                 </button>
 
@@ -752,7 +783,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                   onClick={() => {
                     setUnderstandingStatus('needs_simplification');
                     handleSpeakSnippet(
-                      `没太听懂没关系，老师用更通俗的比喻为你拆解：${activeLesson.simplifiedExplanation}`,
+                      getText(activeLesson.simplifiedExplanation, activeLesson.simplifiedExplanationEn),
                       -3
                     );
                   }}
@@ -764,7 +795,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                 >
                   <div className="flex items-center gap-2">
                     <HelpCircle className="w-4 h-4 text-amber-500" />
-                    <span>🤔 没太听懂，请用更通俗方式再讲讲</span>
+                    <span>{t('optionNeedsAnalogy')}</span>
                   </div>
                 </button>
 
@@ -778,7 +809,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                 >
                   <div className="flex items-center gap-2">
                     <MessageSquare className="w-4 h-4 text-blue-500" />
-                    <span>❓ 我有具体疑问，想向老师提问</span>
+                    <span>{t('optionAskQuestion')}</span>
                   </div>
                 </button>
               </div>
@@ -789,25 +820,25 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 text-amber-900 font-bold text-sm">
                       <Lightbulb className="w-5 h-5 text-amber-600" />
-                      <span>名师通俗生活化比喻与通俗拆解：</span>
+                      <span>{t('analogyBoxHeader')}</span>
                     </div>
 
                     <button
                       onClick={() =>
                         handleSpeakSnippet(
-                          `通俗比喻讲解：${activeLesson.simplifiedExplanation}`,
+                          getText(activeLesson.simplifiedExplanation, activeLesson.simplifiedExplanationEn),
                           -3
                         )
                       }
                       className="px-3 py-1 bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-bold rounded-lg transition flex items-center gap-1 cursor-pointer"
                     >
                       <Volume2 className="w-3.5 h-3.5" />
-                      <span>朗读通俗拆解</span>
+                      <span>{t('readAnalogyBtn')}</span>
                     </button>
                   </div>
 
                   <p className="text-xs text-amber-950 leading-relaxed font-medium bg-white/80 p-4 rounded-xl border border-amber-100">
-                    {activeLesson.simplifiedExplanation}
+                    {getText(activeLesson.simplifiedExplanation, activeLesson.simplifiedExplanationEn)}
                   </p>
 
                   <div className="flex justify-end">
@@ -815,7 +846,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                       onClick={() => setUnderstandingStatus('understood')}
                       className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-xl transition cursor-pointer"
                     >
-                      再次确认：现在听懂了，去过关测试 ➔
+                      {t('confirmUnderstoodNext')}
                     </button>
                   </div>
                 </div>
@@ -826,7 +857,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                 <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-4 animate-in fade-in duration-200">
                   <div className="flex items-center gap-2 text-slate-900 font-bold text-sm">
                     <MessageSquare className="w-4 h-4 text-blue-600" />
-                    <span>向名师发起在线课堂提问：</span>
+                    <span>{t('askTeacherTitle')}</span>
                   </div>
 
                   <form onSubmit={handleAskTeacher} className="flex gap-2">
@@ -834,7 +865,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                       type="text"
                       value={studentQuestion}
                       onChange={(e) => setStudentQuestion(e.target.value)}
-                      placeholder="例：为什么这里的受力分析不需要考虑滑动摩擦力？"
+                      placeholder={t('askTeacherPlaceholder')}
                       className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-medium"
                     />
                     <button
@@ -847,7 +878,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                       ) : (
                         <Send className="w-4 h-4" />
                       )}
-                      <span>发送提问</span>
+                      <span>{t('sendQuestionBtn')}</span>
                     </button>
                   </form>
 
@@ -855,20 +886,20 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                     <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 space-y-2">
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-blue-900">
-                          👨‍🏫 {activeLesson.teacherName} 的解答：
+                          👨‍🏫 {getText(activeLesson.teacherName, activeLesson.teacherNameEn)} {t('teacherAnswerHeader')}
                         </span>
 
                         <button
                           onClick={() =>
                             handleSpeakSnippet(
-                              `老师关于提问的解答：${teacherAnswer}`,
+                              teacherAnswer,
                               -3
                             )
                           }
                           className="px-2.5 py-1 bg-blue-100 hover:bg-blue-200 text-blue-900 text-[11px] font-bold rounded-lg transition flex items-center gap-1 cursor-pointer"
                         >
                           <Volume2 className="w-3.5 h-3.5" />
-                          <span>朗读回答</span>
+                          <span>{t('readTeacherAnswer')}</span>
                         </button>
                       </div>
 
@@ -881,7 +912,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                           onClick={() => setUnderstandingStatus('understood')}
                           className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-[11px] rounded-lg transition"
                         >
-                          明白了，开始课后巩固测试 ➔
+                          {t('confirmUnderstoodNext')}
                         </button>
                       </div>
                     </div>
@@ -899,17 +930,17 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                   </div>
                   <div>
                     <h3 className="text-base font-bold text-slate-900">
-                      Phase 3: 课后巩固测试题 ({activeLesson.homeworkQuiz?.length || 0} 题)
+                      Phase 3: {t('homeworkSectionTitle')} ({activeLesson.homeworkQuiz?.length || 0} {uiLang === 'en' ? 'Questions' : '题'})
                     </h3>
                     <p className="text-xs text-slate-500 mt-0.5">
-                      根据讲课要点精心定制，做完即可检验学习成果
+                      {t('homeworkSubtitle')}
                     </p>
                   </div>
                 </div>
 
                 {understandingStatus !== 'understood' && (
                   <span className="text-xs text-amber-600 font-bold bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">
-                    请先在 Phase 2 确认听懂状况
+                    {uiLang === 'en' ? 'Please complete Phase 2 first' : '请先在 Phase 2 确认听懂状况'}
                   </span>
                 )}
               </div>
@@ -919,6 +950,16 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                   {activeLesson.homeworkQuiz.map((q, qIdx) => {
                     const selectedOpt = userAnswers[qIdx];
                     const isCorrect = selectedOpt === q.correctIndex;
+                    const qText = getText(q.question, q.questionEn);
+                    const qExplanation = getText(q.explanation, q.explanationEn);
+                    
+                    // Options localization
+                    let qOptions = q.options || [];
+                    if (uiLang === 'en' && q.optionsEn && q.optionsEn.length > 0) {
+                      qOptions = q.optionsEn;
+                    } else if (uiLang === 'bilingual' && q.optionsEn && q.optionsEn.length === q.options?.length) {
+                      qOptions = q.options.map((opt, i) => `${opt} / ${q.optionsEn![i]}`);
+                    }
 
                     return (
                       <div
@@ -927,17 +968,21 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                       >
                         <div className="flex items-start justify-between gap-3">
                           <h4 className="text-sm font-bold text-slate-900 leading-snug">
-                            {qIdx + 1}. {q.question}
+                            {qIdx + 1}. {qText}
                           </h4>
                           <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-100 text-blue-700 shrink-0">
-                            {q.difficulty === 'easy' ? '基础' : q.difficulty === 'hard' ? '拔高' : '中等'}
+                            {q.difficulty === 'easy'
+                              ? uiLang === 'en' ? 'Easy' : '基础'
+                              : q.difficulty === 'hard'
+                              ? uiLang === 'en' ? 'Hard' : '拔高'
+                              : uiLang === 'en' ? 'Medium' : '中等'}
                           </span>
                         </div>
 
                         {/* Options */}
-                        {q.options && (
+                        {qOptions && (
                           <div className="space-y-2">
-                            {q.options.map((opt, optIdx) => {
+                            {qOptions.map((opt, optIdx) => {
                               const isSelected = selectedOpt === optIdx;
                               let btnStyle =
                                 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100';
@@ -984,21 +1029,23 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                                   isCorrect ? 'text-emerald-600' : 'text-red-600'
                                 }`}
                               >
-                                {isCorrect ? '✅ 回答正确！' : '❌ 答错了，请查看名师解析：'}
+                                {isCorrect
+                                  ? (uiLang === 'en' ? '✅ Correct Answer!' : '✅ 回答正确！')
+                                  : (uiLang === 'en' ? '❌ Incorrect. See explanation:' : '❌ 答错了，请查看名师解析：')}
                               </span>
 
                               <div className="flex items-center gap-2">
                                 <button
                                   onClick={() =>
                                     handleSpeakSnippet(
-                                      `试题解析：${q.explanation}`,
+                                      `Explanation: ${qExplanation}`,
                                       -3
                                     )
                                   }
                                   className="text-[11px] font-bold text-blue-700 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-2.5 py-1 rounded-lg border border-blue-200 transition cursor-pointer flex items-center gap-1"
                                 >
                                   <Volume2 className="w-3 h-3" />
-                                  <span>朗读解析</span>
+                                  <span>{uiLang === 'en' ? 'Read' : '朗读解析'}</span>
                                 </button>
 
                                 <button
@@ -1007,13 +1054,13 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                                   className="text-[11px] font-bold text-amber-700 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 px-2.5 py-1 rounded-lg border border-amber-200 transition cursor-pointer flex items-center gap-1"
                                 >
                                   <Plus className="w-3 h-3" />
-                                  <span>{savedQuestions[qIdx] ? '已存入错题本' : '存入错题本'}</span>
+                                  <span>{savedQuestions[qIdx] ? t('savedToMistakeLog') : t('addToMistakeLog')}</span>
                                 </button>
                               </div>
                             </div>
 
                             <p className="text-xs text-slate-700 leading-relaxed font-medium bg-white p-3 rounded-xl border border-slate-200">
-                              {q.explanation}
+                              {qExplanation}
                             </p>
                           </div>
                         )}
@@ -1028,34 +1075,36 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                         disabled={Object.keys(userAnswers).length < activeLesson.homeworkQuiz.length}
                         className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-bold text-xs rounded-xl shadow-xs transition cursor-pointer"
                       >
-                        提交课后作业并查看答案解析
+                        {t('submitHomeworkBtn')}
                       </button>
                     ) : (
                       <div className="flex items-center gap-3">
                         <span className="text-xs font-bold text-slate-700">
-                          得分：
+                          {t('myScore')}:{' '}
                           {
                             activeLesson.homeworkQuiz.filter(
                               (q, idx) => userAnswers[idx] === q.correctIndex
                             ).length
                           }{' '}
-                          / {activeLesson.homeworkQuiz.length} 正确
+                          / {activeLesson.homeworkQuiz.length}
                         </span>
                         <button
                           onClick={() => {
                             setSubmittedQuiz(false);
                             setUserAnswers({});
                           }}
-                          className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition"
+                          className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition cursor-pointer"
                         >
-                          重新做题
+                          {t('retryQuizBtn')}
                         </button>
                       </div>
                     )}
                   </div>
                 </div>
               ) : (
-                <p className="text-xs text-slate-400 py-4 text-center">暂无课后练习题。</p>
+                <p className="text-xs text-slate-400 py-4 text-center">
+                  {uiLang === 'en' ? 'No homework exercises yet.' : '暂无课后练习题。'}
+                </p>
               )}
             </div>
           </div>
@@ -1072,9 +1121,13 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                   <Sparkles className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-slate-900">AI 定制年级/地区专属讲堂</h3>
+                  <h3 className="text-lg font-bold text-slate-900">
+                    {uiLang === 'en' ? 'AI Custom Lesson Generator' : 'AI 定制年级/地区专属讲堂'}
+                  </h3>
                   <p className="text-xs text-slate-500">
-                    完全依据【{currentGrade} · {currentSemester}】大纲生成讲教案与习题
+                    {uiLang === 'en'
+                      ? `Generated specifically for Grade 【${currentGrade} · ${currentSemester}】 syllabus`
+                      : `完全依据【${currentGrade} · ${currentSemester}】大纲生成讲教案与习题`}
                   </p>
                 </div>
               </div>
@@ -1088,7 +1141,9 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
             <div className="space-y-4 text-xs font-medium">
               <div>
-                <label className="text-slate-700 font-bold block mb-1">学科领域</label>
+                <label className="text-slate-700 font-bold block mb-1">
+                  {uiLang === 'en' ? 'Subject' : '学科领域'}
+                </label>
                 <select
                   value={genSubject}
                   onChange={(e) => setGenSubject(e.target.value)}
@@ -1106,22 +1161,22 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
               <div>
                 <label className="text-slate-700 font-bold block mb-1">
-                  讲座主题 / 核心考点课题
+                  {uiLang === 'en' ? 'Lecture Topic / Key Concept' : '讲座主题 / 核心考点课题'}
                 </label>
                 <input
                   type="text"
                   value={genTopic}
                   onChange={(e) => setGenTopic(e.target.value)}
-                  placeholder="如：牛顿第二定律综合应用 / 导数求最值"
+                  placeholder={uiLang === 'en' ? 'e.g., Newton\'s Laws / Derivatives' : '如：牛顿第二定律综合应用 / 导数求最值'}
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-900 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
                 />
               </div>
 
               <div className="bg-blue-50 p-3 rounded-xl text-[11px] text-blue-900 space-y-1 border border-blue-100">
-                <p className="font-bold">🎯 系统考纲锁已开启：</p>
-                <p>• 目标年级：{currentGrade}</p>
-                <p>• 目标学期：{currentSemester}</p>
-                <p>• 地区/教材：{currentRegion} · {currentSystem}</p>
+                <p className="font-bold">🎯 {uiLang === 'en' ? 'System Syllabus Lock Active:' : '系统考纲锁已开启：'}</p>
+                <p>• {uiLang === 'en' ? 'Target Grade' : '目标年级'}：{currentGrade}</p>
+                <p>• {uiLang === 'en' ? 'Target Semester' : '目标学期'}：{currentSemester}</p>
+                <p>• {uiLang === 'en' ? 'Region / Curriculum' : '地区/教材'}：{currentRegion} · {currentSystem}</p>
               </div>
             </div>
 
@@ -1130,7 +1185,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                 onClick={() => setShowGenModal(false)}
                 className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition"
               >
-                取消
+                {uiLang === 'en' ? 'Cancel' : '取消'}
               </button>
               <button
                 onClick={handleGenerateLesson}
@@ -1140,12 +1195,12 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                 {isGenerating ? (
                   <>
                     <RefreshCw className="w-4 h-4 animate-spin" />
-                    <span>AI 名师编写教案中...</span>
+                    <span>{uiLang === 'en' ? 'AI Writing Lesson Plan...' : 'AI 名师编写教案中...'}</span>
                   </>
                 ) : (
                   <>
                     <Sparkles className="w-4 h-4" />
-                    <span>生成名师模拟讲堂</span>
+                    <span>{uiLang === 'en' ? 'Generate AI Lesson' : '生成名师模拟讲堂'}</span>
                   </>
                 )}
               </button>

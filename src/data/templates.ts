@@ -19,6 +19,7 @@ export const INITIAL_EXAM_PAPERS: ExamPaperItem[] = [
   {
     id: 'paper-chu1',
     title: '2026初一数学期末综合仿真冲刺卷（有理数与一元一次方程）',
+    titleEn: '2026 Grade 7 Math Final Mock Exam (Rational Numbers & Linear Equations)',
     subject: '数学',
     gradeLevel: '初一',
     countryRegion: '中国大陆',
@@ -27,6 +28,7 @@ export const INITIAL_EXAM_PAPERS: ExamPaperItem[] = [
     totalScore: 100,
     passingScore: 60,
     description: '涵盖初一（七年级）有理数运算、数轴绝对值几何意义、代数式化简与一元一次方程应用题。',
+    descriptionEn: 'Covers Grade 7 rational number operations, absolute value geometry, algebraic simplification, and linear equation word problems.',
     questions: [
       {
         id: 'pchu1-q1',
@@ -35,9 +37,12 @@ export const INITIAL_EXAM_PAPERS: ExamPaperItem[] = [
         gradeLevel: '初一',
         topic: '有理数与数轴绝对值',
         question: '已知有理数 a, b 在数轴上的位置如图所示，a < 0 < b 且 |a| > |b|。化简 |a| + |b| - |a + b| 的结果为：',
+        questionEn: 'Given rational numbers a, b on the number line where a < 0 < b and |a| > |b|. Simplify |a| + |b| - |a + b|:',
         options: ['-2a', '2b', '0', '-2b'],
+        optionsEn: ['-2a', '2b', '0', '-2b'],
         correctIndex: 1,
         explanation: '因 a<0<b 且 |a|>|b|，所以 a+b < 0。因此 |a| = -a，|b| = b，|a+b| = -(a+b) = -a-b。原式 = -a + b - (-a - b) = -a + b + a + b = 2b。选 B。',
+        explanationEn: 'Since a < 0 < b and |a| > |b|, a + b < 0. Thus |a| = -a, |b| = b, and |a+b| = -(a+b) = -a-b. Expression = -a + b - (-a - b) = 2b. Option B.',
         questionType: 'choice',
         difficulty: 'medium',
         keyPoints: ['数轴与绝对值', '去绝对值符号法则']
@@ -49,9 +54,12 @@ export const INITIAL_EXAM_PAPERS: ExamPaperItem[] = [
         gradeLevel: '初一',
         topic: '一元一次方程应用',
         question: '某商店将一件进价为 100 元的服装标价 150 元出售，若打折促销仍要保持 20% 的利润率，则该服装最少可以打几折？',
+        questionEn: 'A store tags a coat at 150 RMB with a cost of 100 RMB. To maintain a 20% profit margin during a sale, what is the maximum discount rate?',
         options: ['8折', '7.5折', '8.5折', '9折'],
+        optionsEn: ['20% off (80%)', '25% off (75%)', '15% off (85%)', '10% off (90%)'],
         correctIndex: 0,
         explanation: '目标售价 = 100 * (1 + 20%) = 120 元。设打 x 折，则 150 * (x/10) = 120 => x = 8。即打 8 折。选 A。',
+        explanationEn: 'Target price = 100 * 1.2 = 120 RMB. Let discount factor be x/10: 150 * (x/10) = 120 => x = 8 (20% off). Option A.',
         questionType: 'choice',
         difficulty: 'easy',
         keyPoints: ['一元一次方程', '打折利润计算']
@@ -61,6 +69,7 @@ export const INITIAL_EXAM_PAPERS: ExamPaperItem[] = [
   {
     id: 'paper-1',
     title: '2026高考物理全真模拟精选冲刺卷（一）',
+    titleEn: '2026 Gaokao Physics Full Simulation Sprint Exam (1)',
     subject: '物理',
     gradeLevel: '高三/高考',
     countryRegion: '中国大陆',
@@ -69,6 +78,7 @@ export const INITIAL_EXAM_PAPERS: ExamPaperItem[] = [
     totalScore: 100,
     passingScore: 60,
     description: '涵盖牛顿力学、动量守恒、电磁感应与机械能守恒等高考一轮二轮复习核心压轴考点。',
+    descriptionEn: 'Covers Newtonian mechanics, momentum conservation, electromagnetic induction, and mechanical energy conservation.',
     questions: [
       {
         id: 'p1-q1',
@@ -77,14 +87,22 @@ export const INITIAL_EXAM_PAPERS: ExamPaperItem[] = [
         gradeLevel: '高三/高考',
         topic: '动量守恒与碰撞',
         question: '在光滑水平面上，质量为 m1=2kg 的木块以 v1=3m/s 的速度与静止的质量为 m2=1kg 的木块发生完全非弹性碰撞，碰撞后两木块粘在一起共同运动。求碰撞后的共同速度 v 及系统的机械能损失 ΔE。',
+        questionEn: 'On a smooth horizontal surface, block m1=2kg moves at v1=3m/s and undergoes a completely inelastic collision with a stationary block m2=1kg. Find common velocity v and mechanical energy loss ΔE.',
         options: [
           'v = 2m/s，ΔE = 3J',
           'v = 1.5m/s，ΔE = 4J',
           'v = 2m/s，ΔE = 6J',
           'v = 3m/s，ΔE = 0J'
         ],
+        optionsEn: [
+          'v = 2m/s, ΔE = 3J',
+          'v = 1.5m/s, ΔE = 4J',
+          'v = 2m/s, ΔE = 6J',
+          'v = 3m/s, ΔE = 0J'
+        ],
         correctIndex: 0,
         explanation: '1. 动量守恒：m1*v1 = (m1+m2)*v => 2*3 = (2+1)*v => v = 2m/s。\n2. 碰撞前总动能 Ek1 = 0.5*2*9 = 9J；碰撞后总动能 Ek2 = 0.5*3*4 = 6J。\n3. 机械能损失 ΔE = 9 - 6 = 3J。选 A。',
+        explanationEn: '1. Momentum conservation: m1*v1 = (m1+m2)*v => 2*3 = 3*v => v = 2m/s.\n2. Initial kinetic energy = 9J, final = 6J.\n3. Energy loss = 9 - 6 = 3J. Option A.',
         questionType: 'choice',
         difficulty: 'medium',
         keyPoints: ['动量守恒定律', '完全非弹性碰撞', '机械能损失']
@@ -96,9 +114,12 @@ export const INITIAL_EXAM_PAPERS: ExamPaperItem[] = [
         gradeLevel: '高三/高考',
         topic: '电磁感应与法拉第定律',
         question: '在磁感应强度 B=0.5T 的匀强磁场中，有一长 L=0.4m 的金属棒切割磁感线运动，速度 v=4m/s，方向垂直于磁场与金属棒。求金属棒产生的感应电动势 E 为多少伏特？',
+        questionEn: 'In a uniform magnetic field B = 0.5T, a metal rod of length L = 0.4m cuts field lines at v = 4m/s perpendicular to the field and rod. Calculate induced EMF E in Volts:',
         options: ['0.8V', '0.4V', '1.0V', '2.0V'],
+        optionsEn: ['0.8V', '0.4V', '1.0V', '2.0V'],
         correctIndex: 0,
         explanation: '由法拉第电磁感应定律公式 E = B*L*v = 0.5 * 0.4 * 4 = 0.8V。选 A。',
+        explanationEn: 'By Faraday Law E = B * L * v = 0.5 * 0.4 * 4 = 0.8V. Option A.',
         questionType: 'choice',
         difficulty: 'easy',
         keyPoints: ['切割磁感线', 'E=BLv公式']
@@ -110,8 +131,10 @@ export const INITIAL_EXAM_PAPERS: ExamPaperItem[] = [
         gradeLevel: '高三/高考',
         topic: '平抛运动轨迹方程',
         question: '一小球以 v0=10m/s 的初速度水平抛出，不计空气阻力，g取10m/s^2。求 1s 末小球的速度方向与水平方向夹角 θ 的正切值 tanθ。',
+        questionEn: 'A ball is thrown horizontally at v0 = 10m/s. Neglecting air resistance (g=10m/s^2), find tanθ of velocity angle θ with horizontal at t = 1s:',
         correctAnswerText: 'tanθ = 1',
         explanation: '1s 末竖直速度 vy = g*t = 10*1 = 10m/s。水平速度 vx = v0 = 10m/s。故 tanθ = vy / vx = 10 / 10 = 1 (即 θ = 45°)。',
+        explanationEn: 'At t = 1s, vertical velocity vy = g*t = 10m/s, horizontal velocity vx = 10m/s. Thus tanθ = vy/vx = 1 (θ = 45°).',
         questionType: 'fill',
         difficulty: 'medium',
         keyPoints: ['平抛运动分解', '速度夹角计算']
@@ -121,6 +144,7 @@ export const INITIAL_EXAM_PAPERS: ExamPaperItem[] = [
   {
     id: 'paper-2',
     title: '2026中考数学全真模拟真题套卷（二次函数与几何综合）',
+    titleEn: '2026 Zhongkao Math Mock Exam (Quadratic Functions & Geometry)',
     subject: '数学',
     gradeLevel: '初三/中考',
     countryRegion: '中国大陆',
@@ -129,6 +153,7 @@ export const INITIAL_EXAM_PAPERS: ExamPaperItem[] = [
     totalScore: 120,
     passingScore: 72,
     description: '针对中考数学二次函数最值、动点问题与圆的几何综合压轴大题，全真仿真考场冲刺。',
+    descriptionEn: 'Targeted practice for Zhongkao quadratic functions max/min values, moving points, and circle geometry.',
     questions: [
       {
         id: 'p2-q1',
@@ -137,9 +162,12 @@ export const INITIAL_EXAM_PAPERS: ExamPaperItem[] = [
         gradeLevel: '初三/中考',
         topic: '二次函数性质',
         question: '已知二次函数 y = a*x^2 + b*x + c (a≠0) 开口向上，对称轴 x = 1，经过 (-1, 0)。判断结论：① b < 0；② 2a + b = 0；③ a - b + c = 0；④ 4a + 2b + c > 0。正确的有几个？',
+        questionEn: 'Given quadratic function y = ax^2 + bx + c (a≠0) opens upwards, axis x = 1, passing (-1, 0). Determine how many statements are true: ① b < 0; ② 2a + b = 0; ③ a - b + c = 0; ④ 4a + 2b + c > 0.',
         options: ['1个', '2个', '3个', '4个'],
+        optionsEn: ['1', '2', '3', '4'],
         correctIndex: 2,
         explanation: 'a>0, 对称轴 -b/(2a)=1 => b=-2a<0 => ①②正确；过(-1,0) => a-b+c=0 => ③正确；x=2时y<0 => 4a+2b+c<0 => ④错。正确3个，选C。',
+        explanationEn: 'a>0, axis -b/(2a)=1 => b=-2a<0 (①② true); (-1,0) => a-b+c=0 (③ true); x=2 gives y<0 => 4a+2b+c<0 (④ false). 3 true statement. Option C.',
         questionType: 'choice',
         difficulty: 'hard',
         keyPoints: ['二次函数图像', '对称轴与系数关系']
@@ -151,9 +179,12 @@ export const INITIAL_EXAM_PAPERS: ExamPaperItem[] = [
         gradeLevel: '初三/中考',
         topic: '勾股定理与切线',
         question: 'Rt△ABC 中，∠C = 90°，AC = 6，BC = 8。以 C 为圆心，R 为半径画圆，当 R 为多少时，⊙C 与斜边 AB 相切？',
+        questionEn: 'In right △ABC, ∠C = 90°, AC = 6, BC = 8. A circle with center C and radius R is drawn. What value of R makes circle C tangent to hypotenuse AB?',
         options: ['4.8', '5', '4', '6'],
+        optionsEn: ['4.8', '5', '4', '6'],
         correctIndex: 0,
         explanation: '斜边 AB = √(6^2+8^2) = 10。过 C 作 CD⊥AB，面积 S = 0.5*AC*BC = 0.5*AB*CD => CD = 6*8/10 = 4.8。故半径 R = 4.8 时相切。选 A。',
+        explanationEn: 'Hypotenuse AB = √(6^2+8^2) = 10. Area = 0.5*6*8 = 0.5*10*h => h = 4.8. Thus radius R = 4.8. Option A.',
         questionType: 'choice',
         difficulty: 'medium',
         keyPoints: ['切线长定理', '直角三角形面积法']
@@ -163,6 +194,7 @@ export const INITIAL_EXAM_PAPERS: ExamPaperItem[] = [
   {
     id: 'paper-3',
     title: 'IELTS Academic English Practice Test (Reading & Grammar)',
+    titleEn: 'IELTS Academic English Practice Test (Reading & Grammar)',
     subject: '英语',
     gradeLevel: 'Grade 12 / 雅思',
     countryRegion: '国际/英国',
@@ -171,6 +203,7 @@ export const INITIAL_EXAM_PAPERS: ExamPaperItem[] = [
     totalScore: 100,
     passingScore: 60,
     description: 'Academic reading & grammar diagnostic test for students targeting IELTS 6.5 - 7.5+.',
+    descriptionEn: 'Academic reading & grammar diagnostic test for students targeting IELTS 6.5 - 7.5+.',
     questions: [
       {
         id: 'p3-q1',
@@ -179,9 +212,12 @@ export const INITIAL_EXAM_PAPERS: ExamPaperItem[] = [
         gradeLevel: '高三/高考',
         topic: 'Academic Vocabulary',
         question: 'Select the most appropriate word to complete the sentence: "The new renewable energy project is expected to _______ carbon emissions by 30% over the next decade."',
+        questionEn: 'Select the most appropriate word to complete the sentence: "The new renewable energy project is expected to _______ carbon emissions by 30% over the next decade."',
         options: ['mitigate', 'exacerbate', 'accumulate', 'deteriorate'],
+        optionsEn: ['mitigate', 'exacerbate', 'accumulate', 'deteriorate'],
         correctIndex: 0,
         explanation: '"Mitigate" means to reduce, lessen, or alleviate severity. "Mitigate carbon emissions" is a formal academic collocation.',
+        explanationEn: '"Mitigate" means to reduce, lessen, or alleviate severity. "Mitigate carbon emissions" is a formal academic collocation.',
         questionType: 'choice',
         difficulty: 'medium',
         keyPoints: ['Collocations', 'IELTS Writing Task 2']

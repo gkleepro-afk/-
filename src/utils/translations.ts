@@ -817,5 +817,367 @@ export const TRANSLATIONS = {
     zh: '举一反三 · 同类变式强化练习',
     en: 'Variant Reinforcement Question',
     bilingual: '举一反三·同类变式练习 / Variant Practice',
+  },
+
+  // Exam Center & AI Classroom Translations
+  examCenterTitle: {
+    zh: '试卷与真题中心',
+    en: 'Exam & Test Center',
+    bilingual: '试卷与真题中心 / Exam Center',
+  },
+  examCenterSubtitle: {
+    zh: '考场仿真计时、全真模拟套卷、智能答题卡与 AI 精准组卷阅卷',
+    en: 'Simulated timed exams, standard mock papers, interactive answer keys & AI paper generation.',
+    bilingual: '考场仿真计时、全真模拟套卷与 AI 组卷 / Timed Exams & AI Papers',
+  },
+  tabMockPapers: {
+    zh: '真题模拟卷',
+    en: 'Mock Exam Papers',
+    bilingual: '真题模拟卷 / Mock Papers',
+  },
+  mockPapersTab: {
+    zh: '真题模拟卷',
+    en: 'Mock Exam Papers',
+    bilingual: '真题模拟卷 / Mock Papers',
+  },
+  tabAiGenerator: {
+    zh: 'AI 智能组卷',
+    en: 'AI Paper Generator',
+    bilingual: 'AI 智能组卷 / AI Generator',
+  },
+  aiGenPaperTab: {
+    zh: 'AI 智能组卷',
+    en: 'AI Paper Generator',
+    bilingual: 'AI 智能组卷 / AI Generator',
+  },
+  tabSubmissions: {
+    zh: '考试成绩单',
+    en: 'Score Reports',
+    bilingual: '考试成绩单 / Score Reports',
+  },
+  scoreReportsTab: {
+    zh: '考试成绩单',
+    en: 'Score Reports',
+    bilingual: '考试成绩单 / Score Reports',
+  },
+  searchPaperPlaceholder: {
+    zh: '搜索试卷标题或核心考点...',
+    en: 'Search paper title or key topics...',
+    bilingual: '搜索试卷或考点 / Search papers or topics...',
+  },
+  allSubjectsFilter: {
+    zh: '全部全科',
+    en: 'All Subjects',
+    bilingual: '全部全科 / All Subjects',
+  },
+  gradeLockPapers: {
+    zh: '全屏年级锁：仅呈现特定试卷',
+    en: 'Grade Lock: Active Grade Papers Only',
+    bilingual: '年级锁：选定年级试卷 / Grade Lock Papers',
+  },
+  enterExamBtn: {
+    zh: '进入考场',
+    en: 'Enter Exam',
+    bilingual: '进入考场 / Enter Exam',
+  },
+  noPapersFound: {
+    zh: '暂无匹配的模拟试卷',
+    en: 'No matching exam papers found',
+    bilingual: '暂无匹配试卷 / No Papers Found',
+  },
+  noPapersFoundSub: {
+    zh: '您可以切换“全部年级”或者使用【AI 智能组卷】功能现场生成试卷',
+    en: 'Try switching grade filters or use AI Paper Generator to create a custom paper.',
+    bilingual: '可使用 AI 智能组卷功能现场生成试卷 / Use AI Generator for Custom Papers',
+  },
+  goToAiGenBtn: {
+    zh: '前往 AI 智能组卷',
+    en: 'Go to AI Generator',
+    bilingual: '前往 AI 智能组卷 / Go to AI Generator',
+  },
+  aiGenPaperTitle: {
+    zh: 'AI 智能精准组卷系统',
+    en: 'AI Custom Exam Paper Generator',
+    bilingual: 'AI 智能精准组卷 / AI Paper Generator',
+  },
+  aiGenPaperSub: {
+    zh: '输入想要考核的知识考点与学科，AI 将为您实时生成定制冲刺套卷',
+    en: 'Enter target topics and subject to generate a custom practice paper in seconds.',
+    bilingual: '输入考点与学科，实时生成套卷 / Generate Custom Papers',
+  },
+  examSubjectLabel: {
+    zh: '考查学科',
+    en: 'Subject',
+    bilingual: '考查学科 / Subject',
+  },
+  examGradeLabel: {
+    zh: '适用年级 / 考试',
+    en: 'Grade Level / Exam',
+    bilingual: '适用年级 / Grade Level',
+  },
+  examSemesterLabel: {
+    zh: '学期阶段',
+    en: 'Semester',
+    bilingual: '学期阶段 / Semester',
+  },
+  examTopicLabel: {
+    zh: '考核专项考点 / 章节标题',
+    en: 'Target Topics / Chapter Title',
+    bilingual: '考核考点 / Target Topics',
+  },
+  examTopicPlaceholder: {
+    zh: '如：动量守恒与碰撞、二次函数压轴题、雅思学术阅读理解...',
+    en: 'e.g., Momentum Conservation, Quadratic Functions, IELTS Reading...',
+    bilingual: '如：动量守恒、二次函数 / e.g. Momentum, Calculus',
+  },
+  examCountLabel: {
+    zh: '题目题量 (题)',
+    en: 'Question Count',
+    bilingual: '题目题量 / Question Count',
+  },
+  genPaperSubmitBtn: {
+    zh: '生成并开启全真考场测试',
+    en: 'Generate & Start Exam',
+    bilingual: '生成并开启考场测试 / Generate & Start Exam',
+  },
+  generatingPaper: {
+    zh: 'AI 正在为您组卷分析中...',
+    en: 'AI is generating your exam paper...',
+    bilingual: 'AI 组卷分析中 / Generating Paper...',
+  },
+  scoreHistoryHeader: {
+    zh: '考试成绩与 AI 阅卷记录',
+    en: 'Exam Score History & AI Reports',
+    bilingual: '考试成绩与 AI 阅卷记录 / Score History',
+  },
+  scoreEarned: {
+    zh: '成绩得分',
+    en: 'Report Score',
+    bilingual: '成绩得分 / Report Score',
+  },
+  timeSpent: {
+    zh: '用时',
+    en: 'Time Spent',
+    bilingual: '用时 / Time Spent',
+  },
+  viewReportBtn: {
+    zh: '查看完整诊断报告',
+    en: 'View Full AI Report',
+    bilingual: '查看诊断报告 / View Report',
+  },
+  noSubmissionsFound: {
+    zh: '暂无已完成的试卷考场记录，快去“真题模拟卷”做一次测试吧！',
+    en: 'No exam history yet. Try taking a mock test!',
+    bilingual: '暂无考场记录，快去做测试吧！ / No Exam History Yet',
+  },
+  examCountdown: {
+    zh: '倒计时',
+    en: 'Time Left',
+    bilingual: '倒计时 / Time Left',
+  },
+  submitExamBtn: {
+    zh: '交卷并生成 AI 诊断',
+    en: 'Submit & Get AI Report',
+    bilingual: '交卷并生成诊断 / Submit & Get Report',
+  },
+  solutionStepInputPlaceholder: {
+    zh: '请输入您的推导步骤与最终答案...',
+    en: 'Enter your solution steps and final answer...',
+    bilingual: '请输入推导步骤与答案 / Enter solution steps',
+  },
+  answerCardTitle: {
+    zh: '答题卡进度 Navigator',
+    en: 'Answer Sheet Navigator',
+    bilingual: '答题卡进度 / Answer Sheet',
+  },
+  answeredCount: {
+    zh: '已完成作答',
+    en: 'Answered',
+    bilingual: '已完成作答 / Answered',
+  },
+  unansweredCount: {
+    zh: '未作答',
+    en: 'Unanswered',
+    bilingual: '未作答 / Unanswered',
+  },
+  reportModalTitle: {
+    zh: '全真考场诊断报告',
+    en: 'Exam Diagnostic Report',
+    bilingual: '全真考场诊断报告 / Diagnostic Report',
+  },
+  confirmAndContinue: {
+    zh: '确认并继续复习',
+    en: 'Confirm & Continue',
+    bilingual: '确认并继续复习 / Confirm & Continue',
+  },
+
+  // Classroom specific
+  ttsLabel: {
+    zh: '名师原声授课 (TTS)',
+    en: 'Teacher Audio Lecture (TTS)',
+    bilingual: '名师原声授课 / Audio Lecture (TTS)',
+  },
+  resumeSpeech: {
+    zh: '继续',
+    en: 'Resume',
+    bilingual: '继续 / Resume',
+  },
+  pauseSpeech: {
+    zh: '暂停',
+    en: 'Pause',
+    bilingual: '暂停 / Pause',
+  },
+  stopSpeech: {
+    zh: '停止',
+    en: 'Stop',
+    bilingual: '停止 / Stop',
+  },
+  speakSnippet: {
+    zh: '朗读本段',
+    en: 'Read Section',
+    bilingual: '朗读本段 / Read Section',
+  },
+  speakingThisSection: {
+    zh: '正在讲授此段',
+    en: 'Teaching This Section',
+    bilingual: '正在讲授此段 / Teaching Section',
+  },
+  keyTakeawayHeader: {
+    zh: '核心结论 / 记忆秘籍：',
+    en: 'Key Takeaway / Memory Tip:',
+    bilingual: '核心结论 / Key Takeaway:',
+  },
+  interactiveAskTitle: {
+    zh: '名师互动问询',
+    en: 'Teacher Interactive Check',
+    bilingual: '名师互动问询 / Teacher Check',
+  },
+  voicePromptBtn: {
+    zh: '语音问询',
+    en: 'Voice Check',
+    bilingual: '语音问询 / Voice Check',
+  },
+  checkPromptGuidance: {
+    zh: '请如实反馈。听懂即可解锁课后练习，若没太懂名师将为你进行更通俗的生动拆解。',
+    en: 'Please give feedback. Understood unlocks homework; if not, teacher will explain simply.',
+    bilingual: '听懂即可解锁练习，未懂提供通俗拆解 / Understood unlocks exercises',
+  },
+  optionUnderstood: {
+    zh: '💡 完全听懂了，去做课后练习！',
+    en: '💡 Fully understood! Start homework exercises.',
+    bilingual: '💡 完全听懂了，做练习 / Fully understood!',
+  },
+  optionNeedsAnalogy: {
+    zh: '🤔 没太听懂，请用更通俗方式再讲讲',
+    en: '🤔 Didn\'t fully understand, explain simply please.',
+    bilingual: '🤔 没太听懂，通俗再讲讲 / Explain simply',
+  },
+  optionAskQuestion: {
+    zh: '❓ 我有具体疑问，想向老师提问',
+    en: '❓ I have a specific question for teacher.',
+    bilingual: '❓ 向老师提问 / Ask teacher a question',
+  },
+  analogyBoxHeader: {
+    zh: '名师通俗生活化比喻与通俗拆解：',
+    en: 'Teacher\'s Everyday Analogy & Simple Breakdown:',
+    bilingual: '名师通俗比喻拆解 / Simple Breakdown:',
+  },
+  readAnalogyBtn: {
+    zh: '朗读通俗拆解',
+    en: 'Read Analogy',
+    bilingual: '朗读通俗拆解 / Read Analogy',
+  },
+  confirmUnderstoodNext: {
+    zh: '再次确认：现在听懂了，去过关测试 ➔',
+    en: 'Confirmed: Now I understand, start quiz ➔',
+    bilingual: '确认听懂，去过关测试 ➔ / Understood, start quiz ➔',
+  },
+  askTeacherTitle: {
+    zh: '向名师发起在线课堂提问：',
+    en: 'Ask Teacher a Question Online:',
+    bilingual: '向名师在线提问 / Ask Teacher Online:',
+  },
+  teacherAnswerHeader: {
+    zh: '名师实时拆解与释疑：',
+    en: 'Teacher Real-Time Answer:',
+    bilingual: '名师实时拆解与释疑 / Teacher Answer:',
+  },
+  readTeacherAnswer: {
+    zh: '朗读名师解答',
+    en: 'Read Answer',
+    bilingual: '朗读名师解答 / Read Answer',
+  },
+  askFollowUp: {
+    zh: '再次向名师追问',
+    en: 'Ask Follow-up',
+    bilingual: '再次追问 / Ask Follow-up',
+  },
+  homeworkSubtitle: {
+    zh: '讲堂听讲完毕！请通过以下试题检验学习效果，提交后获得 AI 智能批改。',
+    en: 'Lecture complete! Test your understanding below for AI grading.',
+    bilingual: '讲堂听讲完毕！请通过以下试题检验效果 / Test your learning below',
+  },
+  myScore: {
+    zh: '本次得分',
+    en: 'Score',
+    bilingual: '本次得分 / Score',
+  },
+  strengthsHeader: {
+    zh: '考点掌握优势',
+    en: 'Strong Knowledge Points',
+    bilingual: '考点掌握优势 / Strengths',
+  },
+  weaknessesHeaderAlt: {
+    zh: '需加强巩固考点',
+    en: 'Weak Knowledge Points',
+    bilingual: '需加强巩固考点 / Weaknesses',
+  },
+  aiAdviceHeader: {
+    zh: 'AI 名师提分建议',
+    en: 'AI Study Advice',
+    bilingual: 'AI 名师提分建议 / AI Advice',
+  },
+  retryQuizBtn: {
+    zh: '重新答题',
+    en: 'Retake Quiz',
+    bilingual: '重新答题 / Retake Quiz',
+  },
+  syncedToMistakes: {
+    zh: '已同步存入错题本',
+    en: 'Synced to Mistake Book',
+    bilingual: '已同步存入错题本 / Synced to Mistakes',
+  },
+  containsQuestions: {
+    zh: '包含',
+    en: 'Contains',
+    bilingual: '包含 / Contains',
+  },
+  totalPoints: {
+    zh: '满分',
+    en: 'Total Points',
+    bilingual: '满分 / Total Points',
+  },
+  startExamBtn: {
+    zh: '进入考场',
+    en: 'Enter Exam',
+    bilingual: '进入考场 / Enter Exam',
+  },
+  countdown: {
+    zh: '倒计时',
+    en: 'Time Left',
+    bilingual: '倒计时 / Time Left',
+  },
+  examReportTitle: {
+    zh: '全真考场诊断报告',
+    en: 'Exam Diagnostic Report',
+    bilingual: '全真考场诊断报告 / Diagnostic Report',
+  },
+  confirmStudyAdvice: {
+    zh: '确认并继续复习',
+    en: 'Confirm & Continue',
+    bilingual: '确认并继续复习 / Confirm & Continue',
   }
 };
+
+export const translations = TRANSLATIONS;
+

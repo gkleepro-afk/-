@@ -23,7 +23,7 @@ import {
   Globe
 } from 'lucide-react';
 import { ExamPaperItem, ExamSubmission, QuestionBankItem, UserProfile } from '../types';
-import { UILanguage } from '../utils/translations';
+import { UILanguage, translations } from '../utils/translations';
 import { matchGradeStrict } from '../utils/gradeMatcher';
 
 interface ExamCenterProps {
@@ -45,6 +45,16 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
   onAddQuestionToMistakes,
   uiLang,
 }) => {
+  const t = (key: keyof typeof translations) => {
+    return translations[key]?.[uiLang] || translations[key]?.['zh'] || key;
+  };
+
+  const getText = (zh?: string, en?: string) => {
+    if (uiLang === 'en') return en || zh || '';
+    if (uiLang === 'bilingual') return en ? `${zh} / ${en}` : zh || '';
+    return zh || '';
+  };
+
   const [activeTab, setActiveTab] = useState<'browse' | 'generate' | 'history'>('browse');
 
   // Filter states
@@ -230,13 +240,15 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-3">
-              <h2 className="text-2xl font-bold text-slate-900 tracking-tight">试卷与真题中心</h2>
+              <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
+                {t('examCenterTitle')}
+              </h2>
               <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-100">
                 Exam & Test Center
               </span>
             </div>
             <p className="text-sm text-slate-500 mt-1">
-              考场仿真计时、全真模拟套卷、智能答题卡与 AI 精准组卷阅卷
+              {t('examCenterSubtitle')}
             </p>
           </div>
 
@@ -250,7 +262,7 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
               }`}
             >
               <FileText className="w-3.5 h-3.5" />
-              <span>真题模拟卷 ({papers.length})</span>
+              <span>{t('mockPapersTab')} ({papers.length})</span>
             </button>
 
             <button
@@ -262,7 +274,7 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
               }`}
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              <span>AI 智能组卷</span>
+              <span>{t('aiGenPaperTab')}</span>
             </button>
 
             <button
@@ -274,7 +286,7 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
               }`}
             >
               <History className="w-3.5 h-3.5" />
-              <span>考试成绩单 ({submissions.length})</span>
+              <span>{t('scoreReportsTab')} ({submissions.length})</span>
             </button>
           </div>
         </div>
@@ -296,13 +308,13 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="搜索试卷标题或核心考点..."
+                    placeholder={uiLang === 'en' ? 'Search exam title or topic...' : '搜索试卷标题或核心考点...'}
                     className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-slate-500">学科:</span>
+                  <span className="text-xs font-bold text-slate-500">{uiLang === 'en' ? 'Subject' : '学科'}:</span>
                   {['all', '物理', '数学', '英语', '化学', '生物'].map((sub) => (
                     <button
                       key={sub}
@@ -313,7 +325,14 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
                           : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                       }`}
                     >
-                      {sub === 'all' ? '全部全科' : sub}
+                      {sub === 'all'
+                        ? uiLang === 'en' ? 'All' : '全部全科'
+                        : sub === '物理' ? (uiLang === 'en' ? 'Physics' : '物理')
+                        : sub === '数学' ? (uiLang === 'en' ? 'Math' : '数学')
+                        : sub === '英语' ? (uiLang === 'en' ? 'English' : '英语')
+                        : sub === '化学' ? (uiLang === 'en' ? 'Chemistry' : '化学')
+                        : sub === '生物' ? (uiLang === 'en' ? 'Biology' : '生物')
+                        : sub}
                     </button>
                   ))}
                 </div>
@@ -322,7 +341,13 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
               <div className="flex items-center gap-2 border-l border-slate-200 pl-4">
                 <span className="px-3 py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold rounded-lg flex items-center gap-1.5">
                   <Check className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>全屏年级锁：仅【{userProfile.gradeLevel || '选定年级'}】试卷</span>
+                  <span>
+                    {uiLang === 'en'
+                      ? `Grade Lock: 【${userProfile.gradeLevel || 'Selected'}】 Papers Only`
+                      : uiLang === 'bilingual'
+                      ? `年级锁：【${userProfile.gradeLevel || '选定'}】试卷 / Grade Lock`
+                      : `全屏年级锁：仅【${userProfile.gradeLevel || '选定年级'}】试卷`}
+                  </span>
                 </span>
               </div>
             </div>
@@ -341,24 +366,24 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
                       </span>
                       <span className="text-xs font-bold text-slate-400 flex items-center gap-1">
                         <Clock className="w-3.5 h-3.5 text-slate-400" />
-                        {paper.durationMinutes} 分钟
+                        {paper.durationMinutes} {uiLang === 'en' ? 'Mins' : '分钟'}
                       </span>
                     </div>
 
                     <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition leading-snug">
-                      {paper.title}
+                      {getText(paper.title, paper.titleEn)}
                     </h3>
 
                     <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
-                      {paper.description}
+                      {getText(paper.description, paper.descriptionEn)}
                     </p>
                   </div>
 
                   <div className="pt-5 border-t border-slate-100 mt-5 flex items-center justify-between">
                     <div className="text-xs text-slate-500">
-                      <span>包含 <strong className="text-slate-800 font-bold">{paper.questions.length}</strong> 道精选题</span>
+                      <span>{t('containsQuestions')}: <strong className="text-slate-800 font-bold">{paper.questions.length}</strong> {uiLang === 'en' ? 'items' : '题'}</span>
                       <span className="mx-2">·</span>
-                      <span>满分 <strong className="text-slate-800 font-bold">{paper.totalScore}</strong> 分</span>
+                      <span>{t('totalPoints')}: <strong className="text-slate-800 font-bold">{paper.totalScore}</strong> {uiLang === 'en' ? 'pts' : '分'}</span>
                     </div>
 
                     <button
@@ -366,7 +391,7 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
                       className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-blue-500/20 cursor-pointer"
                     >
                       <Play className="w-3.5 h-3.5 fill-white" />
-                      <span>进入考场</span>
+                      <span>{t('startExamBtn')}</span>
                     </button>
                   </div>
                 </div>
@@ -398,9 +423,13 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
                 <Sparkles className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white">AI 智能精准组卷系统</h3>
+                <h3 className="text-lg font-bold text-white">
+                  {uiLang === 'en' ? 'AI Precision Exam Generator System' : 'AI 智能精准组卷系统'}
+                </h3>
                 <p className="text-xs text-slate-400 mt-0.5">
-                  输入想要考核的知识考点与学科，AI 将为您实时生成定制冲刺套卷
+                  {uiLang === 'en'
+                    ? 'Input target subject and topics, AI will generate customized practice exam paper'
+                    : '输入想要考核的知识考点与学科，AI 将为您实时生成定制冲刺套卷'}
                 </p>
               </div>
             </div>
@@ -409,7 +438,7 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                   <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
-                    考查学科
+                    {uiLang === 'en' ? 'Subject' : '考查学科'}
                   </label>
                   <select
                     value={genSubject}
@@ -428,7 +457,7 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
 
                 <div>
                   <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
-                    适用年级 / 考试
+                    {uiLang === 'en' ? 'Target Grade / Exam' : '适用年级 / 考试'}
                   </label>
                   <input
                     type="text"
@@ -440,27 +469,27 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
 
                 <div>
                   <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
-                    学期阶段
+                    {uiLang === 'en' ? 'Semester' : '学期阶段'}
                   </label>
                   <select
                     value={genSemester}
                     onChange={(e) => setGenSemester(e.target.value)}
                     className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
-                    <option value="上学期">上学期 (秋季)</option>
-                    <option value="下学期">下学期 (春季)</option>
-                    <option value="全学年/中高考复习">全学年 / 毕业考复习</option>
+                    <option value="上学期">{uiLang === 'en' ? '1st Semester (Fall)' : '上学期 (秋季)'}</option>
+                    <option value="下学期">{uiLang === 'en' ? '2nd Semester (Spring)' : '下学期 (春季)'}</option>
+                    <option value="全学年/中高考复习">{uiLang === 'en' ? 'Full Year / Graduation Prep' : '全学年 / 毕业考复习'}</option>
                   </select>
                 </div>
               </div>
 
               <div>
                 <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
-                  考核专项考点 / 章节标题
+                  {uiLang === 'en' ? 'Key Topic / Chapter Title' : '考核专项考点 / 章节标题'}
                 </label>
                 <input
                   type="text"
-                  placeholder="如：动量守恒与碰撞、二次函数压轴题、雅思学术阅读理解..."
+                  placeholder={uiLang === 'en' ? 'e.g. Momentum Conservation, Quadratic Functions...' : '如：动量守恒与碰撞、二次函数压轴题、雅思学术阅读理解...'}
                   value={genTopic}
                   onChange={(e) => setGenTopic(e.target.value)}
                   className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl p-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -469,16 +498,16 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
 
               <div>
                 <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
-                  题目题量 (题)
+                  {uiLang === 'en' ? 'Question Count' : '题目题量 (题)'}
                 </label>
                 <select
                   value={genCount}
                   onChange={(e) => setGenCount(Number(e.target.value))}
                   className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl p-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
-                  <option value={3}>3 道精选压轴精练题</option>
-                  <option value={4}>4 道标准微套卷 (推荐)</option>
-                  <option value={6}>6 道综合高强组卷</option>
+                  <option value={3}>{uiLang === 'en' ? '3 Selected Key Questions' : '3 道精选压轴精练题'}</option>
+                  <option value={4}>{uiLang === 'en' ? '4 Standard Practice Questions' : '4 道标准微套卷 (推荐)'}</option>
+                  <option value={6}>{uiLang === 'en' ? '6 Comprehensive Paper Questions' : '6 道综合高强组卷'}</option>
                 </select>
               </div>
 
@@ -496,12 +525,12 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
                 {isGenerating ? (
                   <>
                     <Sparkles className="w-4 h-4 animate-spin" />
-                    <span>AI 正在为您组卷分析中...</span>
+                    <span>{uiLang === 'en' ? 'AI Assembling Paper...' : 'AI 正在为您组卷分析中...'}</span>
                   </>
                 ) : (
                   <>
                     <Sparkles className="w-4 h-4 text-amber-300" />
-                    <span>生成并开启全真考场测试</span>
+                    <span>{uiLang === 'en' ? 'Generate & Start Exam' : '生成并开启全真考场测试'}</span>
                   </>
                 )}
               </button>
@@ -514,8 +543,10 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
           <div className="space-y-6">
             <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
               <h3 className="text-base font-bold text-slate-900 mb-4 pb-3 border-b border-slate-100 flex items-center justify-between">
-                <span>考试成绩与 AI 阅卷记录</span>
-                <span className="text-xs text-slate-500 font-normal">共 {submissions.length} 次测验</span>
+                <span>{uiLang === 'en' ? 'Exam History & AI Diagnostics' : '考试成绩与 AI 阅卷记录'}</span>
+                <span className="text-xs text-slate-500 font-normal">
+                  {uiLang === 'en' ? `Total ${submissions.length} tests` : `共 ${submissions.length} 次测验`}
+                </span>
               </h3>
 
               <div className="space-y-4">
@@ -528,7 +559,7 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
                     <div>
                       <div className="flex items-center gap-2 mb-1">
                         <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-100 text-blue-700">
-                          成绩得分
+                          {uiLang === 'en' ? 'Score' : '成绩得分'}
                         </span>
                         <span className="text-xs text-slate-400">
                           {new Date(sub.submittedAt).toLocaleDateString()}
@@ -538,7 +569,7 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
                         {sub.paperTitle}
                       </h4>
                       <p className="text-xs text-slate-500 mt-1">
-                        用时: {Math.floor(sub.timeSpentSeconds / 60)} 分 {sub.timeSpentSeconds % 60} 秒
+                        {uiLang === 'en' ? 'Time Spent' : '用时'}: {Math.floor(sub.timeSpentSeconds / 60)} {uiLang === 'en' ? 'm' : '分'} {sub.timeSpentSeconds % 60} {uiLang === 'en' ? 's' : '秒'}
                       </p>
                     </div>
 
@@ -549,11 +580,11 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
                         }`}>
                           {sub.score}
                         </span>
-                        <span className="text-xs font-bold text-slate-400"> / {sub.totalScore}分</span>
+                        <span className="text-xs font-bold text-slate-400"> / {sub.totalScore}{uiLang === 'en' ? 'pts' : '分'}</span>
                       </div>
 
                       <button className="px-3.5 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-bold shadow-xs cursor-pointer">
-                        查看完整诊断报告
+                        {uiLang === 'en' ? 'View Report' : '查看完整诊断报告'}
                       </button>
                     </div>
                   </div>
@@ -561,7 +592,7 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
 
                 {submissions.length === 0 && (
                   <p className="text-sm text-slate-400 text-center py-8">
-                    暂无已完成的试卷考场记录，快去“真题模拟卷”做一次测试吧！
+                    {uiLang === 'en' ? 'No exam history yet. Try taking a mock test!' : '暂无已完成的试卷考场记录，快去“真题模拟卷”做一次测试吧！'}
                   </p>
                 )}
               </div>
@@ -579,16 +610,16 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
           <header className="bg-slate-900 border-b border-slate-800 px-8 py-4 flex items-center justify-between shrink-0">
             <div>
               <span className="text-xs font-bold px-2.5 py-1 rounded bg-blue-600 text-white uppercase">
-                {activePaper.subject}全真模拟考场
+                {activePaper.subject} {uiLang === 'en' ? 'Mock Exam Room' : '全真模拟考场'}
               </span>
-              <h3 className="text-lg font-bold text-white mt-1">{activePaper.title}</h3>
+              <h3 className="text-lg font-bold text-white mt-1">{getText(activePaper.title, activePaper.titleEn)}</h3>
             </div>
 
             <div className="flex items-center gap-6">
               {/* Countdown Timer */}
               <div className="flex items-center gap-2 bg-slate-800 border border-slate-700 px-4 py-2 rounded-xl text-amber-400 font-mono font-bold text-lg">
                 <Clock className="w-5 h-5 text-amber-400 animate-pulse" />
-                <span>倒计时: {formatTime(timeRemainingSeconds)}</span>
+                <span>{t('countdown')}: {formatTime(timeRemainingSeconds)}</span>
               </div>
 
               <button
@@ -597,7 +628,7 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
                 className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold transition shadow-lg shadow-emerald-900/40 flex items-center gap-2 cursor-pointer"
               >
                 <Send className="w-4 h-4" />
-                <span>交卷并生成 AI 诊断</span>
+                <span>{t('submitExamBtn')}</span>
               </button>
             </div>
           </header>
@@ -609,6 +640,15 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
             <div className="flex-1 overflow-y-auto p-8 max-w-4xl mx-auto space-y-8">
               {activePaper.questions.map((q, idx) => {
                 const userAns = userAnswers[q.id];
+                const qText = getText(q.question, q.questionEn);
+                
+                let qOpts = q.options || [];
+                if (uiLang === 'en' && q.optionsEn && q.optionsEn.length > 0) {
+                  qOpts = q.optionsEn;
+                } else if (uiLang === 'bilingual' && q.optionsEn && q.optionsEn.length === q.options?.length) {
+                  qOpts = q.options.map((opt, i) => `${opt} / ${q.optionsEn![i]}`);
+                }
+
                 return (
                   <div key={q.id} className="bg-slate-800/80 border border-slate-700 p-6 rounded-2xl space-y-4">
                     <div className="flex items-start justify-between gap-4">
@@ -617,15 +657,15 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
                       </span>
                       <div className="flex-1">
                         <p className="text-base font-semibold text-slate-100 leading-relaxed">
-                          {q.question}
+                          {qText}
                         </p>
                       </div>
                     </div>
 
                     {/* Choice Question Options */}
-                    {q.options && q.options.length > 0 && (
+                    {qOpts && qOpts.length > 0 && (
                       <div className="grid grid-cols-1 gap-2.5 pl-11">
-                        {q.options.map((opt, oIdx) => {
+                        {qOpts.map((opt, oIdx) => {
                           const isSelected = userAns === oIdx;
                           return (
                             <button
@@ -650,13 +690,13 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
                     )}
 
                     {/* Fill or Solution Input */}
-                    {(!q.options || q.options.length === 0) && (
+                    {(!qOpts || qOpts.length === 0) && (
                       <div className="pl-11">
                         <textarea
                           rows={3}
                           value={typeof userAns === 'string' ? userAns : ''}
                           onChange={(e) => setUserAnswers({ ...userAnswers, [q.id]: e.target.value })}
-                          placeholder="请输入您的推导步骤与最终答案..."
+                          placeholder={uiLang === 'en' ? 'Enter your solution steps or answer...' : '请输入您的推导步骤与最终答案...'}
                           className="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                       </div>
@@ -669,7 +709,7 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
             {/* Right Floating Answer Navigator / 答题卡 */}
             <div className="w-72 bg-slate-900 border-l border-slate-800 p-6 hidden lg:block shrink-0">
               <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 pb-2 border-b border-slate-800">
-                答题卡进度 Navigator
+                {t('answerCardTitle')}
               </h4>
 
               <div className="grid grid-cols-4 gap-2.5">
@@ -693,11 +733,11 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
               <div className="mt-8 space-y-2 text-xs text-slate-400 pt-4 border-t border-slate-800">
                 <div className="flex items-center gap-2">
                   <span className="w-3 h-3 rounded-full bg-emerald-500" />
-                  <span>已完成作答 ({Object.keys(userAnswers).length})</span>
+                  <span>{uiLang === 'en' ? 'Answered' : '已完成作答'} ({Object.keys(userAnswers).length})</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-3 h-3 rounded-full bg-slate-700" />
-                  <span>未作答 ({activePaper.questions.length - Object.keys(userAnswers).length})</span>
+                  <span>{uiLang === 'en' ? 'Unanswered' : '未作答'} ({activePaper.questions.length - Object.keys(userAnswers).length})</span>
                 </div>
               </div>
             </div>
@@ -713,7 +753,7 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
             <div className="flex items-start justify-between">
               <div>
                 <span className="text-xs font-bold px-2.5 py-1 rounded bg-blue-50 text-blue-600 border border-blue-100">
-                  全真考场诊断报告
+                  {t('examReportTitle')}
                 </span>
                 <h3 className="text-xl font-bold text-slate-900 mt-1">{selectedSubmission.paperTitle}</h3>
               </div>
@@ -728,16 +768,16 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
             {/* Score Ring */}
             <div className="bg-slate-900 text-white p-6 rounded-2xl flex items-center justify-between">
               <div>
-                <p className="text-xs text-slate-400">考场得分 Report Score</p>
+                <p className="text-xs text-slate-400">{uiLang === 'en' ? 'Report Score' : '考场得分 Report Score'}</p>
                 <div className="flex items-baseline gap-1 mt-1">
                   <span className="text-4xl font-black text-amber-400">{selectedSubmission.score}</span>
-                  <span className="text-slate-400 text-sm">/ {selectedSubmission.totalScore} 分</span>
+                  <span className="text-slate-400 text-sm">/ {selectedSubmission.totalScore} {uiLang === 'en' ? 'pts' : '分'}</span>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-xs text-slate-400">做题耗时</p>
+                <p className="text-xs text-slate-400">{uiLang === 'en' ? 'Time Taken' : '做题耗时'}</p>
                 <p className="text-sm font-bold text-white mt-1">
-                  {Math.floor(selectedSubmission.timeSpentSeconds / 60)} 分 {selectedSubmission.timeSpentSeconds % 60} 秒
+                  {Math.floor(selectedSubmission.timeSpentSeconds / 60)} {uiLang === 'en' ? 'm' : '分'} {selectedSubmission.timeSpentSeconds % 60} {uiLang === 'en' ? 's' : '秒'}
                 </p>
               </div>
             </div>
@@ -746,13 +786,13 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
             {selectedSubmission.aiEvaluation && (
               <div className="space-y-4">
                 <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-900 space-y-2">
-                  <p className="font-bold text-sm text-blue-900">💡 AI 导师诊断评语：</p>
+                  <p className="font-bold text-sm text-blue-900">💡 {uiLang === 'en' ? 'AI Evaluation Summary:' : 'AI 导师诊断评语：'}</p>
                   <p>{selectedSubmission.aiEvaluation.summary}</p>
                 </div>
 
                 <div>
                   <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
-                    需强化补强考点：
+                    {uiLang === 'en' ? 'Topics Needing Improvement:' : '需强化补强考点：'}
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {selectedSubmission.aiEvaluation.weaknesses.map((w, idx) => (
@@ -770,7 +810,7 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
                 onClick={() => setSelectedSubmission(null)}
                 className="px-6 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-xs shadow-md shadow-blue-500/20 cursor-pointer"
               >
-                确认并继续复习
+                {t('confirmStudyAdvice')}
               </button>
             </div>
           </div>
