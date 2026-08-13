@@ -12,7 +12,7 @@ import {
   Flame,
   Check
 } from 'lucide-react';
-import { GeneratedStudyPlan } from '../types';
+import { GeneratedStudyPlan, UserProfile } from '../types';
 import { UILanguage, TRANSLATIONS } from '../utils/translations';
 
 interface PlanGeneratorProps {
@@ -20,6 +20,7 @@ interface PlanGeneratorProps {
   existingPlans: GeneratedStudyPlan[];
   onSelectExistingPlan: (plan: GeneratedStudyPlan) => void;
   uiLang: UILanguage;
+  userProfile?: UserProfile;
 }
 
 export const PlanGenerator: React.FC<PlanGeneratorProps> = ({
@@ -27,13 +28,16 @@ export const PlanGenerator: React.FC<PlanGeneratorProps> = ({
   existingPlans,
   onSelectExistingPlan,
   uiLang,
+  userProfile,
 }) => {
   const t = (key: keyof typeof TRANSLATIONS) => TRANSLATIONS[key][uiLang] || TRANSLATIONS[key].bilingual;
 
   const [subject, setSubject] = useState('');
-  const [gradeLevel, setGradeLevel] = useState(uiLang === 'en' ? 'High School / Exam Prep' : '高中二年级 / 冲刺');
+  const [gradeLevel, setGradeLevel] = useState(userProfile?.gradeLevel || '高二');
+  const [semester, setSemester] = useState(userProfile?.semester || '上学期');
+  const [educationSystem, setEducationSystem] = useState(userProfile?.educationSystem || '人教版');
   const [targetGoal, setTargetGoal] = useState('');
-  const [timeMinutesPerDay, setTimeMinutesPerDay] = useState(30);
+  const [timeMinutesPerDay, setTimeMinutesPerDay] = useState(userProfile?.dailyGoalMinutes || 30);
   const [language, setLanguage] = useState(uiLang === 'en' ? 'en' : 'zh');
   const [isGenerating, setIsGenerating] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -90,7 +94,10 @@ export const PlanGenerator: React.FC<PlanGeneratorProps> = ({
         body: JSON.stringify({
           subject: subject.trim(),
           gradeLevel,
-          targetGoal: targetGoal.trim() || '建立系统知识框架并进行高效强化复习',
+          semester,
+          countryRegion: userProfile?.countryRegion || '中国大陆',
+          educationSystem,
+          targetGoal: targetGoal.trim() || '精准符合当前年级学期考纲，建立系统知识框架并进行高效强化复习',
           timeMinutesPerDay,
           language,
         }),
@@ -251,8 +258,8 @@ export const PlanGenerator: React.FC<PlanGeneratorProps> = ({
                 />
               </div>
 
-              {/* Grade Level & Difficulty */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Grade Level, Semester & System */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
                   <label className="text-[11px] uppercase font-bold tracking-wider text-slate-400 block mb-1.5">
                     {t('gradeLevelLabel')}
@@ -260,13 +267,31 @@ export const PlanGenerator: React.FC<PlanGeneratorProps> = ({
                   <select
                     value={gradeLevel}
                     onChange={(e) => setGradeLevel(e.target.value)}
-                    className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl p-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl p-3 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
-                    <option value="初中二年级 / 基础">初中 / 基础提升 (Middle School)</option>
-                    <option value="高中二年级 / 冲刺">高中 / 高考冲刺 (High School)</option>
-                    <option value="大学 / 进阶 (B2-C1)">大学 / 进阶 (College/IELTS)</option>
-                    <option value="零基础入门">零基础入门 (Beginner)</option>
-                    <option value="职业考证 / 专业实践">职业考证 (Professional)</option>
+                    <option value="初一">初一 (Grade 7)</option>
+                    <option value="初二">初二 (Grade 8)</option>
+                    <option value="初三/中考">初三 / 中考冲刺</option>
+                    <option value="高一">高一 (Grade 10)</option>
+                    <option value="高二">高二 (Grade 11)</option>
+                    <option value="高三/高考">高三 / 高考冲刺</option>
+                    <option value="国际高中 (AP/A-Level)">国际高中 (AP/A-Level)</option>
+                    <option value="大学/研究生/自学">大学 / 进阶考研</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="text-[11px] uppercase font-bold tracking-wider text-slate-400 block mb-1.5">
+                    学期阶段
+                  </label>
+                  <select
+                    value={semester}
+                    onChange={(e) => setSemester(e.target.value)}
+                    className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl p-3 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="上学期">上学期 (秋季)</option>
+                    <option value="下学期">下学期 (春季)</option>
+                    <option value="全学年/中高考复习">全学年总复习</option>
                   </select>
                 </div>
 
@@ -277,12 +302,12 @@ export const PlanGenerator: React.FC<PlanGeneratorProps> = ({
                   <select
                     value={timeMinutesPerDay}
                     onChange={(e) => setTimeMinutesPerDay(Number(e.target.value))}
-                    className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl p-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl p-3 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
-                    <option value={15}>15 {uiLang === 'en' ? 'mins (Express)' : '分钟 (高效)'}</option>
-                    <option value={30}>30 {uiLang === 'en' ? 'mins (Standard)' : '分钟 (推荐)'}</option>
-                    <option value={45}>45 {uiLang === 'en' ? 'mins (Deep)' : '分钟 (强化)'}</option>
-                    <option value={60}>60 {uiLang === 'en' ? 'mins (Intensive)' : '分钟 (冲刺)'}</option>
+                    <option value={15}>15 {uiLang === 'en' ? 'mins' : '分钟'}</option>
+                    <option value={30}>30 {uiLang === 'en' ? 'mins' : '分钟'}</option>
+                    <option value={45}>45 {uiLang === 'en' ? 'mins' : '分钟'}</option>
+                    <option value={60}>60 {uiLang === 'en' ? 'mins' : '分钟'}</option>
                   </select>
                 </div>
               </div>

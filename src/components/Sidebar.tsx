@@ -12,9 +12,12 @@ import {
   Flame,
   Globe,
   Camera,
-  Compass
+  Compass,
+  Award,
+  GraduationCap,
+  Settings
 } from 'lucide-react';
-import { UserStats } from '../types';
+import { UserStats, UserProfile } from '../types';
 import { UILanguage, TRANSLATIONS } from '../utils/translations';
 
 interface SidebarProps {
@@ -24,6 +27,8 @@ interface SidebarProps {
   onOpenPomodoro: () => void;
   uiLang: UILanguage;
   onChangeLang: (lang: UILanguage) => void;
+  userProfile?: UserProfile;
+  onOpenProfileModal?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -33,18 +38,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onOpenPomodoro,
   uiLang,
   onChangeLang,
+  userProfile,
+  onOpenProfileModal,
 }) => {
   const t = (key: keyof typeof TRANSLATIONS) => TRANSLATIONS[key][uiLang] || TRANSLATIONS[key].bilingual;
 
   const navItems = [
     { id: 'roadmap', label: t('navRoadmap'), icon: Calendar, badge: `${stats.completedTasksCount}` },
+    { id: 'classroom', label: uiLang === 'zh' ? 'AI 模拟讲堂' : uiLang === 'en' ? 'AI Classroom' : 'AI 模拟讲堂 / Classroom', icon: GraduationCap, isNew: true },
     { id: 'generator', label: t('navGenerator'), icon: Sparkles, isHighlight: true },
-    { id: 'photosolve', label: t('navPhotoSolve'), icon: Camera, isNew: true },
+    { id: 'examcenter', label: t('navExamCenter'), icon: Award, isNew: true },
+    { id: 'photosolve', label: t('navPhotoSolve'), icon: Camera },
     { id: 'qbank', label: t('navQuestionBank'), icon: BookOpen },
     { id: 'preview', label: t('navCoursePreview'), icon: Compass },
     { id: 'flashcards', label: t('navFlashcards'), icon: Languages, badge: `${stats.reviewedCardsCount}` },
     { id: 'quiz', label: t('navQuiz'), icon: HelpCircle },
     { id: 'analytics', label: t('navAnalytics'), icon: BarChart3 },
+    { id: 'userprofile', label: t('navUserProfile'), icon: Settings },
   ];
 
 
@@ -178,19 +188,45 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
       </div>
 
-      {/* User Profile */}
+      {/* User Profile (Bottom Left Direct Entry) */}
       <div className="pt-4 border-t border-slate-100">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-blue-600/10 text-blue-600 font-bold flex items-center justify-center border border-blue-200">
-            <User className="w-5 h-5" />
+        <button
+          onClick={() => {
+            if (onOpenProfileModal) {
+              onOpenProfileModal();
+            } else {
+              onSelectTab('userprofile');
+            }
+          }}
+          className="w-full flex items-center justify-between p-2 rounded-xl hover:bg-slate-100/80 transition cursor-pointer group text-left border border-transparent hover:border-slate-200"
+          title="点击设置个人头像、昵称、年级与偏好"
+        >
+          <div className="flex items-center gap-3 overflow-hidden">
+            {/* User Avatar */}
+            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-bold flex items-center justify-center border-2 border-white shadow-xs shrink-0 overflow-hidden">
+              {userProfile?.avatarUrl ? (
+                <img src={userProfile.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+              ) : userProfile?.avatarEmoji ? (
+                <span className="text-lg">{userProfile.avatarEmoji}</span>
+              ) : (
+                <User className="w-5 h-5 text-white" />
+              )}
+            </div>
+
+            <div className="overflow-hidden">
+              <p className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition truncate">
+                {userProfile?.userName || '智学学子'}
+              </p>
+              <p className="text-[11px] text-slate-400 font-medium truncate">
+                {userProfile?.gradeLevel || (uiLang === 'zh' ? '点击设置学程' : 'Click to Set Grade')}
+              </p>
+            </div>
           </div>
-          <div className="overflow-hidden">
-            <p className="text-sm font-bold text-slate-900 truncate">Alex Zhang</p>
-            <p className="text-xs text-slate-400 font-medium truncate">
-              {uiLang === 'zh' ? '双语高效复习' : uiLang === 'en' ? 'Bilingual Study' : '双语复习 / Bilingual'}
-            </p>
+
+          <div className="w-8 h-8 rounded-lg bg-slate-50 group-hover:bg-blue-50 text-slate-400 group-hover:text-blue-600 flex items-center justify-center transition shrink-0">
+            <Settings className="w-4 h-4" />
           </div>
-        </div>
+        </button>
       </div>
     </aside>
   );

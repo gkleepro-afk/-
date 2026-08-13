@@ -17,12 +17,13 @@ import {
   Layers,
   Award
 } from 'lucide-react';
-import { QuestionBankItem, QuestionType } from '../types';
+import { QuestionBankItem, QuestionType, UserProfile } from '../types';
 import { UILanguage, TRANSLATIONS } from '../utils/translations';
 
 interface QuestionBankViewProps {
   questions: QuestionBankItem[];
   uiLang: UILanguage;
+  userProfile?: UserProfile;
   onUpdateQuestions: (updatedList: QuestionBankItem[]) => void;
   onExplainConcept: (term: string) => void;
 }
@@ -30,6 +31,7 @@ interface QuestionBankViewProps {
 export const QuestionBankView: React.FC<QuestionBankViewProps> = ({
   questions,
   uiLang,
+  userProfile,
   onUpdateQuestions,
   onExplainConcept,
 }) => {
@@ -42,6 +44,7 @@ export const QuestionBankView: React.FC<QuestionBankViewProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStage, setSelectedStage] = useState<string>('all');
   const [selectedGrade, setSelectedGrade] = useState<string>('all');
+  const [selectedSemester, setSelectedSemester] = useState<string>('all');
   const [selectedSubject, setSelectedSubject] = useState<string>('all');
   const [selectedType, setSelectedType] = useState<string>('all');
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
@@ -70,6 +73,9 @@ export const QuestionBankView: React.FC<QuestionBankViewProps> = ({
 
       // Grade filter
       if (selectedGrade !== 'all' && item.gradeLevel !== selectedGrade) return false;
+
+      // Semester filter
+      if (selectedSemester !== 'all' && item.semester && item.semester !== selectedSemester) return false;
 
       // Subject filter
       if (selectedSubject !== 'all' && item.subject !== selectedSubject) return false;
@@ -237,7 +243,7 @@ export const QuestionBankView: React.FC<QuestionBankViewProps> = ({
             <span>精细多维筛选</span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
             {/* Stage */}
             <div>
               <label className="text-[11px] font-bold text-slate-400 block mb-1">学段</label>
@@ -267,6 +273,20 @@ export const QuestionBankView: React.FC<QuestionBankViewProps> = ({
                 <option value="高一">高一</option>
                 <option value="高二">高二</option>
                 <option value="高三/高考">高三 / 高考</option>
+              </select>
+            </div>
+
+            {/* Semester */}
+            <div>
+              <label className="text-[11px] font-bold text-slate-400 block mb-1">学期进度</label>
+              <select
+                value={selectedSemester}
+                onChange={(e) => setSelectedSemester(e.target.value)}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 font-medium"
+              >
+                <option value="all">全部学期</option>
+                <option value="上学期">上学期 (秋季)</option>
+                <option value="下学期">下学期 (春季)</option>
               </select>
             </div>
 

@@ -57,6 +57,16 @@ export const TRANSLATIONS = {
     en: 'Pomodoro Timer',
     bilingual: '番茄专注计时器 / Pomodoro Timer',
   },
+  navExamCenter: {
+    zh: '试卷与真题中心',
+    en: 'Exam & Test Papers',
+    bilingual: '试卷与真题中心 / Exam Papers',
+  },
+  navUserProfile: {
+    zh: '个人设置与学情',
+    en: 'Profile & Goal Settings',
+    bilingual: '个人设置与学情 / Profile Settings',
+  },
   
   // Quick Actions & Headers
   streakDays: {

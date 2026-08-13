@@ -14,12 +14,13 @@ import {
   ArrowRight,
   FileText
 } from 'lucide-react';
-import { CoursePreviewGuide } from '../types';
+import { CoursePreviewGuide, UserProfile } from '../types';
 import { UILanguage, TRANSLATIONS } from '../utils/translations';
 
 interface CoursePreviewViewProps {
   previews: CoursePreviewGuide[];
   uiLang: UILanguage;
+  userProfile?: UserProfile;
   onUpdatePreviews: (updated: CoursePreviewGuide[]) => void;
   onExplainConcept: (term: string) => void;
 }
@@ -27,6 +28,7 @@ interface CoursePreviewViewProps {
 export const CoursePreviewView: React.FC<CoursePreviewViewProps> = ({
   previews,
   uiLang,
+  userProfile,
   onUpdatePreviews,
   onExplainConcept,
 }) => {
@@ -43,8 +45,9 @@ export const CoursePreviewView: React.FC<CoursePreviewViewProps> = ({
   const [showGenModal, setShowGenModal] = useState(false);
   const [genTitle, setGenTitle] = useState('人教版高中化学：氧化还原反应与电子转移');
   const [genSubject, setGenSubject] = useState('化学');
-  const [genGrade, setGenGrade] = useState('高一');
-  const [genPublisher, setGenPublisher] = useState('人教版');
+  const [genGrade, setGenGrade] = useState(userProfile?.gradeLevel || '高一');
+  const [genSemester, setGenSemester] = useState(userProfile?.semester || '上学期');
+  const [genPublisher, setGenPublisher] = useState(userProfile?.educationSystem || '人教版');
   const [isGenerating, setIsGenerating] = useState(false);
 
   const activePreview = previews.find((p) => p.id === selectedPreviewId) || previews[0];
@@ -62,7 +65,9 @@ export const CoursePreviewView: React.FC<CoursePreviewViewProps> = ({
           chapterTitle: genTitle,
           subject: genSubject,
           gradeLevel: genGrade,
+          semester: genSemester,
           publisher: genPublisher,
+          countryRegion: userProfile?.countryRegion || '中国大陆',
         }),
       });
 

@@ -11,6 +11,8 @@ import { CoursePreviewView } from './components/CoursePreviewView';
 import { ConceptModal } from './components/ConceptModal';
 import { PomodoroModal } from './components/PomodoroModal';
 
+import { ClassroomView } from './components/ClassroomView';
+
 import { 
   getStoredPlans, 
   savePlans, 
@@ -26,11 +28,21 @@ import {
   saveQuestionBank,
   getStoredCoursePreviews,
   saveCoursePreviews,
+  getStoredUserProfile,
+  saveUserProfile,
+  getStoredExamPapers,
+  saveExamPapers,
+  getStoredExamSubmissions,
+  saveExamSubmissions,
+  getStoredClassroomLessons,
+  saveClassroomLessons,
   updateCardReview
 } from './utils/storage';
 
-import { GeneratedStudyPlan, StudyTask, Flashcard, QuizQuestion, UserStats, QuestionBankItem, CoursePreviewGuide } from './types';
+import { GeneratedStudyPlan, StudyTask, Flashcard, QuizQuestion, UserStats, QuestionBankItem, CoursePreviewGuide, UserProfile, ExamPaperItem, ExamSubmission, ClassroomLesson } from './types';
 import { UILanguage } from './utils/translations';
+import { UserProfileModal } from './components/UserProfileModal';
+import { ExamCenter } from './components/ExamCenter';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('roadmap');
@@ -44,10 +56,15 @@ export default function App() {
   const [stats, setStats] = useState<UserStats>(getStoredStats);
   const [questionBank, setQuestionBank] = useState<QuestionBankItem[]>(getStoredQuestionBank);
   const [coursePreviews, setCoursePreviews] = useState<CoursePreviewGuide[]>(getStoredCoursePreviews);
+  const [userProfile, setUserProfile] = useState<UserProfile>(getStoredUserProfile);
+  const [examPapers, setExamPapers] = useState<ExamPaperItem[]>(getStoredExamPapers);
+  const [examSubmissions, setExamSubmissions] = useState<ExamSubmission[]>(getStoredExamSubmissions);
+  const [classroomLessons, setClassroomLessons] = useState<ClassroomLesson[]>(getStoredClassroomLessons);
 
   // Modal States
   const [activeConceptTerm, setActiveConceptTerm] = useState<string | null>(null);
   const [showPomodoro, setShowPomodoro] = useState<boolean>(false);
+  const [showProfileModal, setShowProfileModal] = useState<boolean>(false);
 
   // Sync to local storage
   useEffect(() => {
@@ -77,6 +94,22 @@ export default function App() {
   useEffect(() => {
     saveCoursePreviews(coursePreviews);
   }, [coursePreviews]);
+
+  useEffect(() => {
+    saveUserProfile(userProfile);
+  }, [userProfile]);
+
+  useEffect(() => {
+    saveExamPapers(examPapers);
+  }, [examPapers]);
+
+  useEffect(() => {
+    saveExamSubmissions(examSubmissions);
+  }, [examSubmissions]);
+
+  useEffect(() => {
+    saveClassroomLessons(classroomLessons);
+  }, [classroomLessons]);
 
   // Handlers
   const handleSaveToMistakeLog = (item: QuestionBankItem) => {
@@ -296,6 +329,8 @@ export default function App() {
         onOpenPomodoro={() => setShowPomodoro(true)}
         uiLang={uiLang}
         onChangeLang={setUiLang}
+        userProfile={userProfile}
+        onOpenProfileModal={() => setShowProfileModal(true)}
       />
 
       {/* Main View Area */}
@@ -309,6 +344,20 @@ export default function App() {
             onNavigateToGenerator={() => setActiveTab('generator')}
             stats={stats}
             uiLang={uiLang}
+            userProfile={userProfile}
+            onOpenProfileModal={() => setShowProfileModal(true)}
+          />
+        )}
+
+        {activeTab === 'classroom' && (
+          <ClassroomView
+            lessons={classroomLessons}
+            uiLang={uiLang}
+            userProfile={userProfile}
+            onUpdateLessons={setClassroomLessons}
+            onAddQuestionToBank={handleSaveToMistakeLog}
+            onOpenProfileModal={() => setShowProfileModal(true)}
+            onExplainConcept={(term) => setActiveConceptTerm(term)}
           />
         )}
 
@@ -320,7 +369,32 @@ export default function App() {
               setActiveTab('roadmap');
             }}
             uiLang={uiLang}
+            userProfile={userProfile}
           />
+        )}
+
+        {activeTab === 'examcenter' && (
+          <ExamCenter
+            papers={examPapers}
+            submissions={examSubmissions}
+            userProfile={userProfile}
+            onSavePaper={(paper) => setExamPapers([paper, ...examPapers])}
+            onSaveSubmission={(sub) => setExamSubmissions([sub, ...examSubmissions])}
+            onAddQuestionToMistakes={handleSaveToMistakeLog}
+            uiLang={uiLang}
+          />
+        )}
+
+        {activeTab === 'userprofile' && (
+          <div className="flex-1 bg-slate-900 flex items-center justify-center p-8">
+            <UserProfileModal
+              isOpen={true}
+              onClose={() => setActiveTab('roadmap')}
+              userProfile={userProfile}
+              onSaveProfile={setUserProfile}
+              uiLang={uiLang}
+            />
+          </div>
         )}
 
         {activeTab === 'photosolve' && (
@@ -335,6 +409,7 @@ export default function App() {
           <QuestionBankView
             questions={questionBank}
             uiLang={uiLang}
+            userProfile={userProfile}
             onUpdateQuestions={setQuestionBank}
             onExplainConcept={(term) => setActiveConceptTerm(term)}
           />
@@ -344,6 +419,7 @@ export default function App() {
           <CoursePreviewView
             previews={coursePreviews}
             uiLang={uiLang}
+            userProfile={userProfile}
             onUpdatePreviews={setCoursePreviews}
             onExplainConcept={(term) => setActiveConceptTerm(term)}
           />
@@ -386,6 +462,17 @@ export default function App() {
         <PomodoroModal
           onClose={() => setShowPomodoro(false)}
           onAddStudyMinutes={handleAddStudyMinutes}
+        />
+      )}
+
+      {/* User Profile Modal */}
+      {showProfileModal && (
+        <UserProfileModal
+          isOpen={showProfileModal}
+          onClose={() => setShowProfileModal(false)}
+          userProfile={userProfile}
+          onSaveProfile={setUserProfile}
+          uiLang={uiLang}
         />
       )}
     </div>

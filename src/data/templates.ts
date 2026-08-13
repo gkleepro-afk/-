@@ -1,4 +1,153 @@
-import { GeneratedStudyPlan, StudyTask, Flashcard, QuizQuestion } from '../types';
+import { GeneratedStudyPlan, StudyTask, Flashcard, QuizQuestion, QuestionBankItem, CoursePreviewGuide, UserProfile, ExamPaperItem, ClassroomLesson } from '../types';
+
+export const DEFAULT_USER_PROFILE: UserProfile = {
+  userName: '智学学子',
+  avatarEmoji: '🎓',
+  avatarUrl: '',
+  gradeLevel: '高三/高考',
+  semester: '上学期',
+  countryRegion: '中国大陆',
+  educationSystem: '人教版 (新高考新教材)',
+  targetLanguage: '英语',
+  targetExam: '2026年普通高等学校招生全国统一考试 (高考)',
+  dailyGoalMinutes: 45,
+  encouragementTone: 'passionate',
+  customMotto: '星光不问赶路人，岁月不负有心人！提分每一天，冲刺理想院校！',
+};
+
+export const INITIAL_EXAM_PAPERS: ExamPaperItem[] = [
+  {
+    id: 'paper-1',
+    title: '2026高考物理全真模拟精选冲刺卷（一）',
+    subject: '物理',
+    gradeLevel: '高三/高考',
+    countryRegion: '中国大陆',
+    publisher: '新高考全国卷',
+    durationMinutes: 60,
+    totalScore: 100,
+    passingScore: 60,
+    description: '涵盖牛顿力学、动量守恒、电磁感应与机械能守恒等高考一轮二轮复习核心压轴考点。',
+    questions: [
+      {
+        id: 'p1-q1',
+        subject: '物理',
+        gradeStage: '高中',
+        gradeLevel: '高三/高考',
+        topic: '动量守恒与碰撞',
+        question: '在光滑水平面上，质量为 m1=2kg 的木块以 v1=3m/s 的速度与静止的质量为 m2=1kg 的木块发生完全非弹性碰撞，碰撞后两木块粘在一起共同运动。求碰撞后的共同速度 v 及系统的机械能损失 ΔE。',
+        options: [
+          'v = 2m/s，ΔE = 3J',
+          'v = 1.5m/s，ΔE = 4J',
+          'v = 2m/s，ΔE = 6J',
+          'v = 3m/s，ΔE = 0J'
+        ],
+        correctIndex: 0,
+        explanation: '1. 动量守恒：m1*v1 = (m1+m2)*v => 2*3 = (2+1)*v => v = 2m/s。\n2. 碰撞前总动能 Ek1 = 0.5*2*9 = 9J；碰撞后总动能 Ek2 = 0.5*3*4 = 6J。\n3. 机械能损失 ΔE = 9 - 6 = 3J。选 A。',
+        questionType: 'choice',
+        difficulty: 'medium',
+        keyPoints: ['动量守恒定律', '完全非弹性碰撞', '机械能损失']
+      },
+      {
+        id: 'p1-q2',
+        subject: '物理',
+        gradeStage: '高中',
+        gradeLevel: '高三/高考',
+        topic: '电磁感应与法拉第定律',
+        question: '在磁感应强度 B=0.5T 的匀强磁场中，有一长 L=0.4m 的金属棒切割磁感线运动，速度 v=4m/s，方向垂直于磁场与金属棒。求金属棒产生的感应电动势 E 为多少伏特？',
+        options: ['0.8V', '0.4V', '1.0V', '2.0V'],
+        correctIndex: 0,
+        explanation: '由法拉第电磁感应定律公式 E = B*L*v = 0.5 * 0.4 * 4 = 0.8V。选 A。',
+        questionType: 'choice',
+        difficulty: 'easy',
+        keyPoints: ['切割磁感线', 'E=BLv公式']
+      },
+      {
+        id: 'p1-q3',
+        subject: '物理',
+        gradeStage: '高中',
+        gradeLevel: '高三/高考',
+        topic: '平抛运动轨迹方程',
+        question: '一小球以 v0=10m/s 的初速度水平抛出，不计空气阻力，g取10m/s^2。求 1s 末小球的速度方向与水平方向夹角 θ 的正切值 tanθ。',
+        correctAnswerText: 'tanθ = 1',
+        explanation: '1s 末竖直速度 vy = g*t = 10*1 = 10m/s。水平速度 vx = v0 = 10m/s。故 tanθ = vy / vx = 10 / 10 = 1 (即 θ = 45°)。',
+        questionType: 'fill',
+        difficulty: 'medium',
+        keyPoints: ['平抛运动分解', '速度夹角计算']
+      }
+    ]
+  },
+  {
+    id: 'paper-2',
+    title: '2026中考数学全真模拟真题套卷（二次函数与几何综合）',
+    subject: '数学',
+    gradeLevel: '初三/中考',
+    countryRegion: '中国大陆',
+    publisher: '人教版/中考全国卷',
+    durationMinutes: 90,
+    totalScore: 120,
+    passingScore: 72,
+    description: '针对中考数学二次函数最值、动点问题与圆的几何综合压轴大题，全真仿真考场冲刺。',
+    questions: [
+      {
+        id: 'p2-q1',
+        subject: '数学',
+        gradeStage: '初中',
+        gradeLevel: '初三/中考',
+        topic: '二次函数性质',
+        question: '已知二次函数 y = a*x^2 + b*x + c (a≠0) 开口向上，对称轴 x = 1，经过 (-1, 0)。判断结论：① b < 0；② 2a + b = 0；③ a - b + c = 0；④ 4a + 2b + c > 0。正确的有几个？',
+        options: ['1个', '2个', '3个', '4个'],
+        correctIndex: 2,
+        explanation: 'a>0, 对称轴 -b/(2a)=1 => b=-2a<0 => ①②正确；过(-1,0) => a-b+c=0 => ③正确；x=2时y<0 => 4a+2b+c<0 => ④错。正确3个，选C。',
+        questionType: 'choice',
+        difficulty: 'hard',
+        keyPoints: ['二次函数图像', '对称轴与系数关系']
+      },
+      {
+        id: 'p2-q2',
+        subject: '数学',
+        gradeStage: '初中',
+        gradeLevel: '初三/中考',
+        topic: '勾股定理与切线',
+        question: 'Rt△ABC 中，∠C = 90°，AC = 6，BC = 8。以 C 为圆心，R 为半径画圆，当 R 为多少时，⊙C 与斜边 AB 相切？',
+        options: ['4.8', '5', '4', '6'],
+        correctIndex: 0,
+        explanation: '斜边 AB = √(6^2+8^2) = 10。过 C 作 CD⊥AB，面积 S = 0.5*AC*BC = 0.5*AB*CD => CD = 6*8/10 = 4.8。故半径 R = 4.8 时相切。选 A。',
+        questionType: 'choice',
+        difficulty: 'medium',
+        keyPoints: ['切线长定理', '直角三角形面积法']
+      }
+    ]
+  },
+  {
+    id: 'paper-3',
+    title: 'IELTS Academic English Practice Test (Reading & Grammar)',
+    subject: '英语',
+    gradeLevel: 'Grade 12 / 雅思',
+    countryRegion: '国际/英国',
+    publisher: 'Cambridge IELTS Standard',
+    durationMinutes: 45,
+    totalScore: 100,
+    passingScore: 60,
+    description: 'Academic reading & grammar diagnostic test for students targeting IELTS 6.5 - 7.5+.',
+    questions: [
+      {
+        id: 'p3-q1',
+        subject: '英语',
+        gradeStage: '高中',
+        gradeLevel: '高三/高考',
+        topic: 'Academic Vocabulary',
+        question: 'Select the most appropriate word to complete the sentence: "The new renewable energy project is expected to _______ carbon emissions by 30% over the next decade."',
+        options: ['mitigate', 'exacerbate', 'accumulate', 'deteriorate'],
+        correctIndex: 0,
+        explanation: '"Mitigate" means to reduce, lessen, or alleviate severity. "Mitigate carbon emissions" is a formal academic collocation.',
+        questionType: 'choice',
+        difficulty: 'medium',
+        keyPoints: ['Collocations', 'IELTS Writing Task 2']
+      }
+    ]
+  }
+];
+
 
 export const INITIAL_PLANS: GeneratedStudyPlan[] = [
   {
@@ -395,8 +544,6 @@ export const INITIAL_QUIZZES: QuizQuestion[] = [
   }
 ];
 
-import { QuestionBankItem, CoursePreviewGuide } from '../types';
-
 export const INITIAL_QUESTION_BANK: QuestionBankItem[] = [
   {
     id: 'qb-1',
@@ -600,4 +747,145 @@ export const INITIAL_COURSE_PREVIEWS: CoursePreviewGuide[] = [
     ]
   }
 ];
+
+export const INITIAL_CLASSROOM_LESSONS: ClassroomLesson[] = [
+  {
+    id: 'lesson-1-gaosan',
+    subject: '物理',
+    topic: '牛顿第二定律综合应用与受力分析',
+    gradeLevel: '高三/高考',
+    semester: '上学期',
+    countryRegion: '中国大陆',
+    educationSystem: '人教版 (新高考新教材)',
+    teacherName: '智学名师 · 张特级',
+    lectureTitle: '高考物理一轮复习：牛顿第二定律综合模型与受力分析破局',
+    lectureSections: [
+      {
+        sectionTitle: '一、经典场景导入：为什么受力分析决定高考物理成败？',
+        content: '同学们好！欢迎来到高考物理名师讲堂。高三一轮复习中，力学是整座物理大厦的基石。很多同学觉得“公式我都背过（F=ma），但一做高考大题就毫无头绪”。根本原因在于：你没有真正掌握【受力分析三步法】与【瞬时性判定】。今天张老师带大家彻底拿下这个必考核心模型！',
+        keyTakeaway: '受力分析是解题的第一要素，F合 与 a 具有瞬时对应性与同向性！'
+      },
+      {
+        sectionTitle: '二、核心推导与解题规范：斜面滑块与超重失重拆解',
+        content: '我们来看一道高考真题变式：质量为 m 的物体放在倾角为 θ 的粗糙斜面上，受到水平向右的拉力 F。如何判断它的运动趋势？首先，隔离物体 m；第二步，画出重力 mg（竖直向下）、支持力 N（垂直斜面向上）、拉力 F（水平向右）；第三步，将所有力沿【平行斜面】和【垂直斜面】建立直角坐标系正交分解！垂直斜面方向无加速度：N = mg*cosθ + F*sinθ；平行斜面方向：若拉力分量大于重力分量与最大静摩擦力，物体将向上加速：F*cosθ - mg*sinθ - f = m*a。大家看，思路是不是瞬间清爽了？',
+        keyTakeaway: '建系原则：顺着加速度方向建 x 轴，垂直加速度建 y 轴，分解不受力的“斜力”。'
+      }
+    ],
+    simplifiedExplanation: '如果觉得抽象，我们可以用“推购物车上斜坡”来比喻：拉力 F 往右拉，一部分力用来把车往斜坡上拽（F*cosθ），一部分力把车往斜坡面上压（F*sinθ，增加了地面摩擦）。只有向上的拽力大于重力下滑力与摩擦力之和，车子才会加速跑起来！',
+    checkQuestionPrompt: '同学们，上面关于斜面正交分解与 F合=ma 的推导逻辑，你听懂了吗？',
+    homeworkQuiz: [
+      {
+        id: 'hw-gaosan-1',
+        subject: '物理',
+        gradeStage: '高中',
+        gradeLevel: '高三/高考',
+        topic: '牛顿第二定律',
+        question: '质量为 2kg 的物体在倾角 30° 的光滑斜面上下滑，重力加速度 g=10m/s²。求物体的加速度大小为：',
+        options: ['A. 2.5 m/s²', 'B. 5.0 m/s²', 'C. 8.6 m/s²', 'D. 10 m/s²'],
+        correctIndex: 1,
+        explanation: '在光滑斜面上，合外力只有重力沿斜面的分力：F合 = mg*sin30° = 2*10*0.5 = 10N。根据 F合 = ma，a = 10/2 = 5m/s²。答案选 B。',
+        questionType: 'choice',
+        difficulty: 'medium',
+        keyPoints: ['牛顿第二定律', '斜面受力分析']
+      },
+      {
+        id: 'hw-gaosan-2',
+        subject: '物理',
+        gradeStage: '高中',
+        gradeLevel: '高三/高考',
+        topic: '超重与失重',
+        question: '人站在电梯中的体重计上，当电梯以 2m/s² 的加速度加速上升时，体重计的示数与静止时相比：',
+        options: ['A. 增大（超重）', 'B. 减小（失重）', 'C. 不变', 'D. 变为零'],
+        correctIndex: 0,
+        explanation: '加速度向上时，N - mg = ma => N = m(g+a) > mg，此时人处于超重状态，示数增大。答案选 A。',
+        questionType: 'choice',
+        difficulty: 'easy',
+        keyPoints: ['超重与失重', '加速度方向判断']
+      }
+    ]
+  },
+  {
+    id: 'lesson-2-gaoyi',
+    subject: '数学',
+    topic: '二次函数的图像与区间最值（轴动区间定模型）',
+    gradeLevel: '高一',
+    semester: '上学期',
+    countryRegion: '中国大陆',
+    educationSystem: '人教版',
+    teacherName: '智学名师 · 王老师',
+    lectureTitle: '高一数学必修一：二次函数区间最值的分类讨论精讲',
+    lectureSections: [
+      {
+        sectionTitle: '一、引入：初高中数学衔接的最大难点',
+        content: '同学们好！初中我们学二次函数，自变量 x 通常是全体实数，最值直接看顶点。但到了高一，自变量被限制在指定闭区间 [m, n] 上！这就演变成了高中数学第一个高频考点——分类讨论。今天王老师教大家用“对称轴与区间相对位置”三步解题！',
+        keyTakeaway: '区间最值看两要素：抛物线开口方向 + 对称轴在区间的左侧、内部还是右侧！'
+      },
+      {
+        sectionTitle: '二、模型拆解：开口向上 f(x)=x^2-2ax+1 在 [0, 2] 上的最小值',
+        content: '我们来看开口向上的二次函数 f(x) = (x-a)^2 + 1-a^2，对称轴为 x = a。当对称轴 a 在区间左侧（a < 0）时，函数在 [0, 2] 上单调递增，最小值在左端点 f(0) 处取得；当对称轴在区间内部（0 ≤ a ≤ 2）时，最小值就是顶点的纵坐标 f(a)；当对称轴在区间右侧（a > 2）时，函数在 [0, 2] 上单调递减，最小值在右端点 f(2) 处取得。三种情况全面覆盖，绝漏掉任何一种！',
+        keyTakeaway: '分类讨论标准：对称轴 < 左端点、对称轴在区间内、对称轴 > 右端点。'
+      }
+    ],
+    simplifiedExplanation: '我们可以想象在滑滑梯：区间 [0, 2] 就是你滑滑梯的活动范围。如果最底端（顶点）落在你的范围内，最低点就是滑滑梯的最底端；如果最底端在你左边远处，那你活动范围内最左边就是最低的；反之最右边就是最低的。',
+    checkQuestionPrompt: '同学们，上面关于“对称轴与区间相对位置”的 3 种分类讨论方法，你听懂了吗？',
+    homeworkQuiz: [
+      {
+        id: 'hw-gaoyi-1',
+        subject: '数学',
+        gradeStage: '高中',
+        gradeLevel: '高一',
+        topic: '二次函数最值',
+        question: '函数 f(x) = (x-1)^2 + 2 在区间 [2, 4] 上的最小值是：',
+        options: ['A. 2', 'B. 3', 'C. 11', 'D. 6'],
+        correctIndex: 1,
+        explanation: '对称轴为 x = 1，区间为 [2, 4]。对称轴在区间左侧，因此 f(x) 在 [2, 4] 上递增。最小值在 x = 2 处，f(2) = (2-1)^2 + 2 = 3。答案选 B。',
+        questionType: 'choice',
+        difficulty: 'easy',
+        keyPoints: ['二次函数区间最值', '对称轴判定']
+      }
+    ]
+  },
+  {
+    id: 'lesson-3-chusan',
+    subject: '化学',
+    topic: '质量守恒定律与化学方程式配平精讲',
+    gradeLevel: '初三/中考',
+    semester: '上学期',
+    countryRegion: '中国大陆',
+    educationSystem: '人教版',
+    teacherName: '智学名师 · 李老师',
+    lectureTitle: '初三化学中考冲刺：质量守恒定律微观本质与配平技巧',
+    lectureSections: [
+      {
+        sectionTitle: '一、导入：为什么化学反应前后质量不会凭空消失？',
+        content: '同学们好！化学是一门以实验为基础的学科。很多初三同学做实验时疑问：木炭燃烧后只剩下灰烬，质量变小了，难道质量守恒定律错了吗？当然没有！因为生成的二氧化碳气体逸散到了空气中。如果在密闭容器中，反应前后的总质量必定严格相等！',
+        keyTakeaway: '质量守恒定律微观本质：化学反应前后，原子的种类、数目、质量均保持不变！'
+      },
+      {
+        sectionTitle: '二、中考必考配平技巧：最小公倍数法与奇偶配平法',
+        content: '配平化学方程式时，不要盲目凑数。例如配平 Fe + O2 -> Fe3O4：反应前 O 为 2 个，反应后 O 为 4 个，最小公倍数是 4，所以在 O2 前填 2；反应后 Fe 为 3 个，所以在 Fe 前填 3。即 3Fe + 2O2 = Fe3O4（点燃）。记准“六不变”：原子种类、数目、质量不变；元素种类、质量不变；物质总质量不变。',
+        keyTakeaway: '化学反应宏观与微观“六不变”，抓准原子个数守恒即能快速配平。'
+      }
+    ],
+    simplifiedExplanation: '质量守恒就好像玩积木：反应前你有 3 个红积木和 4 个蓝积木，拆开后重新拼成新的模型，积木的总个数和总重量依然是 3 个红 + 4 个蓝，一个都没有掉，也没有凭空多出来！',
+    checkQuestionPrompt: '同学们，上面关于“原子种类与数目不变”及最小公倍数配平法，你听懂了吗？',
+    homeworkQuiz: [
+      {
+        id: 'hw-chusan-1',
+        subject: '化学',
+        gradeStage: '初中',
+        gradeLevel: '初三/中考',
+        topic: '质量守恒定律',
+        question: '在化学反应 A + 2B = C + 2D 中，已知 6g A 与足量 B 充分反应后生成 8g C 和 10g D，则参加反应的 B 的质量为：',
+        options: ['A. 12g', 'B. 14g', 'C. 16g', 'D. 18g'],
+        correctIndex: 0,
+        explanation: '根据质量守恒定律：反应物总质量 = 生成物总质量。m(A) + m(B) = m(C) + m(D) => 6g + m(B) = 8g + 10g = 18g => m(B) = 12g。答案选 A。',
+        questionType: 'choice',
+        difficulty: 'easy',
+        keyPoints: ['质量守恒定律计算', '质量守恒定律微观本质']
+      }
+    ]
+  }
+];
+
 

@@ -12,8 +12,9 @@ import {
   Filter,
   Brain
 } from 'lucide-react';
-import { StudyTask, UserStats } from '../types';
+import { StudyTask, UserStats, UserProfile } from '../types';
 import { UILanguage, TRANSLATIONS } from '../utils/translations';
+import { EncouragementBanner } from './EncouragementBanner';
 
 interface DailyRoadmapProps {
   tasks: StudyTask[];
@@ -23,6 +24,8 @@ interface DailyRoadmapProps {
   onNavigateToGenerator: () => void;
   stats: UserStats;
   uiLang: UILanguage;
+  userProfile?: UserProfile;
+  onOpenProfileModal?: () => void;
 }
 
 export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
@@ -33,6 +36,8 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
   onNavigateToGenerator,
   stats,
   uiLang,
+  userProfile,
+  onOpenProfileModal,
 }) => {
   const t = (key: keyof typeof TRANSLATIONS) => TRANSLATIONS[key][uiLang] || TRANSLATIONS[key].bilingual;
 
@@ -136,7 +141,17 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
       </header>
 
       {/* Main Roadmap Content Area */}
-      <div className="p-8 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="p-8 max-w-7xl mx-auto w-full">
+        {userProfile && (
+          <EncouragementBanner
+            userProfile={userProfile}
+            streakDays={stats.streakDays}
+            uiLang={uiLang}
+            onOpenSettings={onOpenProfileModal || (() => {})}
+          />
+        )}
+        
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
         {/* Left Column: Tasks List (7 Cols) */}
         <div className="lg:col-span-7 flex flex-col gap-6">
@@ -377,6 +392,7 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
 
         </div>
       </div>
+    </div>
 
       {/* Manual Task Modal */}
       {showAddModal && (
