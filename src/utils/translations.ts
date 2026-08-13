@@ -8,9 +8,9 @@ export const TRANSLATIONS = {
     bilingual: '智学星 AI · Logos AI',
   },
   appTagline: {
-    zh: '智能复习引擎',
-    en: 'Intelligent Study Engine',
-    bilingual: '智能复习引擎 · AI Study Engine',
+    zh: '智能学习与提分引擎',
+    en: 'Intelligent Learning & Prep Engine',
+    bilingual: '智能学习引擎 · AI Study Engine',
   },
   navRoadmap: {
     zh: '每日学习路线',
@@ -18,8 +18,8 @@ export const TRANSLATIONS = {
     bilingual: '每日学习路线 / Daily Roadmap',
   },
   navGenerator: {
-    zh: 'AI 制定复习计划',
-    en: 'AI Plan Generator',
+    zh: 'AI 制定学习计划',
+    en: 'AI Study Plan Generator',
     bilingual: 'AI 制定计划 / AI Generator',
   },
   navFlashcards: {

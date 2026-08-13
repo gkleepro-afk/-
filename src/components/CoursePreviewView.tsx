@@ -16,6 +16,8 @@ import {
 } from 'lucide-react';
 import { CoursePreviewGuide, UserProfile } from '../types';
 import { UILanguage, TRANSLATIONS } from '../utils/translations';
+import { matchGradeStrict } from '../utils/gradeMatcher';
+import { Check } from 'lucide-react';
 
 interface CoursePreviewViewProps {
   previews: CoursePreviewGuide[];
@@ -50,7 +52,17 @@ export const CoursePreviewView: React.FC<CoursePreviewViewProps> = ({
   const [genPublisher, setGenPublisher] = useState(userProfile?.educationSystem || '人教版');
   const [isGenerating, setIsGenerating] = useState(false);
 
-  const activePreview = previews.find((p) => p.id === selectedPreviewId) || previews[0];
+  const currentGrade = userProfile?.gradeLevel || '高一';
+
+  // Filter previews strictly by grade level
+  const filteredPreviews = previews.filter((p) =>
+    matchGradeStrict(p.gradeLevel, currentGrade)
+  );
+
+  const activePreview =
+    filteredPreviews.find((p) => p.id === selectedPreviewId) ||
+    filteredPreviews[0] ||
+    null;
 
   // AI Generator Submit
   const handleGeneratePreview = async () => {
@@ -132,12 +144,15 @@ export const CoursePreviewView: React.FC<CoursePreviewViewProps> = ({
               <Layers className="w-4 h-4 text-emerald-600" />
               选择预习章节 / 课程案
             </span>
-            <span className="text-xs text-slate-400">共 {previews.length} 门预习课程</span>
+            <span className="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold rounded-lg flex items-center gap-1.5">
+              <Check className="w-3.5 h-3.5 text-emerald-600" />
+              <span>全屏年级锁：仅【{currentGrade}】预习案 ({filteredPreviews.length} 门)</span>
+            </span>
           </div>
 
           <div className="flex items-center gap-2.5 overflow-x-auto pb-2 scrollbar-none">
-            {previews.map((p) => {
-              const isActive = p.id === selectedPreviewId;
+            {filteredPreviews.map((p) => {
+              const isActive = p.id === activePreview?.id;
               return (
                 <button
                   key={p.id}

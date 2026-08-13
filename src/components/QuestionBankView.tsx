@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { QuestionBankItem, QuestionType, UserProfile } from '../types';
 import { UILanguage, TRANSLATIONS } from '../utils/translations';
+import { matchGradeStrict } from '../utils/gradeMatcher';
 
 interface QuestionBankViewProps {
   questions: QuestionBankItem[];
@@ -68,11 +69,11 @@ export const QuestionBankView: React.FC<QuestionBankViewProps> = ({
       // Tab filter
       if (activeTab === 'mistakes' && !item.isSavedToMistakes) return false;
 
+      // Strict User Profile Grade Filter
+      if (!matchGradeStrict(item.gradeLevel, userProfile?.gradeLevel)) return false;
+
       // Stage filter
       if (selectedStage !== 'all' && item.gradeStage !== selectedStage) return false;
-
-      // Grade filter
-      if (selectedGrade !== 'all' && item.gradeLevel !== selectedGrade) return false;
 
       // Semester filter
       if (selectedSemester !== 'all' && item.semester && item.semester !== selectedSemester) return false;

@@ -117,7 +117,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <nav className="flex-1 space-y-6 overflow-y-auto pr-1">
         <div>
           <p className="text-[10px] uppercase tracking-widest text-slate-400 font-bold mb-3">
-            {uiLang === 'zh' ? '复习导航' : uiLang === 'en' ? 'Navigation' : '复习导航 / Navigation'}
+            {uiLang === 'zh' ? '智学导航' : uiLang === 'en' ? 'Study Navigation' : '智学导航 / Study Navigation'}
           </p>
           <ul className="space-y-1.5">
             {navItems.map((item) => {

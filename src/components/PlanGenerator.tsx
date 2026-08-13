@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { GeneratedStudyPlan, UserProfile } from '../types';
 import { UILanguage, TRANSLATIONS } from '../utils/translations';
+import { matchGradeStrict } from '../utils/gradeMatcher';
 
 interface PlanGeneratorProps {
   onPlanGenerated: (plan: GeneratedStudyPlan) => void;
@@ -204,6 +205,11 @@ export const PlanGenerator: React.FC<PlanGeneratorProps> = ({
       setIsGenerating(false);
     }
   };
+
+  // Filter plans strictly by user profile grade
+  const filteredPlans = existingPlans.filter((p) =>
+    matchGradeStrict(p.gradeLevel, userProfile?.gradeLevel)
+  );
 
   return (
     <div className="flex-1 flex flex-col h-full bg-[#F8FAFC] overflow-y-auto">
@@ -409,12 +415,12 @@ export const PlanGenerator: React.FC<PlanGeneratorProps> = ({
                 {uiLang === 'zh' ? '已生成的计划库' : uiLang === 'en' ? 'Generated Plans' : '已生成的计划库 / Generated Plans'}
               </h3>
               <span className="text-xs font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">
-                {existingPlans.length} {uiLang === 'en' ? 'plans' : '套方案'}
+                {filteredPlans.length} {uiLang === 'en' ? 'plans' : '套方案'}
               </span>
             </div>
 
             <div className="space-y-4">
-              {existingPlans.map((plan) => (
+              {filteredPlans.map((plan) => (
                 <div
                   key={plan.id}
                   onClick={() => onSelectExistingPlan(plan)}

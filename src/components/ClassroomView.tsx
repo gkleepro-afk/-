@@ -27,6 +27,7 @@ import {
 } from 'lucide-react';
 import { ClassroomLesson, UserProfile, QuestionBankItem } from '../types';
 import { UILanguage } from '../utils/translations';
+import { matchGradeStrict } from '../utils/gradeMatcher';
 
 interface ClassroomViewProps {
   lessons: ClassroomLesson[];
@@ -120,19 +121,15 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
   const [genTopic, setGenTopic] = useState('牛顿第二定律综合应用');
   const [isGenerating, setIsGenerating] = useState(false);
 
-  // Filter lessons
-  const filteredLessons = lessons.filter((l) => {
-    if (filterMode === 'all') return true;
-    const gradeMatch =
-      l.gradeLevel.toLowerCase().includes(currentGrade.toLowerCase()) ||
-      currentGrade.toLowerCase().includes(l.gradeLevel.toLowerCase());
-    return gradeMatch;
-  });
+  // Filter lessons strictly by user profile grade
+  const filteredLessons = lessons.filter((l) =>
+    matchGradeStrict(l.gradeLevel, currentGrade)
+  );
 
   const activeLesson =
-    lessons.find((l) => l.id === selectedLessonId) ||
+    filteredLessons.find((l) => l.id === selectedLessonId) ||
     filteredLessons[0] ||
-    lessons[0];
+    null;
 
   // Speech Synthesis Voices Setup
   useEffect(() => {
@@ -443,27 +440,10 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-xs text-slate-400">筛选：</span>
-              <button
-                onClick={() => setFilterMode('matched')}
-                className={`px-3 py-1 rounded-lg text-xs font-bold transition ${
-                  filterMode === 'matched'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                }`}
-              >
-                🎯 适合我的年级 ({currentGrade})
-              </button>
-              <button
-                onClick={() => setFilterMode('all')}
-                className={`px-3 py-1 rounded-lg text-xs font-bold transition ${
-                  filterMode === 'all'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                }`}
-              >
-                全部讲堂 ({lessons.length})
-              </button>
+              <span className="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold rounded-lg flex items-center gap-1.5">
+                <Check className="w-3.5 h-3.5 text-emerald-600" />
+                <span>全屏年级锁：仅呈现【{currentGrade}】讲堂 ({filteredLessons.length} 门)</span>
+              </span>
             </div>
           </div>
 

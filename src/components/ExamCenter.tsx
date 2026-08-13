@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { ExamPaperItem, ExamSubmission, QuestionBankItem, UserProfile } from '../types';
 import { UILanguage } from '../utils/translations';
+import { matchGradeStrict } from '../utils/gradeMatcher';
 
 interface ExamCenterProps {
   papers: ExamPaperItem[];
@@ -210,16 +211,10 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
     }
   };
 
-  // Filter papers list
+  // Filter papers list strictly by user profile grade
   const filteredPapers = papers.filter((p) => {
     if (subjectFilter !== 'all' && !p.subject.includes(subjectFilter)) return false;
-    if (gradeFilter === 'match' && userProfile.gradeLevel) {
-      const pGrade = p.gradeLevel.toLowerCase();
-      const uGrade = userProfile.gradeLevel.toLowerCase();
-      // Match high school / middle school stage
-      if (uGrade.includes('高') && !pGrade.includes('高') && !pGrade.includes('grade 1')) return false;
-      if (uGrade.includes('初') && !pGrade.includes('初') && !pGrade.includes('grade 7') && !pGrade.includes('grade 8') && !pGrade.includes('grade 9')) return false;
-    }
+    if (!matchGradeStrict(p.gradeLevel, userProfile.gradeLevel)) return false;
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       return p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q) || p.subject.toLowerCase().includes(q);
@@ -325,27 +320,10 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
               </div>
 
               <div className="flex items-center gap-2 border-l border-slate-200 pl-4">
-                <span className="text-xs font-bold text-slate-500">学情匹配:</span>
-                <button
-                  onClick={() => setGradeFilter('match')}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
-                    gradeFilter === 'match'
-                      ? 'bg-blue-50 text-blue-600 border border-blue-200'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                  }`}
-                >
-                  匹配【{userProfile.gradeLevel}】
-                </button>
-                <button
-                  onClick={() => setGradeFilter('all')}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
-                    gradeFilter === 'all'
-                      ? 'bg-blue-50 text-blue-600 border border-blue-200'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                  }`}
-                >
-                  查看全部年级
-                </button>
+                <span className="px-3 py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold rounded-lg flex items-center gap-1.5">
+                  <Check className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>全屏年级锁：仅【{userProfile.gradeLevel || '选定年级'}】试卷</span>
+                </span>
               </div>
             </div>
 

@@ -17,6 +17,48 @@ export const DEFAULT_USER_PROFILE: UserProfile = {
 
 export const INITIAL_EXAM_PAPERS: ExamPaperItem[] = [
   {
+    id: 'paper-chu1',
+    title: '2026初一数学期末综合仿真冲刺卷（有理数与一元一次方程）',
+    subject: '数学',
+    gradeLevel: '初一',
+    countryRegion: '中国大陆',
+    publisher: '人教版 (七年级)',
+    durationMinutes: 60,
+    totalScore: 100,
+    passingScore: 60,
+    description: '涵盖初一（七年级）有理数运算、数轴绝对值几何意义、代数式化简与一元一次方程应用题。',
+    questions: [
+      {
+        id: 'pchu1-q1',
+        subject: '数学',
+        gradeStage: '初中',
+        gradeLevel: '初一',
+        topic: '有理数与数轴绝对值',
+        question: '已知有理数 a, b 在数轴上的位置如图所示，a < 0 < b 且 |a| > |b|。化简 |a| + |b| - |a + b| 的结果为：',
+        options: ['-2a', '2b', '0', '-2b'],
+        correctIndex: 1,
+        explanation: '因 a<0<b 且 |a|>|b|，所以 a+b < 0。因此 |a| = -a，|b| = b，|a+b| = -(a+b) = -a-b。原式 = -a + b - (-a - b) = -a + b + a + b = 2b。选 B。',
+        questionType: 'choice',
+        difficulty: 'medium',
+        keyPoints: ['数轴与绝对值', '去绝对值符号法则']
+      },
+      {
+        id: 'pchu1-q2',
+        subject: '数学',
+        gradeStage: '初中',
+        gradeLevel: '初一',
+        topic: '一元一次方程应用',
+        question: '某商店将一件进价为 100 元的服装标价 150 元出售，若打折促销仍要保持 20% 的利润率，则该服装最少可以打几折？',
+        options: ['8折', '7.5折', '8.5折', '9折'],
+        correctIndex: 0,
+        explanation: '目标售价 = 100 * (1 + 20%) = 120 元。设打 x 折，则 150 * (x/10) = 120 => x = 8。即打 8 折。选 A。',
+        questionType: 'choice',
+        difficulty: 'easy',
+        keyPoints: ['一元一次方程', '打折利润计算']
+      }
+    ]
+  },
+  {
     id: 'paper-1',
     title: '2026高考物理全真模拟精选冲刺卷（一）',
     subject: '物理',
@@ -150,6 +192,59 @@ export const INITIAL_EXAM_PAPERS: ExamPaperItem[] = [
 
 
 export const INITIAL_PLANS: GeneratedStudyPlan[] = [
+  {
+    id: 'plan-chu1-1',
+    title: '初一数学：有理数运算与一元一次方程高分突破',
+    subject: '数学',
+    gradeLevel: '初一',
+    targetGoal: '彻底攻克有理数正负数运算、绝对值化简与一元一次方程应用题',
+    language: 'zh',
+    createdAt: new Date().toISOString(),
+    overview: '本计划专为初一（七年级）学生量身打造，涵盖初中数学开篇核心考点，助你在新学期打下坚实的数学逻辑框架。',
+    estimatedDays: 7,
+    keyTopics: ['有理数与数轴', '绝对值几何意义', '代数式合并同类项', '一元一次方程解法与实际应用'],
+    dailyTasks: [
+      {
+        dayOffset: 0,
+        title: '有理数与数轴点的位置判定',
+        description: '复习正负数概念、相反数与数轴图解关系。',
+        subject: '数学',
+        category: 'math',
+        durationMinutes: 25,
+        taskType: 'concept',
+        difficulty: 'easy',
+        keyPoints: ['数轴三要素', '相反数特征']
+      },
+      {
+        dayOffset: 1,
+        title: '绝对值去符号法则与分类讨论',
+        description: '掌握根据代数式正负去掉绝对值符号的通用法则。',
+        subject: '数学',
+        category: 'math',
+        durationMinutes: 30,
+        taskType: 'practice',
+        difficulty: 'medium',
+        keyPoints: ['非负性', '数轴分类讨论']
+      }
+    ],
+    flashcards: [
+      {
+        front: '绝对值的几何意义是什么？',
+        back: '在数轴上，表示数 a 的点与原点的距离叫数 a 的绝对值 |a|。',
+        examples: ['|-5| = 5', '|0| = 0'],
+        language: 'zh',
+        tags: ['初一', '数学', '绝对值']
+      }
+    ],
+    quizQuestions: [
+      {
+        question: '下列关于有理数的说法中正确的是？',
+        options: ['0 是最小的正数', '有理数分为正数和负数', '绝对值等于它本身的数是非负数', '互为相反数的两个数绝对值不相等'],
+        correctIndex: 2,
+        explanation: '非负数包括正数和 0，它们的绝对值都等于它本身。选 C。'
+      }
+    ]
+  },
   {
     id: 'plan-physics-1',
     title: '高中物理：力学与动量守恒冲刺计划',
@@ -546,6 +641,21 @@ export const INITIAL_QUIZZES: QuizQuestion[] = [
 
 export const INITIAL_QUESTION_BANK: QuestionBankItem[] = [
   {
+    id: 'qb-chu1-1',
+    subject: '数学',
+    gradeStage: '初中',
+    gradeLevel: '初一',
+    topic: '有理数与数轴绝对值化简',
+    question: '已知有理数 a, b 在数轴上的对应点位置如图所示，a < 0 < b 且 |a| > |b|。化简 |a| - |b| + |a + b| 的结果是（ ）。',
+    options: ['-2a', '2b', '-2b', '0'],
+    correctIndex: 2,
+    explanation: '【解析】因 a<0<b 且 |a|>|b|，可知 a+b < 0。因此 |a| = -a，|b| = b，|a+b| = -(a+b) = -a-b。原式 = (-a) - b + (-a-b) = -2a-2b。若求 |a| + |b| - |a+b|，则为 -a + b - (-a-b) = 2b。选 C。',
+    questionType: 'choice',
+    difficulty: 'medium',
+    keyPoints: ['初一数学', '绝对值化简', '数轴与几何意义'],
+    isSavedToMistakes: true
+  },
+  {
     id: 'qb-1',
     subject: '物理',
     gradeStage: '高中',
@@ -646,6 +756,53 @@ export const INITIAL_QUESTION_BANK: QuestionBankItem[] = [
 ];
 
 export const INITIAL_COURSE_PREVIEWS: CoursePreviewGuide[] = [
+  {
+    id: 'preview-math-chu1-equation',
+    title: '初一数学：《一元一次方程及其应用》新课预习案',
+    subject: '数学',
+    gradeLevel: '初一',
+    publisher: '人教版 (七年级)',
+    overview: '本预习案带你从算术思维跨越到代数思维，理解“用字母表示未知数”建立等量关系的威力，掌握移项与等式性质。',
+    estimatedTimeMinutes: 20,
+    learningObjectives: [
+      '理解一元一次方程的定义与标准形式 ax + b = 0 (a≠0)',
+      '掌握等式的基本性质（加减乘除恒等变形）',
+      '熟练运用“移项”变号法则解方程并检验解'
+    ],
+    prerequisites: [
+      '用字母表示数与代数式合并同类项',
+      '小学的方程初步与倒推算术方法'
+    ],
+    coreDefinitions: [
+      {
+        name: '一元一次方程定义',
+        explanation: '只含有一个未知数（元），未知数的次数都是 1（次），等号两边都是整式的方程。',
+        keyFormula: 'ax + b = 0 (a ≠ 0)'
+      },
+      {
+        name: '等式基本性质 1 & 2',
+        explanation: '性质 1：等式两边加（或减）同一个数或同一个整式，结果仍相等。性质 2：等式两边乘同一个数，或除以同一个不为 0 的数，结果仍相等。',
+        keyFormula: 'a = b ⟹ a ± c = b ± c ; a·c = b·c'
+      },
+      {
+        name: '移项变号法则',
+        explanation: '把等式一边的某一项改变符号后移到另一边。',
+        keyFormula: '2x + 3 = 7 ⟹ 2x = 7 - 3 ⟹ x = 2'
+      }
+    ],
+    selfCheckQuiz: [
+      {
+        question: '下列方程中属于一元一次方程的是（ ）。',
+        options: ['x + 2y = 5', 'x^2 - 1 = 0', '3x - 1 = 5', '1/x = 2'],
+        correctIndex: 2,
+        explanation: 'A 含两个未知数；B 最高次数为 2；D 是分式方程。只有 C 是一元一次方程。'
+      }
+    ],
+    questionsToAskTeacher: [
+      '移项时忘记变号是最容易扣分的地方，有没有什么顺口溜能帮助记忆？',
+      '在列方程解应用题时，如何快速在题目中找到“等量关系”？'
+    ]
+  },
   {
     id: 'preview-physics-newton1',
     title: '初中物理：《牛顿第一定律与惯性》新课预习案',
@@ -749,6 +906,47 @@ export const INITIAL_COURSE_PREVIEWS: CoursePreviewGuide[] = [
 ];
 
 export const INITIAL_CLASSROOM_LESSONS: ClassroomLesson[] = [
+  {
+    id: 'lesson-chu1-math',
+    subject: '数学',
+    topic: '有理数与数轴绝对值图解',
+    gradeLevel: '初一',
+    semester: '上学期',
+    countryRegion: '中国大陆',
+    educationSystem: '人教版 (七年级)',
+    teacherName: '智学名师 · 陈老师',
+    lectureTitle: '初一数学名师讲堂：有理数、数轴与绝对值几何化简破局',
+    lectureSections: [
+      {
+        sectionTitle: '一、概念通俗透视：从正负数到数轴上的几何距离',
+        content: '同学们好！欢迎来到初一数学名师讲堂。进入初中后，数学学习的第一大飞跃就是从【非负数】扩展到了【有理数】。很多同学觉得正负数运算容易出错，特别是绝对值符号不知道怎么去。今天陈老师教大家用“数轴几何距离”法则，秒杀一切绝对值化简题！',
+        keyTakeaway: '绝对值 |a| 的几何意义就是数轴上点 a 到原点的【距离】，距离永远是非负数（≥ 0）！'
+      },
+      {
+        sectionTitle: '二、核心解法精讲：去绝对值符号的标准三步法',
+        content: '我们来看一道初一期中常考压轴题：已知 a < 0 < b，且 |a| > |b|，如何化简 |a| + |b| - |a+b|？第一步：判断各绝对值内部代数式的正负号！因为 a < 0，所以 |a| = -a；因为 b > 0，所以 |b| = b；因为 a<0 且 |a|>|b|，可知 a+b < 0，所以 |a+b| = -(a+b) = -a-b。第二步：代入原式：(-a) + b - (-a - b) = -a + b + a + b = 2b！大家看，去掉符号后再合并同类项，是不是非常工整简单？',
+        keyTakeaway: '绝对值去符号口诀：“正数直接去，负数变相反，零去依然零”！'
+      }
+    ],
+    simplifiedExplanation: '如果觉得抽象，我们可以把数轴想象成一条直线跑道：原点是起点 0。往右走是正数，往左走是负数。绝对值 |a| 就是你从起点 0 走到点 a 所跑的【实际步数】。不管你往左跑还是往右跑，跑过的步数（距离）永远是正数！',
+    checkQuestionPrompt: '同学们，上面关于“绝对值几何意义与去符号口诀”，你听懂了吗？',
+    homeworkQuiz: [
+      {
+        id: 'hw-chu1-1',
+        subject: '数学',
+        gradeStage: '初中',
+        gradeLevel: '初一',
+        topic: '绝对值去符号',
+        question: '若 |x - 2| = 2 - x，则 x 的取值范围是（ ）。',
+        options: ['A. x > 2', 'B. x ≥ 2', 'C. x < 2', 'D. x ≤ 2'],
+        correctIndex: 3,
+        explanation: '因 |x - 2| = -(x - 2) = 2 - x，说明绝对值里面的代数式 x - 2 必为非正数，即 x - 2 ≤ 0 ⟹ x ≤ 2。答案选 D。',
+        questionType: 'choice',
+        difficulty: 'medium',
+        keyPoints: ['绝对值非负性', '去绝对值变号法则']
+      }
+    ]
+  },
   {
     id: 'lesson-1-gaosan',
     subject: '物理',
