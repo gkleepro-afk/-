@@ -10,6 +10,7 @@ export interface StudyTask {
   title: string;
   description: string;
   subject: string;
+  gradeLevel?: string;
   category: SubjectCategory;
   durationMinutes: number;
   taskType: TaskType;

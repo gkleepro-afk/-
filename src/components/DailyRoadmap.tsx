@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { StudyTask, UserStats, UserProfile } from '../types';
 import { UILanguage, TRANSLATIONS } from '../utils/translations';
+import { matchGradeStrict } from '../utils/gradeMatcher';
 import { EncouragementBanner } from './EncouragementBanner';
 
 interface DailyRoadmapProps {
@@ -49,18 +50,166 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
 
   const todayStr = new Date().toISOString().split('T')[0];
 
-  // Filter tasks
-  const filteredTasks = tasks.filter((t) => {
+  // Filter tasks strictly by grade and selected subject
+  const filteredTasks = tasks.filter((task) => {
+    // Grade filtering
+    if (userProfile?.gradeLevel && !matchGradeStrict(task.gradeLevel || task.subject, userProfile.gradeLevel)) {
+      return false;
+    }
+    // Subject filtering
     if (selectedSubject === 'all') return true;
-    return t.subject.toLowerCase() === selectedSubject.toLowerCase();
+    return task.subject.toLowerCase() === selectedSubject.toLowerCase();
   });
 
   const completedCount = filteredTasks.filter((t) => t.completed).length;
   const totalCount = filteredTasks.length;
   const progressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
-  // Unique subjects for filter
-  const subjects = Array.from(new Set(tasks.map((t) => t.subject)));
+  // Unique subjects available for current grade
+  const availableTasksByGrade = tasks.filter((task) =>
+    userProfile?.gradeLevel ? matchGradeStrict(task.gradeLevel || task.subject, userProfile.gradeLevel) : true
+  );
+  const subjects = Array.from(new Set(availableTasksByGrade.map((t) => t.subject)));
+
+  // Dynamic Timeline according to grade
+  const getTimelineSessions = () => {
+    const grade = userProfile?.gradeLevel || '高一';
+    if (grade.includes('初一') || grade.includes('Grade 7')) {
+      return [
+        {
+          time: '09:00',
+          ampm: 'AM',
+          title: uiLang === 'en' ? 'Grade 7 Math: Rational Numbers & Absolute Values' : '初一数学：有理数与数轴绝对值',
+          desc: uiLang === 'en' ? 'Concept Review • 25 mins' : '概念复习 • 25 分钟',
+          bg: 'bg-slate-50',
+          border: 'border-slate-200/80',
+          textTitle: 'text-slate-800',
+          textDesc: 'text-slate-500'
+        },
+        {
+          time: '14:00',
+          ampm: 'PM',
+          title: uiLang === 'en' ? 'Grade 7 English: Key Vocab & Sentence Cards' : '初一英语：核心词汇与日常句型卡片',
+          desc: uiLang === 'en' ? 'Vocabulary Flashcards • 20 mins' : '多语言翻卡 • 20 分钟',
+          bg: 'bg-blue-50',
+          border: 'border-blue-100',
+          textTitle: 'text-blue-900',
+          textDesc: 'text-blue-600'
+        },
+        {
+          time: '16:30',
+          ampm: 'PM',
+          title: uiLang === 'en' ? 'Grade 7 Math: Solving Linear Equations' : '初一数学：一元一次方程应用突破',
+          desc: uiLang === 'en' ? 'Practice & Applications • 30 mins' : '经典练习 • 30 分钟',
+          bg: 'bg-slate-50',
+          border: 'border-slate-200/80',
+          textTitle: 'text-slate-800',
+          textDesc: 'text-slate-500'
+        }
+      ];
+    } else if (grade.includes('初二') || grade.includes('Grade 8')) {
+      return [
+        {
+          time: '09:00',
+          ampm: 'AM',
+          title: uiLang === 'en' ? 'Grade 8 Math: Linear Functions & Pythagorean Theorem' : '初二数学：一次函数与勾股定理',
+          desc: uiLang === 'en' ? 'Concept Drill • 30 mins' : '概念复习 • 30 分钟',
+          bg: 'bg-slate-50',
+          border: 'border-slate-200/80',
+          textTitle: 'text-slate-800',
+          textDesc: 'text-slate-500'
+        },
+        {
+          time: '14:00',
+          ampm: 'PM',
+          title: uiLang === 'en' ? 'Grade 8 Physics: Acoustics & Optics Key Points' : '初二物理：声现象与光现象知识点卡片',
+          desc: uiLang === 'en' ? 'Physics Flashcards • 20 mins' : '物理考点翻卡 • 20 分钟',
+          bg: 'bg-blue-50',
+          border: 'border-blue-100',
+          textTitle: 'text-blue-900',
+          textDesc: 'text-blue-600'
+        },
+        {
+          time: '16:30',
+          ampm: 'PM',
+          title: uiLang === 'en' ? 'Grade 8 English: Grammar Patterns & Conversation' : '初二英语：语法专项与中考高频句型',
+          desc: uiLang === 'en' ? 'Grammar & Audio • 25 mins' : '语法与发音 • 25 分钟',
+          bg: 'bg-slate-50',
+          border: 'border-slate-200/80',
+          textTitle: 'text-slate-800',
+          textDesc: 'text-slate-500'
+        }
+      ];
+    } else if (grade.includes('初三') || grade.includes('中考') || grade.includes('Grade 9')) {
+      return [
+        {
+          time: '09:00',
+          ampm: 'AM',
+          title: uiLang === 'en' ? 'Grade 9 Math: Quadratic Functions & Exam Pressing Questions' : '初三数学/中考冲刺：二次函数压轴题',
+          desc: uiLang === 'en' ? 'Exam Sprint • 35 mins' : '中考冲刺 • 35 分钟',
+          bg: 'bg-slate-50',
+          border: 'border-slate-200/80',
+          textTitle: 'text-slate-800',
+          textDesc: 'text-slate-500'
+        },
+        {
+          time: '14:00',
+          ampm: 'PM',
+          title: uiLang === 'en' ? 'Grade 9 Chemistry & Physics: Chemical Equations & Circuits' : '初三物理化学：电路规律与化学方程式',
+          desc: uiLang === 'en' ? 'Science Flashcards • 25 mins' : '理综考点翻卡 • 25 分钟',
+          bg: 'bg-blue-50',
+          border: 'border-blue-100',
+          textTitle: 'text-blue-900',
+          textDesc: 'text-blue-600'
+        },
+        {
+          time: '16:30',
+          ampm: 'PM',
+          title: uiLang === 'en' ? 'Grade 9 English: Exam Vocabulary Drill' : '初三英语：中考全真模拟高频词汇',
+          desc: uiLang === 'en' ? 'Simulated Drill • 25 mins' : '模拟精练 • 25 分钟',
+          bg: 'bg-slate-50',
+          border: 'border-slate-200/80',
+          textTitle: 'text-slate-800',
+          textDesc: 'text-slate-500'
+        }
+      ];
+    } else {
+      return [
+        {
+          time: '09:00',
+          ampm: 'AM',
+          title: uiLang === 'en' ? 'High School Physics: Mechanics & Newton\'s Laws' : '高中物理：受力分析与牛顿定律',
+          desc: uiLang === 'en' ? 'Concept Review • 30 mins' : '概念复习 • 30 分钟',
+          bg: 'bg-slate-50',
+          border: 'border-slate-200/80',
+          textTitle: 'text-slate-800',
+          textDesc: 'text-slate-500'
+        },
+        {
+          time: '14:00',
+          ampm: 'PM',
+          title: uiLang === 'en' ? 'IELTS Academic Vocab & High-Frequency Verbs' : '英语雅思/高考：高频核心学术词汇翻卡',
+          desc: uiLang === 'en' ? 'Bilingual Flashcards • 15 mins' : '多语言翻卡 • 15 分钟',
+          bg: 'bg-blue-50',
+          border: 'border-blue-100',
+          textTitle: 'text-blue-900',
+          textDesc: 'text-blue-600'
+        },
+        {
+          time: '16:30',
+          ampm: 'PM',
+          title: uiLang === 'en' ? 'High School Math: Functions & Conic Sections' : '高中数学/物理：导数与电磁感应重难点',
+          desc: uiLang === 'en' ? 'Practice & Deep Review • 25 mins' : '重难点复习 • 25 分钟',
+          bg: 'bg-slate-50',
+          border: 'border-slate-200/80',
+          textTitle: 'text-slate-800',
+          textDesc: 'text-slate-500'
+        }
+      ];
+    }
+  };
+
+  const timelineSessions = getTimelineSessions();
 
   const handleCreateTask = (e: React.FormEvent) => {
     e.preventDefault();
@@ -321,51 +470,23 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
             </div>
 
             <div className="space-y-5">
-              <div className="flex items-center gap-4">
-                <div className="text-right w-12 shrink-0">
-                  <p className="text-sm font-bold text-slate-900">09:00</p>
-                  <p className="text-[10px] text-slate-400 font-semibold">AM</p>
+              {timelineSessions.map((session, idx) => (
+                <div key={idx} className="flex items-center gap-4">
+                  <div className="text-right w-12 shrink-0">
+                    <p className="text-sm font-bold text-slate-900">{session.time}</p>
+                    <p className="text-[10px] text-slate-400 font-semibold">{session.ampm}</p>
+                  </div>
+                  <div className="w-px h-10 bg-slate-200" />
+                  <div className={`p-3.5 ${session.bg} rounded-lg flex-1 border ${session.border}`}>
+                    <p className={`text-xs font-bold ${session.textTitle}`}>
+                      {session.title}
+                    </p>
+                    <p className={`text-[11px] ${session.textDesc}`}>
+                      {session.desc}
+                    </p>
+                  </div>
                 </div>
-                <div className="w-px h-10 bg-slate-200" />
-                <div className="p-3.5 bg-slate-50 rounded-lg flex-1 border border-slate-200/80">
-                  <p className="text-xs font-bold text-slate-800">
-                    {uiLang === 'en' ? 'Physics: Mechanics & Newton\'s Laws' : '高中物理：受力分析与牛顿定律'}
-                  </p>
-                  <p className="text-[11px] text-slate-500">
-                    {uiLang === 'en' ? 'Concept Review • 30 mins' : '概念复习 • 30 分钟'}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-4">
-                <div className="text-right w-12 shrink-0">
-                  <p className="text-sm font-bold text-slate-900">14:00</p>
-                  <p className="text-[10px] text-slate-400 font-semibold">PM</p>
-                </div>
-                <div className="w-px h-10 bg-slate-200" />
-                <div className="p-3.5 bg-blue-50 rounded-lg flex-1 border border-blue-100">
-                  <p className="text-xs font-bold text-blue-900">IELTS Academic Vocab Flashcards</p>
-                  <p className="text-[11px] text-blue-600">
-                    {uiLang === 'en' ? 'Bilingual Flashcards • 15 mins' : '多语言翻卡 • 15 分钟'}
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-4">
-                <div className="text-right w-12 shrink-0">
-                  <p className="text-sm font-bold text-slate-900">16:30</p>
-                  <p className="text-[10px] text-slate-400 font-semibold">PM</p>
-                </div>
-                <div className="w-px h-10 bg-slate-200" />
-                <div className="p-3.5 bg-slate-50 rounded-lg flex-1 border border-slate-200/80">
-                  <p className="text-xs font-bold text-slate-800">
-                    {uiLang === 'en' ? 'Japanese N2 Grammar & Voice Audio' : '日本語 N2 核心句型 5 选巩固'}
-                  </p>
-                  <p className="text-[11px] text-slate-500">
-                    {uiLang === 'en' ? 'Grammar & Audio • 25 mins' : '语法与发音 • 25 分钟'}
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 

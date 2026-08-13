@@ -16,7 +16,7 @@ import {
   Layers
 } from 'lucide-react';
 import { UserProfile } from '../types';
-import { UILanguage } from '../utils/translations';
+import { UILanguage, TRANSLATIONS } from '../utils/translations';
 
 interface UserProfileModalProps {
   isOpen: boolean;
@@ -35,6 +35,8 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 }) => {
   if (!isOpen) return null;
 
+  const t = (key: keyof typeof TRANSLATIONS) => TRANSLATIONS[key][uiLang] || TRANSLATIONS[key].bilingual;
+
   const [userName, setUserName] = useState(userProfile.userName);
   const [avatarEmoji, setAvatarEmoji] = useState(userProfile.avatarEmoji || '🎓');
   const [avatarUrl, setAvatarUrl] = useState(userProfile.avatarUrl || '');
@@ -51,22 +53,22 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
   const [savedSuccess, setSavedSuccess] = useState(false);
 
   const PRESET_AVATARS = [
-    { emoji: '🎓', name: '学霸帽子' },
-    { emoji: '🚀', name: '冲刺火箭' },
-    { emoji: '🦊', name: '敏捷灵狐' },
-    { emoji: '🦉', name: '睿智猫头鹰' },
-    { emoji: '⚡', name: '闪电提分' },
-    { emoji: '🌸', name: '温情樱花' },
-    { emoji: '🦁', name: '霸气雄狮' },
-    { emoji: '📚', name: '万卷书狂' },
-    { emoji: '🎨', name: '创意灵感' },
-    { emoji: '🏆', name: '夺冠金杯' },
+    { emoji: '🎓', name: uiLang === 'en' ? 'Scholar Cap' : '学霸帽子' },
+    { emoji: '🚀', name: uiLang === 'en' ? 'Rocket' : '冲刺火箭' },
+    { emoji: '🦊', name: uiLang === 'en' ? 'Agile Fox' : '敏捷灵狐' },
+    { emoji: '🦉', name: uiLang === 'en' ? 'Wise Owl' : '睿智猫头鹰' },
+    { emoji: '⚡', name: uiLang === 'en' ? 'Lightning' : '闪电提分' },
+    { emoji: '🌸', name: uiLang === 'en' ? 'Sakura' : '温情樱花' },
+    { emoji: '🦁', name: uiLang === 'en' ? 'Brave Lion' : '霸气雄狮' },
+    { emoji: '📚', name: uiLang === 'en' ? 'Book Lover' : '万卷书狂' },
+    { emoji: '🎨', name: uiLang === 'en' ? 'Creative' : '创意灵感' },
+    { emoji: '🏆', name: uiLang === 'en' ? 'Trophy' : '夺冠金杯' },
   ];
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     const updated: UserProfile = {
-      userName: userName.trim() || '智学学子',
+      userName: userName.trim() || (uiLang === 'en' ? 'AI Scholar' : '智学学子'),
       avatarEmoji,
       avatarUrl: avatarUrl.trim(),
       gradeLevel,
@@ -74,7 +76,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
       countryRegion,
       educationSystem,
       targetLanguage,
-      targetExam: targetExam.trim() || '备考冲刺',
+      targetExam: targetExam.trim() || (uiLang === 'en' ? 'Exam Prep' : '备考冲刺'),
       dailyGoalMinutes,
       encouragementTone,
       customMotto: customMotto.trim(),
@@ -105,9 +107,9 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
               <User className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-xl font-bold text-white">学情偏好与个性化设置</h3>
+              <h3 className="text-xl font-bold text-white">{t('profileModalTitle')}</h3>
               <p className="text-xs text-slate-400 mt-0.5">
-                定制您的年级、考纲与鼓励风格，AI 题目推荐与预习案将随之智能适配
+                {t('profileModalDesc')}
               </p>
             </div>
           </div>
@@ -120,13 +122,13 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
           <div className="space-y-4">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 pb-2 flex items-center gap-1.5">
               <User className="w-4 h-4 text-blue-600" />
-              个人形象与称呼设置
+              {t('avatarHeader')}
             </h4>
 
             {/* Avatar Selector Block */}
             <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
               <label className="text-xs font-bold text-slate-700 block">
-                选择专属学习头像 / 图标
+                {t('chooseAvatarLabel')}
               </label>
 
               <div className="flex flex-wrap items-center gap-3">
@@ -168,7 +170,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                   type="text"
                   value={avatarUrl}
                   onChange={(e) => setAvatarUrl(e.target.value)}
-                  placeholder="或粘贴网络自定义头像图片 URL 地址 (可选)"
+                  placeholder={uiLang === 'en' ? 'Or paste custom Avatar Image URL (optional)' : '或粘贴网络自定义头像图片 URL 地址 (可选)'}
                   className="w-full bg-white border border-slate-200 text-slate-900 rounded-xl p-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
@@ -177,50 +179,52 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label className="text-xs font-bold text-slate-700 block mb-1">
-                  学生昵称 / 称呼
+                  {t('userNameLabel')}
                 </label>
                 <input
                   type="text"
                   value={userName}
                   onChange={(e) => setUserName(e.target.value)}
-                  placeholder="如：张同学、智学学子"
+                  placeholder={uiLang === 'en' ? 'e.g. Alex, Scholar' : '如：张同学、智学学子'}
                   className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
               <div>
                 <label className="text-xs font-bold text-slate-700 block mb-1">
-                  当前年级 / 学段
+                  {t('gradeSelectLabel')}
                 </label>
                 <select
                   value={gradeLevel}
                   onChange={(e) => setGradeLevel(e.target.value)}
                   className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="初一">初一 / 基础建立 (Grade 7)</option>
-                  <option value="初二">初二 / 知识巩固 (Grade 8)</option>
-                  <option value="初三/中考">初三 / 中考冲刺 (Grade 9)</option>
-                  <option value="高一">高一 / 学科衔接 (Grade 10)</option>
-                  <option value="高二">高二 / 难点突破 (Grade 11)</option>
-                  <option value="高三/高考">高三 / 高考冲刺 (Grade 12)</option>
-                  <option value="国际高中 (AP/A-Level)">国际高中 (AP/A-Level/IB)</option>
-                  <option value="大学/研究生/自学">大学 / 进阶考研 / 技能自学</option>
+                  <option value="初一">{uiLang === 'en' ? 'Grade 7 / Middle School 1' : '初一 / 基础建立 (Grade 7)'}</option>
+                  <option value="初二">{uiLang === 'en' ? 'Grade 8 / Middle School 2' : '初二 / 知识巩固 (Grade 8)'}</option>
+                  <option value="初三/中考">{uiLang === 'en' ? 'Grade 9 / Senior High Entrance Exam' : '初三 / 中考冲刺 (Grade 9)'}</option>
+                  <option value="高一">{uiLang === 'en' ? 'Grade 10 / High School 1' : '高一 / 学科衔接 (Grade 10)'}</option>
+                  <option value="高二">{uiLang === 'en' ? 'Grade 11 / High School 2' : '高二 / 难点突破 (Grade 11)'}</option>
+                  <option value="高三/高考">{uiLang === 'en' ? 'Grade 12 / College Entrance Exam' : '高三 / 高考冲刺 (Grade 12)'}</option>
+                  <option value="国际高中 (AP/A-Level)">{uiLang === 'en' ? 'Intl High School (AP/A-Level/IB)' : '国际高中 (AP/A-Level/IB)'}</option>
+                  <option value="大学/研究生/自学">{uiLang === 'en' ? 'University / Self-Study' : '大学 / 进阶考研 / 技能自学'}</option>
                 </select>
               </div>
 
               <div>
                 <label className="text-xs font-bold text-slate-700 block mb-1 flex items-center justify-between">
-                  <span>学期 / 进度阶段</span>
-                  <span className="text-[10px] text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded font-semibold">精准匹配考纲</span>
+                  <span>{t('semesterSelectLabel')}</span>
+                  <span className="text-[10px] text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded font-semibold">
+                    {uiLang === 'en' ? 'Aligned' : '精准匹配考纲'}
+                  </span>
                 </label>
                 <select
                   value={semester}
                   onChange={(e) => setSemester(e.target.value)}
                   className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
                 >
-                  <option value="上学期">秋季 · 上学期 (1st Semester)</option>
-                  <option value="下学期">春季 · 下学期 (2nd Semester)</option>
-                  <option value="全学年/中高考复习">全学年 / 毕业考中高考总复习</option>
+                  <option value="上学期">{uiLang === 'en' ? 'Term 1 / Fall Semester' : '秋季 · 上学期 (1st Semester)'}</option>
+                  <option value="下学期">{uiLang === 'en' ? 'Term 2 / Spring Semester' : '春季 · 下学期 (2nd Semester)'}</option>
+                  <option value="全学年/中高考复习">{uiLang === 'en' ? 'Full Year / Comprehensive Review' : '全学年 / 毕业考中高考总复习'}</option>
                 </select>
               </div>
             </div>
@@ -230,13 +234,13 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
           <div className="space-y-4">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 pb-2 flex items-center gap-1.5">
               <Globe className="w-4 h-4 text-emerald-600" />
-              地区、教材体制与目标考试
+              {t('gradeHeader')}
             </h4>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="text-xs font-bold text-slate-700 block mb-1">
-                  国家 / 地区
+                  {t('countrySelectLabel')}
                 </label>
                 <select
                   value={countryRegion}
@@ -255,7 +259,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
               <div>
                 <label className="text-xs font-bold text-slate-700 block mb-1">
-                  教材版本 / 考纲体制
+                  {t('eduSystemLabel')}
                 </label>
                 <select
                   value={educationSystem}
@@ -278,7 +282,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="text-xs font-bold text-slate-700 block mb-1">
-                  主要学习/外语方向
+                  {t('cardLangLabel')}
                 </label>
                 <select
                   value={targetLanguage}
@@ -296,13 +300,13 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
               <div>
                 <label className="text-xs font-bold text-slate-700 block mb-1">
-                  目标考试与节点
+                  {t('targetExamLabel')}
                 </label>
                 <input
                   type="text"
                   value={targetExam}
                   onChange={(e) => setTargetExam(e.target.value)}
-                  placeholder="如：2026年全国高考、中考、雅思7.0"
+                  placeholder={uiLang === 'en' ? 'e.g., College Prep, IELTS 7.0, Midterm' : '如：2026年全国高考、中考、雅思7.0'}
                   className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
@@ -313,54 +317,54 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
           <div className="space-y-4">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 pb-2 flex items-center gap-1.5">
               <Heart className="w-4 h-4 text-rose-500" />
-              人性化陪伴与每日目标
+              {t('goalHeader')}
             </h4>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="text-xs font-bold text-slate-700 block mb-1 flex items-center gap-1">
                   <Clock className="w-3.5 h-3.5 text-blue-500" />
-                  每日期望复习时长 (分钟)
+                  {t('dailyGoalLabel')}
                 </label>
                 <select
                   value={dailyGoalMinutes}
                   onChange={(e) => setDailyGoalMinutes(Number(e.target.value))}
                   className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value={15}>15 分钟 (轻量微学习)</option>
-                  <option value={30}>30 分钟 (标准高效模式)</option>
-                  <option value={45}>45 分钟 (深度提分模式)</option>
-                  <option value={60}>60 分钟 (高强冲刺模式)</option>
-                  <option value={90}>90 分钟 (学霸爆刷模式)</option>
+                  <option value={15}>15 {uiLang === 'en' ? 'Mins (Micro Study)' : '分钟 (轻量微学习)'}</option>
+                  <option value={30}>30 {uiLang === 'en' ? 'Mins (Standard Mode)' : '分钟 (标准高效模式)'}</option>
+                  <option value={45}>45 {uiLang === 'en' ? 'Mins (Deep Focus)' : '分钟 (深度提分模式)'}</option>
+                  <option value={60}>60 {uiLang === 'en' ? 'Mins (Sprint Mode)' : '分钟 (高强冲刺模式)'}</option>
+                  <option value={90}>90 {uiLang === 'en' ? 'Mins (Intensive Study)' : '分钟 (学霸爆刷模式)'}</option>
                 </select>
               </div>
 
               <div>
                 <label className="text-xs font-bold text-slate-700 block mb-1">
-                  鼓励语/元气风格偏好
+                  {t('encouragementToneLabel')}
                 </label>
                 <select
                   value={encouragementTone}
                   onChange={(e) => setEncouragementTone(e.target.value as any)}
                   className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="passionate">🔥 激情霸气型 (冲刺高分，热血沸腾)</option>
-                  <option value="gentle">🌸 温柔陪伴型 (贴心温暖，润物无声)</option>
-                  <option value="humorous">😄 幽默风趣型 (轻松解压，梗图提分)</option>
-                  <option value="academic">📖 严谨学术型 (名言金句，名师指点)</option>
+                  <option value="passionate">🔥 {uiLang === 'en' ? 'Passionate & High Score' : '激情霸气型 (冲刺高分，热血沸腾)'}</option>
+                  <option value="gentle">🌸 {uiLang === 'en' ? 'Gentle & Encouraging' : '温柔陪伴型 (贴心温暖，润物无声)'}</option>
+                  <option value="humorous">😄 {uiLang === 'en' ? 'Humorous & Fun' : '幽默风趣型 (轻松解压，梗图提分)'}</option>
+                  <option value="academic">📖 {uiLang === 'en' ? 'Academic & Rigorous' : '严谨学术型 (名言金句，名师指点)'}</option>
                 </select>
               </div>
             </div>
 
             <div>
               <label className="text-xs font-bold text-slate-700 block mb-1">
-                自订备考格言 / 座右铭
+                {t('customMottoLabel')}
               </label>
               <textarea
                 rows={2}
                 value={customMotto}
                 onChange={(e) => setCustomMotto(e.target.value)}
-                placeholder="如：星光不问赶路人，岁月不负有心人！"
+                placeholder={uiLang === 'en' ? 'e.g. Aim for the moon. Even if you miss, you\'ll land among the stars!' : '如：星光不问赶路人，岁月不负有心人！'}
                 className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -370,11 +374,11 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
           <div className="bg-gradient-to-r from-blue-50 via-slate-50 to-indigo-50 border border-blue-200/60 p-4 rounded-xl">
             <h5 className="text-xs font-bold text-blue-900 flex items-center gap-1.5 mb-2">
               <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-              适配效果实时预览
+              {uiLang === 'en' ? 'Real-time Adaptation Preview' : '适配效果实时预览'}
             </h5>
             <div className="text-xs text-slate-600 space-y-1">
-              <p>🎯 <strong className="text-slate-800">题目推荐：</strong>将自动优先推送符合【{countryRegion} · {gradeLevel} · {educationSystem}】的考点。</p>
-              <p>⚡ <strong className="text-slate-800">试卷中心：</strong>匹配【{targetExam}】的全真真题卷与 AI 组卷试题。</p>
+              <p>🎯 <strong className="text-slate-800">{uiLang === 'en' ? 'Questions & Roadmap:' : '题目推荐：'}</strong> {uiLang === 'en' ? `Automatically aligned with [${countryRegion} · ${gradeLevel} · ${educationSystem}].` : `将自动优先推送符合【${countryRegion} · ${gradeLevel} · ${educationSystem}】的考点。`}</p>
+              <p>⚡ <strong className="text-slate-800">{uiLang === 'en' ? 'Exam Center:' : '试卷中心：'}</strong> {uiLang === 'en' ? `Strictly matched with target exams for [${gradeLevel}].` : `匹配【${targetExam}】的全真真题卷与 AI 组卷试题。`}</p>
             </div>
           </div>
 
@@ -385,7 +389,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
               onClick={onClose}
               className="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm font-bold transition cursor-pointer"
             >
-              取消
+              {uiLang === 'en' ? 'Cancel' : '取消'}
             </button>
             <button
               type="submit"
@@ -394,12 +398,12 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
               {savedSuccess ? (
                 <>
                   <Check className="w-4 h-4 text-emerald-300 animate-bounce" />
-                  <span>已保存更新！</span>
+                  <span>{uiLang === 'en' ? 'Saved Successfully!' : '已保存更新！'}</span>
                 </>
               ) : (
                 <>
                   <Sparkles className="w-4 h-4" />
-                  <span>保存设置并生效</span>
+                  <span>{t('saveProfileBtn')}</span>
                 </>
               )}
             </button>

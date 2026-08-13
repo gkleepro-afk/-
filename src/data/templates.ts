@@ -484,12 +484,61 @@ export const INITIAL_PLANS: GeneratedStudyPlan[] = [
 ];
 
 export const INITIAL_TASKS: StudyTask[] = [
+  // Grade 7 / 初一 Tasks
+  {
+    id: 'task-chu1-1',
+    planId: 'plan-chu1-1',
+    title: '初一数学：有理数与数轴点的位置判定',
+    description: '复习正负数概念、相反数与数轴图解关系，练习去绝对值符号三步法。',
+    subject: '数学',
+    gradeLevel: '初一',
+    category: 'math',
+    durationMinutes: 25,
+    taskType: 'concept',
+    difficulty: 'easy',
+    dueDate: new Date().toISOString().split('T')[0],
+    completed: true,
+    completedAt: new Date().toISOString(),
+    keyPoints: ['数轴三要素', '绝对值几何意义', '相反数特征']
+  },
+  {
+    id: 'task-chu1-2',
+    planId: 'plan-chu1-1',
+    title: '初一数学：一元一次方程移项与应用演练',
+    description: '掌握含括号与分母的一元一次方程求解步骤，理解工程与行程问题等量关系。',
+    subject: '数学',
+    gradeLevel: '初一',
+    category: 'math',
+    durationMinutes: 30,
+    taskType: 'practice',
+    difficulty: 'medium',
+    dueDate: new Date().toISOString().split('T')[0],
+    completed: false,
+    keyPoints: ['移项变号', '去分母法则', '实际应用等量方程']
+  },
+  {
+    id: 'task-chu1-3',
+    title: 'Grade 7 English: Key Academic Vocab & Sentence Drill',
+    description: 'Master core vocabulary, grammar patterns, and daily conversational phrases for Grade 7.',
+    subject: '英语',
+    gradeLevel: '初一',
+    category: 'language',
+    durationMinutes: 20,
+    taskType: 'flashcard',
+    difficulty: 'easy',
+    dueDate: new Date().toISOString().split('T')[0],
+    completed: false,
+    keyPoints: ['Grammar Patterns', 'Vocabulary Flashcards', 'Listening Pronunciation']
+  },
+
+  // High School / 高中 Tasks
   {
     id: 'task-1',
     planId: 'plan-physics-1',
     title: '受力分析与牛顿第二定律深度复习',
     description: '系统梳理重力、弹力、摩擦力的受力分析步骤，练习整体法与隔离法。',
-    subject: '高中物理',
+    subject: '物理',
+    gradeLevel: '高一',
     category: 'science',
     durationMinutes: 30,
     taskType: 'concept',
@@ -504,7 +553,8 @@ export const INITIAL_TASKS: StudyTask[] = [
     planId: 'plan-physics-1',
     title: '力学公式知识卡片记忆与默写',
     description: '复习力学核心公式与适用条件（如 F=ma, f=μN）。',
-    subject: '高中物理',
+    subject: '物理',
+    gradeLevel: '高二',
     category: 'science',
     durationMinutes: 20,
     taskType: 'flashcard',

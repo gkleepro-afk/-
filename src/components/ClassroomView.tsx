@@ -26,7 +26,7 @@ import {
   Sliders
 } from 'lucide-react';
 import { ClassroomLesson, UserProfile, QuestionBankItem } from '../types';
-import { UILanguage } from '../utils/translations';
+import { UILanguage, TRANSLATIONS } from '../utils/translations';
 import { matchGradeStrict } from '../utils/gradeMatcher';
 
 interface ClassroomViewProps {
@@ -74,6 +74,8 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
   onOpenProfileModal,
   onExplainConcept,
 }) => {
+  const t = (key: keyof typeof TRANSLATIONS) => TRANSLATIONS[key][uiLang] || TRANSLATIONS[key].bilingual;
+
   const currentGrade = userProfile?.gradeLevel || '高一';
   const currentSemester = userProfile?.semester || '上学期';
   const currentRegion = userProfile?.countryRegion || '中国大陆';
@@ -376,7 +378,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             <div className="flex items-center gap-3">
               <h2 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
                 <GraduationCap className="w-7 h-7 text-blue-600" />
-                AI 模拟课堂名师讲堂
+                {t('classroomTitle')}
               </h2>
               <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 border border-blue-100 flex items-center gap-1">
                 <Sparkles className="w-3.5 h-3.5" />
@@ -384,7 +386,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
               </span>
             </div>
             <p className="text-sm text-slate-500 mt-1">
-              模拟名师原声授课：先细致听讲 ➔ 导师主动问询听懂情况 ➔ 课后针对性试题巩固
+              {t('classroomSubtitle')}
             </p>
           </div>
 
@@ -394,7 +396,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
               className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-xs transition-all cursor-pointer"
             >
               <Sparkles className="w-4 h-4" />
-              <span>AI 定制年级专属讲堂</span>
+              <span>{t('customClassroomBtn')}</span>
             </button>
           </div>
         </div>
@@ -409,13 +411,15 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             </div>
             <div>
               <p className="text-xs font-semibold text-blue-200 uppercase tracking-wider">
-                考纲与学情精准对齐
+                {t('gradeLockBanner')}
               </p>
               <p className="text-sm font-bold text-white mt-0.5">
-                当前考纲：【{currentGrade} · {currentSemester}】· {currentRegion} ({currentSystem})
+                {uiLang === 'en'
+                  ? `Syllabus: 【${currentGrade} · ${currentSemester}】· ${currentRegion} (${currentSystem})`
+                  : `当前考纲：【${currentGrade} · ${currentSemester}】· ${currentRegion} (${currentSystem})`}
               </p>
               <p className="text-[11px] text-slate-300 mt-0.5">
-                已启用全系统年级锁：绝对不推荐跨年级超纲或无关年级的学习内容。
+                {t('gradeLockDesc')}
               </p>
             </div>
           </div>
@@ -425,7 +429,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-lg border border-white/20 transition shrink-0 cursor-pointer"
           >
             <Settings className="w-3.5 h-3.5" />
-            <span>调整我的学情档案</span>
+            <span>{t('adjustGradeBtn')}</span>
           </button>
         </div>
 
@@ -435,7 +439,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             <div className="flex items-center gap-2">
               <BookOpen className="w-4 h-4 text-blue-600" />
               <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                名师讲堂课程列表
+                {t('lessonListTitle')}
               </span>
             </div>
 

@@ -171,24 +171,24 @@ export const QuestionBankView: React.FC<QuestionBankViewProps> = ({
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-3">
-              <h2 className="text-2xl font-bold text-slate-900 tracking-tight">初高中全科智能题库</h2>
+              <h2 className="text-2xl font-bold text-slate-900 tracking-tight">{t('qbTitle')}</h2>
               <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 border border-blue-100 flex items-center gap-1">
                 <BookOpen className="w-3.5 h-3.5" />
                 K-12 Exam Bank
               </span>
             </div>
             <p className="text-sm text-slate-500 mt-1">
-              涵盖中考/高考数理化生英等核心考点，内置交互式刷题、考点解题推导与智能错题本。
+              {t('qbSubtitle')}
             </p>
           </div>
 
           <div className="flex items-center gap-3">
             <button
               onClick={() => setShowGeneratorModal(true)}
-              className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-sm transition-all"
+              className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-sm transition-all cursor-pointer"
             >
               <Sparkles className="w-4 h-4" />
-              <span>AI 智能生成变式考题</span>
+              <span>{t('aiGenVariantBtn')}</span>
             </button>
           </div>
         </div>
@@ -208,7 +208,7 @@ export const QuestionBankView: React.FC<QuestionBankViewProps> = ({
               }`}
             >
               <Layers className="w-4 h-4 text-blue-600" />
-              <span>全部题库 ({questions.length})</span>
+              <span>{t('allQuestionBankTab')} ({questions.length})</span>
             </button>
 
             <button
@@ -220,7 +220,7 @@ export const QuestionBankView: React.FC<QuestionBankViewProps> = ({
               }`}
             >
               <Bookmark className="w-4 h-4 text-amber-500 fill-amber-500/20" />
-              <span>错题本 ({mistakesCount})</span>
+              <span>{t('mistakesTab')} ({mistakesCount})</span>
             </button>
           </div>
 
@@ -231,7 +231,7 @@ export const QuestionBankView: React.FC<QuestionBankViewProps> = ({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="搜索题目、考点知识点或逻辑关键词..."
+              placeholder={t('searchPlaceholder')}
               className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2 text-xs text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-blue-500/20"
             />
           </div>
@@ -241,101 +241,101 @@ export const QuestionBankView: React.FC<QuestionBankViewProps> = ({
         <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4">
           <div className="flex items-center gap-2 text-xs font-bold text-slate-700 uppercase tracking-wider">
             <Filter className="w-3.5 h-3.5 text-blue-600" />
-            <span>精细多维筛选</span>
+            <span>{uiLang === 'en' ? 'Multidimensional Filters' : '精细多维筛选'}</span>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
             {/* Stage */}
             <div>
-              <label className="text-[11px] font-bold text-slate-400 block mb-1">学段</label>
+              <label className="text-[11px] font-bold text-slate-400 block mb-1">{t('stageFilter')}</label>
               <select
                 value={selectedStage}
                 onChange={(e) => setSelectedStage(e.target.value)}
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 font-medium"
               >
-                <option value="all">全部学段</option>
-                <option value="初中">初中 (中考)</option>
-                <option value="高中">高中 (高考)</option>
+                <option value="all">{uiLang === 'en' ? 'All Stages' : '全部学段'}</option>
+                <option value="初中">{uiLang === 'en' ? 'Middle School' : '初中 (中考)'}</option>
+                <option value="高中">{uiLang === 'en' ? 'High School' : '高中 (高考)'}</option>
               </select>
             </div>
 
             {/* Grade */}
             <div>
-              <label className="text-[11px] font-bold text-slate-400 block mb-1">年级</label>
+              <label className="text-[11px] font-bold text-slate-400 block mb-1">{t('gradeFilter')}</label>
               <select
                 value={selectedGrade}
                 onChange={(e) => setSelectedGrade(e.target.value)}
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 font-medium"
               >
-                <option value="all">全部年级</option>
-                <option value="初一">初一</option>
-                <option value="初二">初二</option>
-                <option value="初三/中考">初三 / 中考</option>
-                <option value="高一">高一</option>
-                <option value="高二">高二</option>
-                <option value="高三/高考">高三 / 高考</option>
+                <option value="all">{uiLang === 'en' ? 'All Grades' : '全部年级'}</option>
+                <option value="初一">{uiLang === 'en' ? 'Grade 7' : '初一'}</option>
+                <option value="初二">{uiLang === 'en' ? 'Grade 8' : '初二'}</option>
+                <option value="初三/中考">{uiLang === 'en' ? 'Grade 9 / Senior Exam' : '初三 / 中考'}</option>
+                <option value="高一">{uiLang === 'en' ? 'Grade 10' : '高一'}</option>
+                <option value="高二">{uiLang === 'en' ? 'Grade 11' : '高二'}</option>
+                <option value="高三/高考">{uiLang === 'en' ? 'Grade 12 / College Entrance' : '高三 / 高考'}</option>
               </select>
             </div>
 
             {/* Semester */}
             <div>
-              <label className="text-[11px] font-bold text-slate-400 block mb-1">学期进度</label>
+              <label className="text-[11px] font-bold text-slate-400 block mb-1">{t('semesterFilter')}</label>
               <select
                 value={selectedSemester}
                 onChange={(e) => setSelectedSemester(e.target.value)}
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 font-medium"
               >
-                <option value="all">全部学期</option>
-                <option value="上学期">上学期 (秋季)</option>
-                <option value="下学期">下学期 (春季)</option>
+                <option value="all">{uiLang === 'en' ? 'All Semesters' : '全部学期'}</option>
+                <option value="上学期">{uiLang === 'en' ? '1st Semester (Fall)' : '上学期 (秋季)'}</option>
+                <option value="下学期">{uiLang === 'en' ? '2nd Semester (Spring)' : '下学期 (春季)'}</option>
               </select>
             </div>
 
             {/* Subject */}
             <div>
-              <label className="text-[11px] font-bold text-slate-400 block mb-1">学科</label>
+              <label className="text-[11px] font-bold text-slate-400 block mb-1">{t('subjectFilter')}</label>
               <select
                 value={selectedSubject}
                 onChange={(e) => setSelectedSubject(e.target.value)}
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 font-medium"
               >
-                <option value="all">全部学科</option>
-                <option value="数学">数学</option>
-                <option value="物理">物理</option>
-                <option value="化学">化学</option>
-                <option value="生物">生物</option>
-                <option value="英语">英语</option>
-                <option value="语文">语文</option>
+                <option value="all">{uiLang === 'en' ? 'All Subjects' : '全部学科'}</option>
+                <option value="数学">{uiLang === 'en' ? 'Math' : '数学'}</option>
+                <option value="物理">{uiLang === 'en' ? 'Physics' : '物理'}</option>
+                <option value="化学">{uiLang === 'en' ? 'Chemistry' : '化学'}</option>
+                <option value="生物">{uiLang === 'en' ? 'Biology' : '生物'}</option>
+                <option value="英语">{uiLang === 'en' ? 'English' : '英语'}</option>
+                <option value="语文">{uiLang === 'en' ? 'Chinese' : '语文'}</option>
               </select>
             </div>
 
             {/* Type */}
             <div>
-              <label className="text-[11px] font-bold text-slate-400 block mb-1">题型</label>
+              <label className="text-[11px] font-bold text-slate-400 block mb-1">{t('typeFilter')}</label>
               <select
                 value={selectedType}
                 onChange={(e) => setSelectedType(e.target.value)}
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 font-medium"
               >
-                <option value="all">全部题型</option>
-                <option value="choice">单项选择题</option>
-                <option value="fill">填空题</option>
-                <option value="solution">解答/计算推导题</option>
+                <option value="all">{uiLang === 'en' ? 'All Types' : '全部题型'}</option>
+                <option value="choice">{t('choiceType')}</option>
+                <option value="fill">{t('fillType')}</option>
+                <option value="solution">{t('solutionType')}</option>
               </select>
             </div>
 
             {/* Difficulty */}
             <div>
-              <label className="text-[11px] font-bold text-slate-400 block mb-1">难度等级</label>
+              <label className="text-[11px] font-bold text-slate-400 block mb-1">{t('difficultyFilter')}</label>
               <select
                 value={selectedDifficulty}
                 onChange={(e) => setSelectedDifficulty(e.target.value)}
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-800 font-medium"
               >
-                <option value="all">全部难度</option>
-                <option value="easy">基础巩固 (Easy)</option>
-                <option value="medium">进阶中等 (Medium)</option>
-                <option value="hard">压轴拔高 (Hard)</option>
+                <option value="all">{uiLang === 'en' ? 'All Difficulties' : '全部难度'}</option>
+                <option value="easy">{uiLang === 'en' ? 'Foundation (Easy)' : '基础巩固 (Easy)'}</option>
+                <option value="medium">{uiLang === 'en' ? 'Intermediate (Medium)' : '进阶中等 (Medium)'}</option>
+                <option value="hard">{uiLang === 'en' ? 'Challenging (Hard)' : '压轴拔高 (Hard)'}</option>
               </select>
             </div>
           </div>
