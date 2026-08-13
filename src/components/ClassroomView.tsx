@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import Markdown from 'react-markdown';
 import {
   GraduationCap,
   Volume2,
@@ -23,7 +24,8 @@ import {
   Flame,
   Check,
   Radio,
-  Sliders
+  Sliders,
+  CheckSquare
 } from 'lucide-react';
 import { ClassroomLesson, UserProfile, QuestionBankItem } from '../types';
 import { UILanguage, TRANSLATIONS } from '../utils/translations';
@@ -40,12 +42,37 @@ interface ClassroomViewProps {
 }
 
 // Sanitizes formula notation, math symbols, and markdown for natural speech synthesis
-const cleanTextForSpeech = (text: string): string => {
+const cleanTextForSpeech = (text: string, lang?: string): string => {
   if (!text) return '';
-  return text
-    .replace(/\*\*/g, '')
-    .replace(/#/g, '')
-    .replace(/`/g, '')
+  const isEn = lang?.startsWith('en');
+  let cleaned = text
+    .replace(/#+\s*/g, '')
+    .replace(/\*\*(.*?)\*\*/g, '$1')
+    .replace(/\*(.*?)\*/g, '$1')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/^-\s+/gm, '')
+    .replace(/^\d+\.\s+/gm, '');
+
+  if (isEn) {
+    return cleaned
+      .replace(/m\/s²/gi, 'meters per second squared')
+      .replace(/m\/s/gi, 'meters per second')
+      .replace(/kg\*m\/s/gi, 'kilogram meters per second')
+      .replace(/\^2/g, ' squared')
+      .replace(/\^3/g, ' cubed')
+      .replace(/->|→/g, ' yields ')
+      .replace(/θ/g, 'theta')
+      .replace(/α/g, 'alpha')
+      .replace(/β/g, 'beta')
+      .replace(/Δ/g, 'delta')
+      .replace(/=/g, ' equals ')
+      .replace(/\+/g, ' plus ')
+      .replace(/×/g, ' times ')
+      .replace(/÷/g, ' divided by ')
+      .trim();
+  }
+
+  return cleaned
     .replace(/m\/s²/gi, '米每二次方秒')
     .replace(/m\/s/gi, '米每秒')
     .replace(/kg\*m\/s/gi, '千克米每秒')
@@ -82,6 +109,8 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
     return zh;
   };
 
+  const getLectureText = (zh: string) => zh;
+
   const currentGrade = userProfile?.gradeLevel || '高一';
   const currentSemester = userProfile?.semester || '上学期';
   const currentRegion = userProfile?.countryRegion || '中国大陆';
@@ -110,17 +139,23 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
   const [submittedQuiz, setSubmittedQuiz] = useState(false);
   const [savedQuestions, setSavedQuestions] = useState<Record<number, boolean>>({});
 
+  // Section Checkpoint Answers: sectionIdx -> selectedOption
+  const [sectionCheckpointAnswers, setSectionCheckpointAnswers] = useState<Record<number, number>>({});
+  const [sectionCheckpointSubmitted, setSectionCheckpointSubmitted] = useState<Record<number, boolean>>({});
+  const [savedCheckpointMistakes, setSavedCheckpointMistakes] = useState<Record<number, boolean>>({});
+
   // Audio Speech Synthesis state
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [speechRate, setSpeechRate] = useState<number>(1.0);
   const [speechPitch, setSpeechPitch] = useState<number>(1.0);
+  const [allVoices, setAllVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
   const [selectedVoiceURI, setSelectedVoiceURI] = useState<string>('');
   const [activeSectionIdx, setActiveSectionIdx] = useState<number | null>(null);
 
   // Queue ref for section-by-section lecture playback
-  const speechQueueRef = useRef<Array<{ text: string; sectionIdx: number }>>([]);
+  const speechQueueRef = useRef<Array<{ text: string; sectionIdx: number; lang?: string }>>([]);
   const sectionRefs = useRef<Record<number, HTMLDivElement | null>>({});
 
   // AI Generator Modal
@@ -129,28 +164,40 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
   const [genTopic, setGenTopic] = useState('牛顿第二定律综合应用');
   const [isGenerating, setIsGenerating] = useState(false);
 
-  // Filter lessons strictly by user profile grade
-  const filteredLessons = lessons.filter((l) =>
+  // Filter lessons strictly by user profile grade, but allow viewing all
+  const matchedGradeLessons = lessons.filter((l) =>
     matchGradeStrict(l.gradeLevel, currentGrade)
   );
 
+  const filteredLessons = filterMode === 'matched'
+    ? (matchedGradeLessons.length > 0 ? matchedGradeLessons : lessons)
+    : lessons;
+
   const activeLesson =
     filteredLessons.find((l) => l.id === selectedLessonId) ||
+    lessons.find((l) => l.id === selectedLessonId) ||
     filteredLessons[0] ||
+    lessons[0] ||
     null;
+
+  // Sync available Chinese voices
+  const refreshVoices = (voicesList: SpeechSynthesisVoice[]) => {
+    const chineseVoices = voicesList.filter((v) => v.lang.startsWith('zh') || v.lang.startsWith('cn'));
+    const finalVoices = chineseVoices.length > 0 ? chineseVoices : voicesList;
+    setAvailableVoices(finalVoices);
+
+    if (finalVoices.length > 0 && !selectedVoiceURI) {
+      setSelectedVoiceURI(finalVoices[0].voiceURI);
+    }
+  };
 
   // Speech Synthesis Voices Setup
   useEffect(() => {
     const updateVoices = () => {
       if ('speechSynthesis' in window) {
         const voices = window.speechSynthesis.getVoices();
-        const zhVoices = voices.filter(
-          (v) => v.lang.startsWith('zh') || v.lang.startsWith('cn')
-        );
-        setAvailableVoices(zhVoices.length > 0 ? zhVoices : voices);
-        if (zhVoices.length > 0 && !selectedVoiceURI) {
-          setSelectedVoiceURI(zhVoices[0].voiceURI);
-        }
+        setAllVoices(voices);
+        refreshVoices(voices);
       }
     };
 
@@ -193,8 +240,9 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
       });
     }
 
-    const utterance = new SpeechSynthesisUtterance(cleanTextForSpeech(currentItem.text));
-    utterance.lang = uiLang === 'en' ? 'en-US' : 'zh-CN';
+    const targetLang = currentItem.lang || 'zh-CN';
+    const utterance = new SpeechSynthesisUtterance(cleanTextForSpeech(currentItem.text, targetLang));
+    utterance.lang = targetLang;
     utterance.rate = speechRate;
     utterance.pitch = speechPitch;
 
@@ -227,25 +275,27 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
     setIsPaused(false);
   };
 
-  // Start Full Speech (Sequential Sections)
+  // Start Full Speech (Sequential Sections in Chinese)
   const handleStartSpeech = () => {
     if (!('speechSynthesis' in window) || !activeLesson) return;
 
     window.speechSynthesis.cancel();
 
-    // Build speech queue
-    const queue: Array<{ text: string; sectionIdx: number }> = [
+    const queue: Array<{ text: string; sectionIdx: number; lang?: string }> = [
       {
-        text: `同学们好！我是${activeLesson.teacherName}。今天为您讲授的是高分考点《${activeLesson.lectureTitle}》。`,
+        text: `同学们好！我是${activeLesson.teacherName}。今天为您讲授的是重点考点《${activeLesson.lectureTitle}》。`,
         sectionIdx: -1,
+        lang: 'zh-CN',
       },
       ...activeLesson.lectureSections.map((sec, idx) => ({
-        text: `${sec.sectionTitle}。${sec.content}。核心结论与记忆口诀：${sec.keyTakeaway}`,
+        text: `${sec.sectionTitle}。${sec.content}。核心结论与记忆要点：${sec.keyTakeaway}`,
         sectionIdx: idx,
+        lang: 'zh-CN',
       })),
       {
         text: activeLesson.checkQuestionPrompt || `同学们，以上核心考点你听懂了吗？`,
         sectionIdx: -2,
+        lang: 'zh-CN',
       },
     ];
 
@@ -254,11 +304,12 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
   };
 
   // Speak single text snippet (e.g. single section or teacher answer)
-  const handleSpeakSnippet = (text: string, sectionIdx: number) => {
+  const handleSpeakSnippet = (text: string, sectionIdx: number, customLang?: string) => {
     if (!('speechSynthesis' in window)) return;
 
     window.speechSynthesis.cancel();
-    speechQueueRef.current = [{ text, sectionIdx }];
+    const lang = customLang || 'zh-CN';
+    speechQueueRef.current = [{ text, sectionIdx, lang }];
     playNextInQueue();
   };
 
@@ -301,6 +352,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
           studentQuestion: studentQuestion.trim(),
           gradeLevel: currentGrade,
           semester: currentSemester,
+          languageMode: 'Chinese',
         }),
       });
 
@@ -308,8 +360,8 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
       if (data.success && data.teacherAnswer) {
         setTeacherAnswer(data.teacherAnswer);
         setUnderstandingStatus('asked_question');
-        // Auto-speak teacher answer
-        handleSpeakSnippet(`老师解答如下：${data.teacherAnswer}`, -3);
+        // Auto-speak teacher answer in Chinese
+        handleSpeakSnippet(`老师解答如下：${data.teacherAnswer}`, -3, 'zh-CN');
       }
     } catch (err) {
       console.error(err);
@@ -450,16 +502,30 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold rounded-lg flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-emerald-600" />
-                <span>
-                  {uiLang === 'en'
-                    ? `Grade Lock: Grade 【${currentGrade}】 Lessons (${filteredLessons.length})`
-                    : uiLang === 'bilingual'
-                    ? `年级锁：【${currentGrade}】讲堂 (${filteredLessons.length}) / Grade Lock`
-                    : `全屏年级锁：仅呈现【${currentGrade}】讲堂 (${filteredLessons.length} 门)`}
-                </span>
-              </span>
+              <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-xs">
+                <button
+                  type="button"
+                  onClick={() => setFilterMode('matched')}
+                  className={`px-2.5 py-1 rounded-md font-medium transition-all ${
+                    filterMode === 'matched'
+                      ? 'bg-white text-blue-700 shadow-xs font-bold'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  {uiLang === 'en' ? `Grade: ${currentGrade}` : `【${currentGrade}】(${matchedGradeLessons.length})`}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setFilterMode('all')}
+                  className={`px-2.5 py-1 rounded-md font-medium transition-all ${
+                    filterMode === 'all'
+                      ? 'bg-white text-blue-700 shadow-xs font-bold'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  {uiLang === 'en' ? `All (${lessons.length})` : `全部课程 (${lessons.length})`}
+                </button>
+              </div>
             </div>
           </div>
 
@@ -522,7 +588,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
               {/* Lecture Top Bar */}
               <div className="bg-slate-900 text-white p-6 sm:p-8 space-y-4">
                 <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <span className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-lg text-xs font-bold border border-blue-500/30">
                       {activeLesson.subject}
                     </span>
@@ -530,7 +596,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                       {activeLesson.gradeLevel} · {activeLesson.semester || '上学期'}
                     </span>
                     <span className="px-3 py-1 bg-amber-500/20 text-amber-300 rounded-lg text-xs font-bold border border-amber-500/30">
-                      👨‍🏫 {getText(activeLesson.teacherName, activeLesson.teacherNameEn)}
+                      👨‍🏫 {activeLesson.teacherName}
                     </span>
                   </div>
 
@@ -610,9 +676,21 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                   </div>
                 </div>
 
-                <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-3">
-                  {getText(activeLesson.lectureTitle, activeLesson.lectureTitleEn)}
-                </h3>
+                <div className="space-y-2">
+                  <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-3">
+                    {activeLesson.lectureTitle}
+                  </h3>
+
+                  {/* Lesson Overall Objective */}
+                  {activeLesson.objective && (
+                    <div className="bg-slate-800/80 border border-slate-700/80 rounded-xl px-3.5 py-2 text-xs text-blue-200 flex items-center gap-2">
+                      <span className="font-bold text-amber-400 shrink-0">🎯 本课目标：</span>
+                      <span className="text-slate-200">
+                        {activeLesson.objective}
+                      </span>
+                    </div>
+                  )}
+                </div>
 
                 {isSpeaking && (
                   <div className="flex items-center justify-between text-xs text-blue-300 font-medium bg-blue-950/80 p-3 rounded-xl border border-blue-800/80 animate-in fade-in duration-150">
@@ -620,22 +698,16 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                       <span className="w-2.5 h-2.5 rounded-full bg-blue-400 animate-ping" />
                       <span>
                         {activeSectionIdx === -1
-                          ? uiLang === 'en'
-                            ? '🎙️ Teacher intro & greeting...'
-                            : '🎙️ 名师开场问候与课题引入中...'
+                          ? '🎙️ 名师开场问候与课题引入中...'
                           : activeSectionIdx !== null && activeSectionIdx >= 0
-                          ? uiLang === 'en'
-                            ? `🎙️ Teacher presenting Section ${activeSectionIdx + 1}...`
-                            : `🎙️ 名师正在精讲第 ${activeSectionIdx + 1} 节，请结合屏幕文本听讲...`
-                          : uiLang === 'en'
-                          ? '🎙️ Interactive Q&A lecture...'
+                          ? `🎙️ 名师正在精讲第 ${activeSectionIdx + 1} 节，请结合屏幕板书听讲...`
                           : '🎙️ 正在进行课堂互动问询讲解...'}
                       </span>
                     </div>
 
                     <div className="flex items-center gap-1 text-[10px] text-blue-200">
                       <Radio className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
-                      <span>{uiLang === 'en' ? 'Audio playing' : '原声分段播放中'}</span>
+                      <span>原声板书同步授课中</span>
                     </div>
                   </div>
                 )}
@@ -645,15 +717,19 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
               <div className="p-6 sm:p-8 space-y-8">
                 {activeLesson.lectureSections.map((sec, idx) => {
                   const isCurrentSpeaking = activeSectionIdx === idx;
-                  const secTitle = getText(sec.sectionTitle, sec.sectionTitleEn);
-                  const secContent = getText(sec.content, sec.contentEn);
-                  const secTakeaway = getText(sec.keyTakeaway, sec.keyTakeawayEn);
+                  const checkpoint = sec.checkpoint;
+
+                  const selectedCpOpt = sectionCheckpointAnswers[idx];
+                  const isCpSubmitted = sectionCheckpointSubmitted[idx];
+                  const isCpCorrect = checkpoint && selectedCpOpt === checkpoint.correctIndex;
 
                   return (
                     <div
                       key={idx}
-                      ref={(el) => (sectionRefs.current[idx] = el)}
-                      className={`space-y-3 p-5 rounded-2xl transition-all duration-300 border ${
+                      ref={(el) => {
+                        sectionRefs.current[idx] = el;
+                      }}
+                      className={`space-y-4 p-5 sm:p-6 rounded-2xl transition-all duration-300 border ${
                         isCurrentSpeaking
                           ? 'bg-blue-50/70 border-blue-400 shadow-md ring-2 ring-blue-400/50 scale-[1.01]'
                           : 'bg-white border-slate-100 hover:border-slate-200'
@@ -670,9 +746,11 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                           >
                             {idx + 1}
                           </span>
-                          <h4 className="text-base font-bold text-slate-900">
-                            {secTitle}
-                          </h4>
+                          <div>
+                            <h4 className="text-base font-bold text-slate-900">
+                              {sec.sectionTitle}
+                            </h4>
+                          </div>
                         </div>
 
                         <div className="flex items-center gap-2">
@@ -684,12 +762,10 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                           )}
 
                           <button
-                            onClick={() =>
-                              handleSpeakSnippet(
-                                `${secTitle}。${secContent}。${t('keyTakeawayHeader')}${secTakeaway}`,
-                                idx
-                              )
-                            }
+                            onClick={() => {
+                              const snippetText = `${sec.sectionTitle}。${sec.content}。${t('keyTakeawayHeader')}${sec.keyTakeaway}`;
+                              handleSpeakSnippet(snippetText, idx, 'zh-CN');
+                            }}
                             className="text-xs font-bold text-slate-600 hover:text-blue-600 bg-slate-100 hover:bg-blue-50 px-3 py-1.5 rounded-lg border border-slate-200 transition flex items-center gap-1 cursor-pointer"
                             title="Read section"
                           >
@@ -699,21 +775,180 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                         </div>
                       </div>
 
-                      <div className="text-slate-700 text-sm leading-relaxed whitespace-pre-line pl-1 sm:pl-9">
-                        {secContent}
+                      {/* Section Objective */}
+                      {sec.objective && (
+                        <div className="sm:ml-9 px-3.5 py-1.5 bg-blue-50/80 border border-blue-100 rounded-xl text-xs text-blue-900 font-medium flex items-center gap-2">
+                          <span className="font-bold text-blue-600">🎯 本节目标：</span>
+                          <span>{sec.objective}</span>
+                        </div>
+                      )}
+
+                      {/* Markdown Formatted Content */}
+                      <div className="pl-1 sm:ml-9">
+                        <div className="markdown-body text-slate-700 text-sm leading-relaxed">
+                          <Markdown>{sec.content}</Markdown>
+                        </div>
                       </div>
 
+                      {/* Key Takeaway & Formula */}
                       <div className="sm:ml-9 bg-amber-50 border border-amber-200/80 rounded-xl p-3.5 flex items-start gap-3">
                         <Lightbulb className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-                        <div>
+                        <div className="w-full">
                           <span className="text-xs font-bold text-amber-800 uppercase tracking-wider block">
                             {t('keyTakeawayHeader')}
                           </span>
                           <p className="text-xs text-amber-900 font-medium mt-0.5">
-                            {secTakeaway}
+                            {sec.keyTakeaway}
                           </p>
                         </div>
                       </div>
+
+                      {/* Interactive Section Checkpoint (随堂小试) */}
+                      {checkpoint && (
+                        <div className="sm:ml-9 bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50/30 border border-blue-200/70 rounded-2xl p-4 sm:p-5 space-y-3.5">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <span className="px-2.5 py-0.5 bg-blue-600 text-white rounded-lg text-[11px] font-bold flex items-center gap-1 shadow-2xs">
+                                ⚡ Checkpoint {idx + 1}
+                              </span>
+                              <span className="text-xs font-bold text-slate-800">
+                                本节随堂小试 (即刻自测)
+                              </span>
+                            </div>
+
+                            <button
+                              onClick={() => {
+                                handleSpeakSnippet(
+                                  `随堂小测试题：${checkpoint.question}`,
+                                  idx,
+                                  'zh-CN'
+                                );
+                              }}
+                              className="text-[11px] font-bold text-blue-600 hover:text-blue-700 bg-white px-2.5 py-1 rounded-lg border border-slate-200 shadow-2xs transition flex items-center gap-1 cursor-pointer"
+                              title="Read checkpoint"
+                            >
+                              <Volume2 className="w-3.5 h-3.5" />
+                              <span>朗读题目</span>
+                            </button>
+                          </div>
+
+                          {/* Question Text */}
+                          <div className="text-xs sm:text-sm font-bold text-slate-900 leading-snug">
+                            {checkpoint.question}
+                          </div>
+
+                          {/* Options */}
+                          {checkpoint.options && checkpoint.options.length > 0 && (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                              {checkpoint.options.map((opt, optIdx) => {
+                                const isSelected = selectedCpOpt === optIdx;
+                                let btnStyle =
+                                  'bg-white text-slate-700 border-slate-200 hover:bg-blue-50/50 hover:border-blue-300';
+
+                                if (isCpSubmitted) {
+                                  if (optIdx === checkpoint.correctIndex) {
+                                    btnStyle = 'bg-emerald-500 text-white border-emerald-600 font-bold shadow-xs';
+                                  } else if (isSelected && !isCpCorrect) {
+                                    btnStyle = 'bg-red-500 text-white border-red-600 font-bold shadow-xs';
+                                  }
+                                } else if (isSelected) {
+                                  btnStyle = 'bg-blue-600 text-white border-blue-600 font-bold shadow-xs';
+                                }
+
+                                return (
+                                  <button
+                                    key={optIdx}
+                                    onClick={() => {
+                                      if (!isCpSubmitted) {
+                                        setSectionCheckpointAnswers((prev) => ({
+                                          ...prev,
+                                          [idx]: optIdx,
+                                        }));
+                                        // Auto-submit for instant interactive feedback
+                                        setSectionCheckpointSubmitted((prev) => ({
+                                          ...prev,
+                                          [idx]: true,
+                                        }));
+                                      }
+                                    }}
+                                    className={`p-3 rounded-xl border text-xs text-left transition flex items-center justify-between cursor-pointer ${btnStyle}`}
+                                  >
+                                    <span>{opt}</span>
+                                    {isCpSubmitted && optIdx === checkpoint.correctIndex && (
+                                      <CheckCircle2 className="w-4 h-4 text-white shrink-0 ml-1.5" />
+                                    )}
+                                    {isCpSubmitted && isSelected && !isCpCorrect && (
+                                      <XCircle className="w-4 h-4 text-white shrink-0 ml-1.5" />
+                                    )}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          )}
+
+                          {/* Checkpoint Explanation & Actions */}
+                          {isCpSubmitted && (
+                            <div className="pt-2.5 border-t border-slate-200/80 space-y-2 animate-in fade-in duration-150">
+                              <div className="flex items-center justify-between">
+                                <span
+                                  className={`text-xs font-bold flex items-center gap-1.5 ${
+                                    isCpCorrect ? 'text-emerald-700' : 'text-amber-700'
+                                  }`}
+                                >
+                                  {isCpCorrect ? (
+                                    <>
+                                      <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                                      <span>太棒了！完全答对，本节核心要点已掌握！</span>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <HelpCircle className="w-4 h-4 text-amber-600" />
+                                      <span>答错了别灰心，点击查看名师解题关键：</span>
+                                    </>
+                                  )}
+                                </span>
+
+                                <div className="flex items-center gap-2">
+                                  <button
+                                    onClick={() => {
+                                      handleSpeakSnippet(
+                                        `解析：${checkpoint.explanation}`,
+                                        idx,
+                                        'zh-CN'
+                                      );
+                                    }}
+                                    className="text-[11px] font-bold text-blue-700 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-2 py-1 rounded-lg border border-blue-200 transition cursor-pointer flex items-center gap-1"
+                                  >
+                                    <Volume2 className="w-3 h-3" />
+                                    <span>朗读解析</span>
+                                  </button>
+
+                                  <button
+                                    onClick={() => {
+                                      setSectionCheckpointSubmitted((prev) => ({ ...prev, [idx]: false }));
+                                      setSectionCheckpointAnswers((prev) => {
+                                        const next = { ...prev };
+                                        delete next[idx];
+                                        return next;
+                                      });
+                                    }}
+                                    className="text-[11px] font-bold text-slate-600 hover:text-slate-800 bg-white px-2 py-1 rounded-lg border border-slate-200 transition cursor-pointer"
+                                  >
+                                    重做
+                                  </button>
+                                </div>
+                              </div>
+
+                              <div className="bg-white/90 p-3 rounded-xl border border-slate-200/80 text-xs text-slate-700 leading-relaxed font-medium">
+                                <span className="font-bold text-slate-900 block mb-0.5">
+                                  💡 即时解析：
+                                </span>
+                                {checkpoint.explanation}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
                   );
                 })}

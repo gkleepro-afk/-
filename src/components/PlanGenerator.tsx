@@ -46,6 +46,12 @@ export const PlanGenerator: React.FC<PlanGeneratorProps> = ({
   // Preset suggestions
   const presetTemplates = [
     {
+      subject: uiLang === 'en' ? 'Grade 7 English: Grammar & Daily Dialogues' : '七年级英语：一般现在时与日常交际',
+      grade: uiLang === 'en' ? 'Grade 7 / Junior 1' : '初一',
+      goal: uiLang === 'en' ? 'Master Simple Present, 3rd Person Singular, Pronouns & There-be sentences' : '掌握一般现在时动词三单规律、人称代词体系与 There be 句型及日常交际表达',
+      lang: 'zh',
+    },
+    {
       subject: uiLang === 'en' ? 'High School Physics: Mechanics' : '高中物理：力学与动量',
       grade: uiLang === 'en' ? 'Grade 11 / High School' : '高中二年级',
       goal: uiLang === 'en' ? 'Master Momentum Conservation & Newton\'s Second Law' : '重点攻克动量守恒定理与牛顿第二定律综合题型',

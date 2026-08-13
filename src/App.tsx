@@ -453,6 +453,7 @@ export default function App() {
       {activeConceptTerm && (
         <ConceptModal
           term={activeConceptTerm}
+          uiLang={uiLang}
           onClose={() => setActiveConceptTerm(null)}
         />
       )}

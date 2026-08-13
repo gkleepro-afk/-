@@ -15,6 +15,37 @@ const KEYS = {
   CLASSROOM_LESSONS: 'zhixue_classroom_lessons_v1',
 };
 
+const mergeById = <T extends { id: string }>(initial: T[], stored: T[]): T[] => {
+  if (!stored || !Array.isArray(stored) || stored.length === 0) return initial;
+  const storedMap = new Map<string, T>();
+  stored.forEach(item => {
+    if (item && item.id) storedMap.set(item.id, item);
+  });
+  
+  // Start with all initial items (overwritten by stored version if existing)
+  const result: T[] = [];
+  const handledIds = new Set<string>();
+
+  initial.forEach(initItem => {
+    if (storedMap.has(initItem.id)) {
+      result.push(storedMap.get(initItem.id)!);
+    } else {
+      result.push(initItem);
+    }
+    handledIds.add(initItem.id);
+  });
+
+  // Then add any user-created items that were not in initial
+  stored.forEach(item => {
+    if (item && item.id && !handledIds.has(item.id)) {
+      result.push(item);
+      handledIds.add(item.id);
+    }
+  });
+
+  return result;
+};
+
 export const getStoredUserProfile = (): UserProfile => {
   try {
     const raw = localStorage.getItem(KEYS.USER_PROFILE);
@@ -39,7 +70,7 @@ export const saveUserProfile = (profile: UserProfile) => {
 export const getStoredExamPapers = (): ExamPaperItem[] => {
   try {
     const raw = localStorage.getItem(KEYS.EXAM_PAPERS);
-    return raw ? JSON.parse(raw) : INITIAL_EXAM_PAPERS;
+    return raw ? mergeById(INITIAL_EXAM_PAPERS, JSON.parse(raw)) : INITIAL_EXAM_PAPERS;
   } catch {
     return INITIAL_EXAM_PAPERS;
   }
@@ -66,7 +97,7 @@ export const saveExamSubmissions = (submissions: ExamSubmission[]) => {
 export const getStoredQuestionBank = (): QuestionBankItem[] => {
   try {
     const raw = localStorage.getItem(KEYS.QUESTION_BANK);
-    return raw ? JSON.parse(raw) : INITIAL_QUESTION_BANK;
+    return raw ? mergeById(INITIAL_QUESTION_BANK, JSON.parse(raw)) : INITIAL_QUESTION_BANK;
   } catch {
     return INITIAL_QUESTION_BANK;
   }
@@ -79,7 +110,7 @@ export const saveQuestionBank = (questions: QuestionBankItem[]) => {
 export const getStoredCoursePreviews = (): CoursePreviewGuide[] => {
   try {
     const raw = localStorage.getItem(KEYS.COURSE_PREVIEWS);
-    return raw ? JSON.parse(raw) : INITIAL_COURSE_PREVIEWS;
+    return raw ? mergeById(INITIAL_COURSE_PREVIEWS, JSON.parse(raw)) : INITIAL_COURSE_PREVIEWS;
   } catch {
     return INITIAL_COURSE_PREVIEWS;
   }
@@ -93,7 +124,7 @@ export const saveCoursePreviews = (guides: CoursePreviewGuide[]) => {
 export const getStoredPlans = (): GeneratedStudyPlan[] => {
   try {
     const raw = localStorage.getItem(KEYS.PLANS);
-    return raw ? JSON.parse(raw) : INITIAL_PLANS;
+    return raw ? mergeById(INITIAL_PLANS, JSON.parse(raw)) : INITIAL_PLANS;
   } catch {
     return INITIAL_PLANS;
   }
@@ -106,7 +137,7 @@ export const savePlans = (plans: GeneratedStudyPlan[]) => {
 export const getStoredTasks = (): StudyTask[] => {
   try {
     const raw = localStorage.getItem(KEYS.TASKS);
-    return raw ? JSON.parse(raw) : INITIAL_TASKS;
+    return raw ? mergeById(INITIAL_TASKS, JSON.parse(raw)) : INITIAL_TASKS;
   } catch {
     return INITIAL_TASKS;
   }
@@ -119,7 +150,7 @@ export const saveTasks = (tasks: StudyTask[]) => {
 export const getStoredFlashcards = (): Flashcard[] => {
   try {
     const raw = localStorage.getItem(KEYS.FLASHCARDS);
-    return raw ? JSON.parse(raw) : INITIAL_FLASHCARDS;
+    return raw ? mergeById(INITIAL_FLASHCARDS, JSON.parse(raw)) : INITIAL_FLASHCARDS;
   } catch {
     return INITIAL_FLASHCARDS;
   }
@@ -132,7 +163,7 @@ export const saveFlashcards = (cards: Flashcard[]) => {
 export const getStoredQuizzes = (): QuizQuestion[] => {
   try {
     const raw = localStorage.getItem(KEYS.QUIZZES);
-    return raw ? JSON.parse(raw) : INITIAL_QUIZZES;
+    return raw ? mergeById(INITIAL_QUIZZES, JSON.parse(raw)) : INITIAL_QUIZZES;
   } catch {
     return INITIAL_QUIZZES;
   }
@@ -216,7 +247,7 @@ export const updateCardReview = (card: Flashcard, rating: 'again' | 'hard' | 'go
 export const getStoredClassroomLessons = (): ClassroomLesson[] => {
   try {
     const raw = localStorage.getItem(KEYS.CLASSROOM_LESSONS);
-    return raw ? JSON.parse(raw) : INITIAL_CLASSROOM_LESSONS;
+    return raw ? mergeById(INITIAL_CLASSROOM_LESSONS, JSON.parse(raw)) : INITIAL_CLASSROOM_LESSONS;
   } catch {
     return INITIAL_CLASSROOM_LESSONS;
   }

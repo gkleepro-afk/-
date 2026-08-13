@@ -17,6 +17,94 @@ export const DEFAULT_USER_PROFILE: UserProfile = {
 
 export const INITIAL_EXAM_PAPERS: ExamPaperItem[] = [
   {
+    id: 'paper-chu1-eng',
+    title: '2026七年级（初一）英语上学期期末综合仿真冲刺卷',
+    titleEn: '2026 Grade 7 English Semester 1 Final Comprehensive Mock Exam',
+    subject: '英语',
+    gradeLevel: '初一',
+    countryRegion: '中国大陆',
+    publisher: '人教版 (七年级新目标)',
+    durationMinutes: 60,
+    totalScore: 100,
+    passingScore: 60,
+    description: '涵盖七年级（初一）英语一般现在时、动词第三人称单数、代词体系、There be 句型与日常交际对话核心考点。',
+    descriptionEn: 'Covers Grade 7 English Simple Present Tense, third-person singular, pronoun systems, There-be structure, and situational dialogues.',
+    questions: [
+      {
+        id: 'peng7-q1',
+        subject: '英语',
+        gradeStage: '初中',
+        gradeLevel: '初一',
+        topic: '动词第三人称单数与频度副词',
+        topicEn: 'Third-person Singular & Frequency Adverbs',
+        question: 'My sister always _______ (get) up at 6:30 and _______ (brush) her teeth quickly in the morning.',
+        questionEn: 'My sister always _______ (get) up at 6:30 and _______ (brush) her teeth quickly in the morning.',
+        options: ['get; brush', 'gets; brushes', 'gets; brushs', 'getting; brushing'],
+        optionsEn: ['get; brush', 'gets; brushes', 'gets; brushs', 'getting; brushing'],
+        correctIndex: 1,
+        explanation: '主语 My sister 是第三人称单数，句中有频度副词 always 表一般现在时。get 变 gets；brush 以 sh 结尾变 brushes。选 B。',
+        explanationEn: 'The subject "My sister" is third-person singular with the frequency adverb "always". "get" becomes "gets" and "brush" (+es) becomes "brushes". Option B.',
+        questionType: 'choice',
+        difficulty: 'easy',
+        keyPoints: ['动词第三人称单数变化', '一般现在时标志词']
+      },
+      {
+        id: 'peng7-q2',
+        subject: '英语',
+        gradeStage: '初中',
+        gradeLevel: '初一',
+        topic: 'There be 句型与就近原则',
+        topicEn: 'There Be Structure & Proximity Rule',
+        question: 'Look! There _______ a pen and two notebooks on the teacher\'s desk.',
+        questionEn: 'Look! There _______ a pen and two notebooks on the teacher\'s desk.',
+        options: ['is', 'are', 'be', 'have'],
+        optionsEn: ['is', 'are', 'be', 'have'],
+        correctIndex: 0,
+        explanation: 'There be 句型遵循“就近原则”（be 动词单复数由紧跟其后的第一个名词决定）。紧邻的 a pen 为单数名词，故 be 动词用 is。选 A。',
+        explanationEn: 'The "There be" structure follows the Proximity Rule. Since the nearest noun "a pen" is singular, we use "is". Option A.',
+        questionType: 'choice',
+        difficulty: 'medium',
+        keyPoints: ['There be 句型', '就近原则']
+      },
+      {
+        id: 'peng7-q3',
+        subject: '英语',
+        gradeStage: '初中',
+        gradeLevel: '初一',
+        topic: '人称代词与物主代词辨析',
+        topicEn: 'Subject/Object Pronouns & Possessive Pronouns',
+        question: '— Is this red schoolbag _______ (you)?\n— No, it isn\'t. _______ (I) is blue. Ask Linda, maybe it is _______ (she).',
+        questionEn: '— Is this red schoolbag _______ (you)?\n— No, it isn\'t. _______ (I) is blue. Ask Linda, maybe it is _______ (she).',
+        options: ['yours; Mine; hers', 'your; My; her', 'yours; My; hers', 'your; Mine; her'],
+        optionsEn: ['yours; Mine; hers', 'your; My; her', 'yours; My; hers', 'your; Mine; her'],
+        correctIndex: 0,
+        explanation: '第一空作表语表示“你的书包”，用名词性物主代词 yours；第二空作主语表示“我的书包”，用 Mine；第三空表示“她的书包”，用 hers。选 A。',
+        explanationEn: 'All three blanks stand for "possessive pronoun + noun" (your schoolbag, my schoolbag, her schoolbag), requiring nominal possessive pronouns: yours, Mine, and hers. Option A.',
+        questionType: 'choice',
+        difficulty: 'medium',
+        keyPoints: ['名词性物主代词', '代词独立用法']
+      },
+      {
+        id: 'peng7-q4',
+        subject: '英语',
+        gradeStage: '初中',
+        gradeLevel: '初一',
+        topic: '情态动词 can 及其日常疑问句',
+        topicEn: 'Modal Verb Can & Interrogative Sentences',
+        question: '— _______ your brother play the violin?\n— No, he can\'t, but he _______ (play) chess very well.',
+        questionEn: '— _______ your brother play the violin?\n— No, he can\'t, but he _______ (play) chess very well.',
+        options: ['Can; plays', 'Does; play', 'Can; play', 'Is; plays'],
+        optionsEn: ['Can; plays', 'Does; play', 'Can; play', 'Is; plays'],
+        correctIndex: 0,
+        explanation: '根据答语 No, he can\'t 可知问句由 Can 引导；下半句 he 为第三人称单数，动词 play 变三单形式 plays。选 A。',
+        explanationEn: 'The response "No, he can\'t" indicates the question starts with "Can". In the second clause, "he" is singular, so "play" becomes "plays". Option A.',
+        questionType: 'choice',
+        difficulty: 'easy',
+        keyPoints: ['情态动词 can 用法', '主谓一致']
+      }
+    ]
+  },
+  {
     id: 'paper-chu1',
     title: '2026初一数学期末综合仿真冲刺卷（有理数与一元一次方程）',
     titleEn: '2026 Grade 7 Math Final Mock Exam (Rational Numbers & Linear Equations)',
@@ -228,6 +316,177 @@ export const INITIAL_EXAM_PAPERS: ExamPaperItem[] = [
 
 
 export const INITIAL_PLANS: GeneratedStudyPlan[] = [
+  {
+    id: 'plan-chu1-eng-1',
+    title: '七年级英语：核心词汇、语法体系与日常交际 7 天满分突破计划',
+    subject: '英语',
+    gradeLevel: '初一',
+    targetGoal: '全面掌握一般现在时、动词三单变形规则、人称/物主代词与 There be 句型及日常交际表达',
+    language: 'zh',
+    createdAt: new Date().toISOString(),
+    overview: '专为初中七年级（初一）学生量身定制的 7 天英语核心能力提升计划，紧扣人教版新课标重难点，通过“概念剖析 + 艾宾浩斯高频词汇翻卡 + 情境对话 + 真题自测”形成高效学习闭环。',
+    estimatedDays: 7,
+    keyTopics: [
+      'be 动词用法与一般现在时基础句型',
+      '实义动词第三人称单数 (3rd Person Singular) 4 大变化法则',
+      '人称代词（主格/宾格）与物主代词（形物代/名物代）系统图表',
+      'There be 句型与空间方位介词 (in/on/under/behind/next to)',
+      '情态动词 can / can\'t 能力与俱乐部情境表达',
+      '日常交际问答：日常作息、喜好学科、购物与问路'
+    ],
+    dailyTasks: [
+      {
+        dayOffset: 0,
+        title: 'Day 1: be 动词用法口诀与一般现在时主谓一致',
+        description: '掌握“我用 am，你用 are，is 连着他她它，单数 is 复数 are”口诀，练习肯定、否定与一般疑问句转化。',
+        subject: '英语',
+        category: 'language',
+        durationMinutes: 25,
+        taskType: 'concept',
+        difficulty: 'easy',
+        keyPoints: ['be 动词口诀', '一般疑问句提前 be 动词', '肯定/否定回答规范']
+      },
+      {
+        dayOffset: 1,
+        title: 'Day 2: 动词第三人称单数变形规则与发音',
+        description: '梳理一般加 -s、以 s/x/ch/sh/o 结尾加 -es、辅音+y 变 ies 及特殊变化 (have->has) 规律。',
+        subject: '英语',
+        category: 'language',
+        durationMinutes: 25,
+        taskType: 'practice',
+        difficulty: 'medium',
+        keyPoints: ['动词三单 4 大规则', '清辅音后读 /s/ 浊辅音及元音后读 /z/']
+      },
+      {
+        dayOffset: 2,
+        title: 'Day 3: 助动词 do / does 在否定句与疑问句中的降维',
+        description: '掌握“借助助动词 do/does 后，后面的实义动词必须打回原形”的金牌法则。',
+        subject: '英语',
+        category: 'language',
+        durationMinutes: 30,
+        taskType: 'concept',
+        difficulty: 'medium',
+        keyPoints: ['Does she like...? Yes, she does.', '实义动词还原形']
+      },
+      {
+        dayOffset: 3,
+        title: 'Day 4: 代词大家族（主格、宾格、形物代、名物代）',
+        description: '用九宫格表格理清 I-me-my-mine, she-her-her-hers 等代词的句子成分对应。',
+        subject: '英语',
+        category: 'language',
+        durationMinutes: 20,
+        taskType: 'flashcard',
+        difficulty: 'easy',
+        keyPoints: ['形物代后必须加名词', '名物代 = 形物代 + 名词']
+      },
+      {
+        dayOffset: 4,
+        title: 'Day 5: There be 句型与就近原则实战演练',
+        description: '攻克 There is a book and two pens... 与 There are two pens and a book... 就近选择。',
+        subject: '英语',
+        category: 'language',
+        durationMinutes: 25,
+        taskType: 'practice',
+        difficulty: 'medium',
+        keyPoints: ['就近原则 (Proximity Rule)', '方位介词短语 in front of vs in the front of']
+      },
+      {
+        dayOffset: 5,
+        title: 'Day 6: 七年级日常情境交际高频句型操练',
+        description: '练习日常作息 (What time do you get up?)、爱好学科与原因 (Why do you like geography?) 及能力表达 (Can you play the guitar?)。',
+        subject: '英语',
+        category: 'language',
+        durationMinutes: 25,
+        taskType: 'practice',
+        difficulty: 'easy',
+        keyPoints: ['特殊疑问词 what/why/how/where', '情态动词 can 用法']
+      },
+      {
+        dayOffset: 6,
+        title: 'Day 7: 七年级全单元综合自测与易错词汇速记',
+        description: '完成 10 道综合单选与短文填空，翻卡复习本周掌握的 20 个高频词汇。',
+        subject: '英语',
+        category: 'language',
+        durationMinutes: 35,
+        taskType: 'quiz',
+        difficulty: 'medium',
+        keyPoints: ['综合模拟题诊断', '错题巩固复盘']
+      }
+    ],
+    flashcards: [
+      {
+        front: 'favorite',
+        phonetic: '/ˈfeɪvərɪt/',
+        back: 'adj. 最喜爱的；n. 最喜爱的人或物\n用法：one\'s favorite subject (某人最喜欢的科目)',
+        examples: [
+          'My favorite subject is English because it is very interesting.',
+          'Science is her favorite.'
+        ],
+        language: 'en',
+        tags: ['七年级', '英语', '核心词汇', 'Unit 9']
+      },
+      {
+        front: 'schedule',
+        phonetic: '/ˈskedʒuːl/',
+        back: 'n. 日程安排，时间表；v. 安排\n搭配：a busy schedule (忙碌的日程)',
+        examples: [
+          'I have a very busy schedule from Monday to Friday.'
+        ],
+        language: 'en',
+        tags: ['七年级', '英语', '日常词汇']
+      },
+      {
+        front: 'delicious',
+        phonetic: '/dɪˈlɪʃəs/',
+        back: 'adj. 美味的，可口的\n同义词：tasty, yummy',
+        examples: [
+          'The dumplings in this restaurant are really delicious!'
+        ],
+        language: 'en',
+        tags: ['七年级', '英语', '食物与描述']
+      },
+      {
+        front: 'instrument',
+        phonetic: '/ˈɪnstrəmənt/',
+        back: 'n. 乐器；器械，仪器\n搭配：play a musical instrument (演奏乐器)',
+        examples: [
+          'Can you play any musical instruments, like the piano or guitar?'
+        ],
+        language: 'en',
+        tags: ['七年级', '英语', '俱乐部与爱好']
+      },
+      {
+        front: 'geography',
+        phonetic: '/dʒiˈɒɡrəfi/',
+        back: 'n. 地理（学）\n学科常考：history, geography, biology, math, English',
+        examples: [
+          'We have geography class every Tuesday afternoon.'
+        ],
+        language: 'en',
+        tags: ['七年级', '英语', '学校科目']
+      }
+    ],
+    quizQuestions: [
+      {
+        question: '— What does your brother usually _______ on Sunday morning?\n— He often _______ his homework.',
+        options: ['do; does', 'does; do', 'do; do', 'does; does'],
+        correctIndex: 0,
+        explanation: '第一空助动词 does 后动词用原形 do；答句主语 He 是第三人称单数，动词用三单形式 does。选 A。'
+      },
+      {
+        question: 'There _______ an apple and three oranges in the basket on the table.',
+        options: ['is', 'are', 'be', 'have'],
+        correctIndex: 0,
+        explanation: 'There be 句型遵循就近原则，离 be 动词最近的名词 an apple 是单数，用 is。选 A。'
+      },
+      {
+        question: '— Can Mary _______ the guitar?\n— Yes, she can. She is in the school music club.',
+        options: ['play', 'plays', 'playing', 'to play'],
+        correctIndex: 0,
+        explanation: '情态动词 can 后面必须接动词原形 play。选 A。'
+      }
+    ]
+  },
   {
     id: 'plan-chu1-1',
     title: '初一数学：有理数运算与一元一次方程高分突破',
@@ -631,6 +890,58 @@ export const INITIAL_TASKS: StudyTask[] = [
 
 export const INITIAL_FLASHCARDS: Flashcard[] = [
   {
+    id: 'fc-chu1-eng-1',
+    subject: '英语',
+    language: 'en',
+    front: 'favorite',
+    phonetic: '/ˈfeɪvərɪt/',
+    back: 'adj. 最喜爱的；n. 最喜爱的人或物\n用法：one\'s favorite subject (某人最喜欢的科目)',
+    examples: [
+      'My favorite subject is English because it is interesting.',
+      'Which sport is your favorite?'
+    ],
+    tags: ['初一', '英语', '七年级核心词汇'],
+    intervalDays: 1,
+    easeFactor: 2.5,
+    repetitions: 1,
+    nextReviewDate: new Date().toISOString().split('T')[0],
+    masteryLevel: 45
+  },
+  {
+    id: 'fc-chu1-eng-2',
+    subject: '英语',
+    language: 'en',
+    front: 'schedule',
+    phonetic: '/ˈskedʒuːl/',
+    back: 'n. 日程安排，时间表；v. 安排\n搭配：a busy schedule (忙碌的日程)',
+    examples: [
+      'I have a busy schedule on Monday and Wednesday.'
+    ],
+    tags: ['初一', '英语', '七年级核心词汇'],
+    intervalDays: 2,
+    easeFactor: 2.5,
+    repetitions: 1,
+    nextReviewDate: new Date().toISOString().split('T')[0],
+    masteryLevel: 50
+  },
+  {
+    id: 'fc-chu1-eng-3',
+    subject: '英语',
+    language: 'en',
+    front: 'instrument',
+    phonetic: '/ˈɪnstrəmənt/',
+    back: 'n. 乐器；器械，仪器\n搭配：play a musical instrument (演奏乐器)',
+    examples: [
+      'Can you play any musical instruments?'
+    ],
+    tags: ['初一', '英语', '俱乐部与爱好'],
+    intervalDays: 3,
+    easeFactor: 2.5,
+    repetitions: 2,
+    nextReviewDate: new Date().toISOString().split('T')[0],
+    masteryLevel: 70
+  },
+  {
     id: 'fc-1',
     subject: '英语雅思',
     language: 'en',
@@ -700,6 +1011,22 @@ export const INITIAL_FLASHCARDS: Flashcard[] = [
 
 export const INITIAL_QUIZZES: QuizQuestion[] = [
   {
+    id: 'quiz-chu1-eng-1',
+    subject: '英语',
+    question: '— What time _______ your mother usually get up in the morning?\n— She usually _______ up at 6:00 a.m.',
+    options: ['does; gets', 'do; get', 'is; gets', 'does; get'],
+    correctIndex: 0,
+    explanation: '主语 your mother 是第三人称单数，疑问句助动词用 does；答句中主语 She 为单数，谓语动词 get 变三单 gets。选 A。'
+  },
+  {
+    id: 'quiz-chu1-eng-2',
+    subject: '英语',
+    question: 'There _______ three apples and a bottle of milk on the dining table.',
+    options: ['are', 'is', 'have', 'be'],
+    correctIndex: 0,
+    explanation: 'There be 句型遵循“就近原则”，紧邻 be 动词的名词 three apples 为复数，因此用 are。选 A。'
+  },
+  {
     id: 'quiz-1',
     subject: '高中物理',
     question: '一质量为 m 的小球以速度 v 垂直撞击墙壁后以原速率反弹，墙壁对小球的冲量大小为多少？',
@@ -726,6 +1053,36 @@ export const INITIAL_QUIZZES: QuizQuestion[] = [
 ];
 
 export const INITIAL_QUESTION_BANK: QuestionBankItem[] = [
+  {
+    id: 'qb-chu1-eng-1',
+    subject: '英语',
+    gradeStage: '初中',
+    gradeLevel: '初一',
+    topic: '一般现在时动词三单与频度副词',
+    question: 'Tony usually _______ (walk) to school, but sometimes he _______ (ride) his bike.',
+    options: ['walks; rides', 'walk; ride', 'walks; ride', 'walk; rides'],
+    correctIndex: 0,
+    explanation: '【解析】主语 Tony 是第三人称单数，由 usually 和 sometimes 可知句子为一般现在时，两处动词均需用第三人称单数形式 walks 与 rides。选 A。',
+    questionType: 'choice',
+    difficulty: 'easy',
+    keyPoints: ['七年级英语', '动词第三人称单数', '一般现在时标志词'],
+    isSavedToMistakes: true
+  },
+  {
+    id: 'qb-chu1-eng-2',
+    subject: '英语',
+    gradeStage: '初中',
+    gradeLevel: '初一',
+    topic: 'There be 句型与介词短语',
+    question: '— Is there a library in your school?\n— Yes, _______. It\'s _______ the dining hall and the teaching building.',
+    options: ['there is; between', 'it is; next', 'there is; under', 'there are; behind'],
+    correctIndex: 0,
+    explanation: '【解析】1. Is there...? 的肯定回答固定为 "Yes, there is."；2. 表示“在……和……之间”固定搭配为 "between A and B"。选 A。',
+    questionType: 'choice',
+    difficulty: 'medium',
+    keyPoints: ['七年级英语', 'There be 句型简略回答', '介词 between...and...'],
+    isSavedToMistakes: false
+  },
   {
     id: 'qb-chu1-1',
     subject: '数学',
@@ -843,179 +1200,845 @@ export const INITIAL_QUESTION_BANK: QuestionBankItem[] = [
 
 export const INITIAL_COURSE_PREVIEWS: CoursePreviewGuide[] = [
   {
+    id: 'preview-english-chu1-simple-present',
+    title: '七年级英语：《一般现在时与动词第三人称单数》新课预习案',
+    titleEn: 'Grade 7 English: Simple Present Tense & 3rd Person Singular Pre-Class Guide',
+    subject: '英语',
+    gradeLevel: '初一',
+    publisher: '人教版 (七年级上/下册)',
+    overview: '一般现在时是初中英语最基础也是初一考试失分率最高的核心语法点。本预习案带你攻克动词第三人称单数 (3rd Person Singular) 的 4 大变形规律、助动词 do/does 的降维法则，以及日常情境问答表达。',
+    overviewEn: 'The Simple Present Tense is the foundational pillar of Grade 7 English. Master 3rd person singular verb inflections, do/does auxiliary questions, and daily routine conversational patterns.',
+    estimatedTimeMinutes: 15,
+    learningObjectives: [
+      '掌握一般现在时的两大核心用法：经常性动作/习惯与客观事实真理',
+      '熟练运用动词第三人称单数 4 种变形规则（加-s、加-es、辅音+y变-ies、特殊have->has）',
+      '掌握否定句 (don\'t / doesn\'t) 与一般疑问句 (Do / Does) 的句型转换与动词还原形规则',
+      '能流利运用频度副词 (always, usually, often, sometimes, never) 描述个人日常作息'
+    ],
+    learningObjectivesEn: [
+      'Understand recurring habits and general facts in the Simple Present Tense',
+      'Master the 4 conjugation rules for 3rd person singular verbs (-s, -es, -ies, has)',
+      'Construct negative sentences and questions using auxiliary verbs do/does with base form verbs',
+      'Use frequency adverbs (always, usually, often, sometimes, never) to describe daily schedules'
+    ],
+    prerequisites: [
+      'be 动词 (am, is, are) 的主谓搭配口诀：“我用 am，你用 are，is 连着他她它，单数 is 复数 are”',
+      '人称代词主格（I, you, he, she, it, we, they）的基础含义'
+    ],
+    prerequisitesEn: [
+      'Subject-verb agreement for the verb "to be" (am, is, are)',
+      'Subject pronouns (I, you, he, she, it, we, they)'
+    ],
+    coreDefinitions: [
+      {
+        name: '一般现在时与频度时间标志词',
+        nameEn: 'Simple Present Tense & Time Markers',
+        explanation: '表示经常性、习惯性的动作或当前存在的状态。常见标志词：always (总是 100%), usually (通常 80%), often (经常 60%), sometimes (有时 40%), never (从不 0%), every day / on weekends。',
+        explanationEn: 'Expresses habitual actions, general truths, or ongoing states. Common markers: always, usually, often, sometimes, never, every morning.',
+        keyFormula: '主语 (I/We/You/They) + 动词原形 ; 主语 (He/She/It/单数名词) + 动词三单 (V-s/es)',
+        keyFormulaEn: 'I/You/We/They + V(base) ; He/She/It + V(-s/-es)'
+      },
+      {
+        name: '助动词 do/does “照妖镜”法则',
+        nameEn: 'Auxiliary Verb Do/Does Base-Form Rule',
+        explanation: '当句子变成否定句（加 don\'t / doesn\'t）或一般疑问句（句首加 Do / Does）时，助动词已经承担了单复数和时态，后面的谓语动词必须变回动词原形！',
+        explanationEn: 'In negative sentences (don\'t/doesn\'t) and questions (Do/Does), the main verb always reverts to its base form.',
+        keyFormula: 'Does + 主语(三单) + 动词原形...? ⟹ Yes, 主语+does. / No, 主语+doesn\'t.',
+        keyFormulaEn: 'Does + Subject + V(base)...? ⟹ Yes, S+does. / No, S+doesn\'t.'
+      }
+    ],
+    selfCheckQuiz: [
+      {
+        question: '— What does your father do on Saturday afternoons?\n— He usually _______ basketball with his friends.',
+        questionEn: '— What does your father do on Saturday afternoons?\n— He usually _______ basketball with his friends.',
+        options: ['play', 'plays', 'playing', 'to play'],
+        optionsEn: ['play', 'plays', 'playing', 'to play'],
+        correctIndex: 1,
+        explanation: '答句主语 He 是第三人称单数，由 usually 可知句子是一般现在时，play 变三单 plays。选 B。',
+        explanationEn: 'The subject "He" is third-person singular in the present simple tense with "usually", requiring the singular verb form "plays". Option B.'
+      },
+      {
+        question: 'Mary doesn\'t _______ (like) carrots, but she _______ (eat) tomatoes every day.',
+        questionEn: 'Mary doesn\'t _______ (like) carrots, but she _______ (eat) tomatoes every day.',
+        options: ['likes; eats', 'like; eats', 'like; eat', 'likes; eat'],
+        optionsEn: ['likes; eats', 'like; eats', 'like; eat', 'likes; eat'],
+        correctIndex: 1,
+        explanation: '前半句有助动词 doesn\'t，后面的 like 用原形；后半句主语 she 是第三人称单数肯定句，eat 变三单 eats。选 B。',
+        explanationEn: 'After the negative auxiliary "doesn\'t", the verb must remain in base form "like". In the second clause, affirmative subject "she" takes "eats". Option B.'
+      }
+    ],
+    questionsToAskTeacher: [
+      '动词以辅音字母 + y 结尾变 ies（如 fly->flies, study->studies），如果以元音字母 + y 结尾（如 play, buy, stay）为什么直接加 s？',
+      '在 There be 句型中，如果主语是并列名词（如 a pen and two rulers），应该用 There is 还是 There are？'
+    ],
+    questionsToAskTeacherEn: [
+      'Why do verbs ending in vowel+y (play, buy) just take -s, while consonant+y (study) change to -ies?',
+      'In "There be" sentences with multiple nouns (a pen and two rulers), how does the Proximity Rule determine is vs are?'
+    ]
+  },
+  {
+    id: 'preview-english-gaozhong-nonfinite',
+    title: '高中英语：《非谓语动词与状语从句综合突破》新课预习案',
+    titleEn: 'Senior High English: Non-Finite Verbs & Adverbial Clauses Pre-Class Guide',
+    subject: '英语',
+    gradeLevel: '高中 (高一/高二/高考)',
+    publisher: '人教版 / 新课标高中英语',
+    overview: '非谓语动词（不定式 to do、动名词/现在分词 doing、过去分词 done）是高中英语写作与长难句阅读的灵魂。本预习案带你攻克句子主干与非谓语修饰成分的判定逻辑。',
+    overviewEn: 'Non-finite verbs (to do, doing, done) are the backbone of high school English reading comprehension and academic writing. This guide demystifies syntactic parsing and role determination.',
+    estimatedTimeMinutes: 20,
+    learningObjectives: [
+      '准确区分句子中的谓语动词 (Predicate Verb) 与非谓语动词 (Non-Finite Verb)',
+      '掌握 doing（主动/进行）与 done（被动/完成）作定语和状语的核心判断法则',
+      '攻克高中完形填空与短文填空中非谓语变形高频易错点'
+    ],
+    learningObjectivesEn: [
+      'Differentiate predicate verbs from non-finite verbs in complex sentences',
+      'Master active vs passive logic for doing (active/ongoing) and done (passive/completed)',
+      'Achieve high accuracy in cloze and grammatical filling sections'
+    ],
+    prerequisites: [
+      '初中五大基本句型（S+V, S+V+O, S+V+P, S+V+O+OC, S+V+IO+DO）',
+      '动词的过去式 (Past Tense) 与过去分词 (Past Participle) 规则与不规则变形'
+    ],
+    prerequisitesEn: [
+      'Five basic English sentence patterns',
+      'Regular and irregular verb past tense and past participle conjugations'
+    ],
+    coreDefinitions: [
+      {
+        name: '非谓语动词核心定义 (Non-Finite Verbs)',
+        nameEn: 'Definition of Non-Finite Verbs',
+        explanation: '在句子中充当除谓语以外的其他句子成分（主语、宾语、表语、定语、状语、补语）的动词形式，不受人称和数的人称限制。',
+        explanationEn: 'Verb forms that do not act as the predicate of a clause, serving instead as nouns, adjectives, or adverbs.',
+        keyFormula: 'To Do (目的/将来) | Doing (主动/进行) | Done (被动/完成)',
+        keyFormulaEn: 'To Do (purpose/future) | Doing (active/in-progress) | Done (passive/completed)'
+      },
+      {
+        name: '做定语/状语判定法则 (Logical Subject Test)',
+        nameEn: 'Logical Subject Test',
+        explanation: '找到非谓语动词的逻辑主语（修饰名词或主句主语）：若逻辑主语发出动作，用 doing；若逻辑主语承受动作，用 done。',
+        explanationEn: 'Identify the logical subject: choose "doing" if the subject performs the action, or "done" if the subject undergoes the action.',
+        keyFormula: '主动/进行 ⟹ doing ; 被动/完成 ⟹ done',
+        keyFormulaEn: 'Active/Ongoing ⟹ doing ; Passive/Completed ⟹ done'
+      }
+    ],
+    selfCheckQuiz: [
+      {
+        question: '_______ (hear) the exciting news, all the students jumped with joy.',
+        questionEn: '_______ (hear) the exciting news, all the students jumped with joy.',
+        options: ['Hear', 'Heard', 'Hearing', 'To hear'],
+        optionsEn: ['Hear', 'Heard', 'Hearing', 'To hear'],
+        correctIndex: 2,
+        explanation: '句中谓语动词为 jumped，前面是非谓语作时间/原因状语。逻辑主语 all the students 与 hear 是主动关系，故用现在分词 Hearing。',
+        explanationEn: 'The predicate verb is "jumped". The logical subject "all the students" actively performs the action "hear", requiring the present participle "Hearing".'
+      },
+      {
+        question: 'The famous book _______ (write) by Mo Yan is popular among high school students.',
+        questionEn: 'The famous book _______ (write) by Mo Yan is popular among high school students.',
+        options: ['writing', 'written', 'wrote', 'to write'],
+        optionsEn: ['writing', 'written', 'wrote', 'to write'],
+        correctIndex: 1,
+        explanation: 'The famous book 与 write 之间是被动完成关系，作定语修饰 book，填 written。',
+        explanationEn: '"The famous book" receives the action of "write", requiring the past participle "written" as an adjective modifier.'
+      }
+    ],
+    questionsToAskTeacher: [
+      '非谓语动词的“完成式（having done / having been done）”在高考中一般有哪些典型标志词？',
+      '如何快速区分现在分词作状语和独立主格结构？'
+    ],
+    questionsToAskTeacherEn: [
+      'What are the typical context clues indicating the perfect form "having done"?',
+      'How to distinguish absolute structures from participle adverbial clauses?'
+    ]
+  },
+  {
+    id: 'preview-english-chuzhong-tenses',
+    title: '初中英语：《现在完成时与中考核心句型》新课预习案',
+    titleEn: 'Junior High English: Present Perfect Tense Pre-Class Guide',
+    subject: '英语',
+    gradeLevel: '初中 (初二/初三)',
+    publisher: '人教版 (Go for it!)',
+    overview: '现在完成时是初中阶段最容易混淆的语法点。本预习案带你掌握 have/has + done 的两大核心考法：持续性与影响性，理清 have been to 与 have gone to 的区别。',
+    overviewEn: 'Present perfect tense is the most crucial grammar topic in junior high. Master ongoing duration versus past impact, and clarify "have been to" vs "have gone to".',
+    estimatedTimeMinutes: 15,
+    learningObjectives: [
+      '掌握现在完成时基本结构：have/has + 过去分词 (Past Participle)',
+      '彻底分清 have been to（去过某地已回）与 have gone to（去某地未归）',
+      '掌握 for + 时间段 与 since + 过去时间点的连用规则及延续性动词转化'
+    ],
+    learningObjectivesEn: [
+      'Master the structure of Present Perfect: have/has + past participle',
+      'Distinguish "have been to" (been and returned) from "have gone to" (left and not yet back)',
+      'Learn the rules of using "for" and "since" with continuous action verbs'
+    ],
+    prerequisites: [
+      '一般过去时态 (Past Simple) 的基本构成与标志词 (yesterday, last year, ago)',
+      '常见常用动词的三态变化 (eat-ate-eaten, see-saw-seen)'
+    ],
+    prerequisitesEn: [
+      'Past Simple structure and time markers',
+      'Irregular verb past and past participle forms'
+    ],
+    coreDefinitions: [
+      {
+        name: '现在完成时两大核心用法',
+        nameEn: 'Two Core Usages of Present Perfect',
+        explanation: '1. 影响性：过去发生的动作对现在造成的结果或影响（标志词 already, yet, just）。2. 延续性：过去发生并一直持续到现在的动作（标志词 for 3 years, since 2020）。',
+        explanationEn: '1. Impact: An action in the past having a result now. 2. Duration: An action that started in the past and continues into the present.',
+        keyFormula: 'have/has + 过去分词 (V-ed/V-pp)',
+        keyFormulaEn: 'have/has + Past Participle (p.p.)'
+      },
+      {
+        name: 'have been to 与 have gone to 辨析',
+        nameEn: 'Difference: Have Been To vs Have Gone To',
+        explanation: 'have been to 表示“曾去过某地（现在人已经回来）”；have gone to 表示“去了某地（现在人还在那里或在路上）”。',
+        explanationEn: '"Have been to" means visited and returned; "Have gone to" means went somewhere and has not returned.',
+        keyFormula: 'have been to = 经历过已回 ; have gone to = 在途中/未归',
+        keyFormulaEn: 'been to = returned ; gone to = away'
+      }
+    ],
+    selfCheckQuiz: [
+      {
+        question: '— Where is Mr. Wang?\n— He _______ to Beijing on business and will come back next Monday.',
+        questionEn: '— Where is Mr. Wang?\n— He _______ to Beijing on business and will come back next Monday.',
+        options: ['has been', 'has gone', 'went', 'goes'],
+        optionsEn: ['has been', 'has gone', 'went', 'goes'],
+        correctIndex: 1,
+        explanation: '由下句“下周一才回来”可知王老师去了北京还没回来，用 has gone to。选 B。',
+        explanationEn: 'Since he "will come back next Monday", he is still in Beijing or on the way, requiring "has gone to".'
+      }
+    ],
+    questionsToAskTeacher: [
+      '短暂性动词（如 die, buy, join）在与 for/since 连用时，如何转换成延续性状态（如 be dead, have, be in/be a member of）？'
+    ],
+    questionsToAskTeacherEn: [
+      'How do momentary verbs (like buy, die, join) convert into durative states when paired with for/since?'
+    ]
+  },
+  {
     id: 'preview-math-chu1-equation',
     title: '初一数学：《一元一次方程及其应用》新课预习案',
+    titleEn: 'Junior 1 Math: Linear Equations in One Variable Pre-Class Guide',
     subject: '数学',
     gradeLevel: '初一',
     publisher: '人教版 (七年级)',
     overview: '本预习案带你从算术思维跨越到代数思维，理解“用字母表示未知数”建立等量关系的威力，掌握移项与等式性质。',
+    overviewEn: 'Bridge arithmetic into algebra by learning how variables establish equations and applying properties of equality.',
     estimatedTimeMinutes: 20,
     learningObjectives: [
       '理解一元一次方程的定义与标准形式 ax + b = 0 (a≠0)',
       '掌握等式的基本性质（加减乘除恒等变形）',
       '熟练运用“移项”变号法则解方程并检验解'
     ],
+    learningObjectivesEn: [
+      'Understand the definition and standard form of linear equations: ax + b = 0 (a ≠ 0)',
+      'Master the basic properties of equality under algebraic operations',
+      'Proficiently apply term transposing to solve and verify linear equations'
+    ],
     prerequisites: [
       '用字母表示数与代数式合并同类项',
       '小学的方程初步与倒推算术方法'
     ],
+    prerequisitesEn: [
+      'Algebraic expressions and combining like terms',
+      'Elementary equation foundations'
+    ],
     coreDefinitions: [
       {
         name: '一元一次方程定义',
+        nameEn: 'Linear Equation in One Variable',
         explanation: '只含有一个未知数（元），未知数的次数都是 1（次），等号两边都是整式的方程。',
-        keyFormula: 'ax + b = 0 (a ≠ 0)'
+        explanationEn: 'An equation containing only one unknown variable with an exponent of 1 where both sides are polynomial expressions.',
+        keyFormula: 'ax + b = 0 (a ≠ 0)',
+        keyFormulaEn: 'ax + b = 0 (a ≠ 0)'
       },
       {
         name: '等式基本性质 1 & 2',
+        nameEn: 'Properties of Equality',
         explanation: '性质 1：等式两边加（或减）同一个数或同一个整式，结果仍相等。性质 2：等式两边乘同一个数，或除以同一个不为 0 的数，结果仍相等。',
-        keyFormula: 'a = b ⟹ a ± c = b ± c ; a·c = b·c'
+        explanationEn: 'Adding, subtracting, multiplying, or dividing (non-zero) the same quantity on both sides preserves equality.',
+        keyFormula: 'a = b ⟹ a ± c = b ± c ; a·c = b·c',
+        keyFormulaEn: 'a = b ⟹ a ± c = b ± c ; a·c = b·c'
       },
       {
         name: '移项变号法则',
+        nameEn: 'Transposition Rule',
         explanation: '把等式一边的某一项改变符号后移到另一边。',
-        keyFormula: '2x + 3 = 7 ⟹ 2x = 7 - 3 ⟹ x = 2'
+        explanationEn: 'Moving a term across the equals sign flips its positive or negative sign.',
+        keyFormula: '2x + 3 = 7 ⟹ 2x = 7 - 3 ⟹ x = 2',
+        keyFormulaEn: '2x + 3 = 7 ⟹ 2x = 7 - 3 ⟹ x = 2'
       }
     ],
     selfCheckQuiz: [
       {
         question: '下列方程中属于一元一次方程的是（ ）。',
+        questionEn: 'Which of the following is a linear equation in one variable?',
         options: ['x + 2y = 5', 'x^2 - 1 = 0', '3x - 1 = 5', '1/x = 2'],
+        optionsEn: ['x + 2y = 5', 'x^2 - 1 = 0', '3x - 1 = 5', '1/x = 2'],
         correctIndex: 2,
-        explanation: 'A 含两个未知数；B 最高次数为 2；D 是分式方程。只有 C 是一元一次方程。'
+        explanation: 'A 含两个未知数；B 最高次数为 2；D 是分式方程。只有 C 是一元一次方程。',
+        explanationEn: 'A has two variables; B is quadratic; D is a fractional equation. Only C is linear in one variable.'
       }
     ],
     questionsToAskTeacher: [
       '移项时忘记变号是最容易扣分的地方，有没有什么顺口溜能帮助记忆？',
       '在列方程解应用题时，如何快速在题目中找到“等量关系”？'
+    ],
+    questionsToAskTeacherEn: [
+      'How to effectively remember sign flipping when moving terms across the equals sign?',
+      'What are the best strategies to identify equivalent relationships in word problems?'
     ]
   },
   {
     id: 'preview-physics-newton1',
     title: '初中物理：《牛顿第一定律与惯性》新课预习案',
+    titleEn: 'Junior High Physics: Newton\'s First Law & Inertia Pre-Class Guide',
     subject: '物理',
     gradeLevel: '初中 (初二下)',
     publisher: '人教版',
     overview: '本预习案带你打破日常生活中的物理直觉误区，探究“力是不是维持物体运动的原因”，深刻理解牛顿第一定律与惯性现象。',
+    overviewEn: 'Demystify intuitive misconceptions about mechanics and explore whether force is needed to maintain motion.',
     estimatedTimeMinutes: 20,
     learningObjectives: [
       '知道伽利略斜面实验的推理过程与科学方法',
       '理解牛顿第一定律（惯性定律）的准确表述与适用条件',
       '能够用“惯性”解释生活中的常见现象（如刹车前倾、甩干衣服）'
     ],
+    learningObjectivesEn: [
+      'Understand Galileo\'s inclined plane thought experiment',
+      'Grasp Newton\'s First Law (Law of Inertia) conditions and definition',
+      'Explain real-world inertia phenomena (sudden braking, centrifugal spin)'
+    ],
     prerequisites: [
       '力的三要素（大小、方向、作用点）与力的作用效果（改变物体的运动状态或形状）',
       '二力平衡条件（同物、等大、反向、共线）'
     ],
+    prerequisitesEn: [
+      'Three elements of force (magnitude, direction, point of action)',
+      'Balanced forces equilibrium conditions'
+    ],
     coreDefinitions: [
       {
         name: '伽利略理想斜面实验',
+        nameEn: 'Galileo\'s Ideal Inclined Plane Experiment',
         explanation: '让小车从同一斜面同一高度静止滑下，表面越光滑，受到的阻力越小，小车运动的距离越远。推理：若阻力为零，小车将永远做匀速直线运动。',
-        keyFormula: '科学推理法 (理想化思维模型)'
+        explanationEn: 'A cart rolling down an incline goes further on smoother surfaces. Deduce: with zero resistance, it moves forever at constant velocity.',
+        keyFormula: '科学推理法 (理想化思维模型)',
+        keyFormulaEn: 'Scientific Deduction & Ideal Thought Experiment'
       },
       {
         name: '牛顿第一定律 (惯性定律)',
+        nameEn: 'Newton\'s First Law of Motion',
         explanation: '一切物体在没有受到力的作用时，总保持静止状态或匀速直线运动状态。',
-        keyFormula: 'F合 = 0 ⟹ 静止 或 匀速直线运动'
+        explanationEn: 'An object remains at rest or in uniform motion in a straight line unless acted upon by a net external force.',
+        keyFormula: 'F合 = 0 ⟹ 静止 或 匀速直线运动',
+        keyFormulaEn: 'F_net = 0 ⟹ Rest or Constant Velocity'
       },
       {
         name: '惯性 (Inertia)',
+        nameEn: 'Inertia',
         explanation: '物体保持原有运动状态不变的属性。一切物体在任何情况下都具有惯性，质量是惯性大小的唯一量度。',
-        keyFormula: '质量越大 ⟹ 惯性越大 ⟹ 运动状态越难改变'
+        explanationEn: 'The resistance of any physical object to any change in its velocity. Mass is the sole measure of inertia.',
+        keyFormula: '质量越大 ⟹ 惯性越大 ⟹ 运动状态越难改变',
+        keyFormulaEn: 'Greater Mass ⟹ Greater Inertia ⟹ Harder to Alter Motion'
       }
     ],
     selfCheckQuiz: [
       {
         question: '一正在空中飞行的足球，若突然失去一切外力作用，它将（ ）。',
+        questionEn: 'A soccer ball moving in the air would _______ if all external forces suddenly disappeared.',
         options: ['立即停在空中', '垂直掉落到地面', '做匀速直线运动', '减速运动直到停止'],
+        optionsEn: ['Stop immediately in the air', 'Fall vertically to the ground', 'Move in uniform straight-line motion', 'Decelerate until it stops'],
         correctIndex: 2,
-        explanation: '根据牛顿第一定律，原来运动的物体在不受外力时将保持匀速直线运动状态。'
+        explanation: '根据牛顿第一定律，原来运动的物体在不受外力时将保持匀速直线运动状态。',
+        explanationEn: 'By Newton\'s First Law, an object in motion continues in uniform straight-line motion when net external force is zero.'
       },
       {
         question: '关于惯性，下列说法正确的是（ ）。',
+        questionEn: 'Which statement regarding inertia is correct?',
         options: [
           '静止的物体没有惯性',
           '物体速度越大，惯性越大',
           '物体不受力时才有惯性',
           '汽车质量越大，惯性越大，越难刹车'
         ],
+        optionsEn: [
+          'Stationary objects have no inertia',
+          'Higher velocity means greater inertia',
+          'Objects only have inertia when no force acts',
+          'Greater car mass means greater inertia and harder braking'
+        ],
         correctIndex: 3,
-        explanation: '质量是惯性大小的唯一决定因素。任何物体任何状态下均有惯性。'
+        explanation: '质量是惯性大小的唯一决定因素。任何物体任何状态下均有惯性。',
+        explanationEn: 'Mass is the sole determining factor of inertia. All physical objects possess inertia at all times.'
       }
     ],
     questionsToAskTeacher: [
       '既然牛顿第一定律是在理想状况下（不受外力）成立的，我们生活中受力的物体是如何表现出匀速运动的？',
       '惯性是一种力吗？为什么不能说“受到了惯性的作用”？'
+    ],
+    questionsToAskTeacherEn: [
+      'How does uniform motion manifest in the real world when balanced forces act on an object?',
+      'Why is inertia a property rather than a force?'
     ]
   },
   {
     id: 'preview-math-function-monotone',
     title: '高中数学：《函数的单调性与最大(小)值》新课预习案',
+    titleEn: 'Senior High Math: Function Monotonicity & Extrema Pre-Class Guide',
     subject: '数学',
     gradeLevel: '高中 (高一上)',
     publisher: '人教 A 版',
     overview: '函数的单调性是函数性质研究的核心。本预习案带你从“图像的升降”过渡到用严密的“代数定义 ($f(x_1) < f(x_2)$)”来证明单调性。',
+    overviewEn: 'Function monotonicity is the core of function properties. Shift from geometric visual intuition to rigorous algebraic proofs.',
     estimatedTimeMinutes: 25,
     learningObjectives: [
       '从图像直观理解函数的增减变化，掌握增函数与减函数的图象特征',
       '掌握用定义法证明函数单调性的标准四步法（作差法）',
       '学会利用单调性求函数在闭区间上的最大值与最小值'
     ],
+    learningObjectivesEn: [
+      'Understand increasing/decreasing functions geometrically and algebraically',
+      'Master the standard 4-step difference method for proving monotonicity',
+      'Utilize monotonicity to find maximum and minimum values on closed intervals'
+    ],
     prerequisites: [
       '初中一次函数、二次函数的图像与性质',
       '不等式的性质与因式分解（特别是平方差与作差比较大小）'
     ],
+    prerequisitesEn: [
+      'Linear and quadratic function graphs and features',
+      'Inequalities and factorization techniques'
+    ],
     coreDefinitions: [
       {
         name: '增函数 (Increasing Function) 代数定义',
+        nameEn: 'Algebraic Definition of Increasing Function',
         explanation: '设函数 f(x) 在区间 D 上，对于任意的 x1, x2 ∈ D，当 x1 < x2 时，都有 f(x1) < f(x2)，则称 f(x) 在 D 上是增函数。',
-        keyFormula: '(x1 - x2)[f(x1) - f(x2)] > 0'
+        explanationEn: 'For any x1, x2 in domain D with x1 < x2, if f(x1) < f(x2), f(x) is strictly increasing on D.',
+        keyFormula: '(x1 - x2)[f(x1) - f(x2)] > 0',
+        keyFormulaEn: '(x1 - x2)[f(x1) - f(x2)] > 0'
       },
       {
         name: '定义法证明单调性四步法',
+        nameEn: '4-Step Monotonicity Proof',
         explanation: '1. 取值：任取 x1, x2 ∈ D，且 x1 < x2；\n2. 作差：计算 f(x1) - f(x2)；\n3. 变形：因式分解或配方；\n4. 定号：判断差值符号并下结论。',
-        keyFormula: '取值 ⟹ 作差 ⟹ 变形 ⟹ 定号'
+        explanationEn: '1. Choose: pick x1 < x2 in domain; 2. Subtract: f(x1) - f(x2); 3. Factorize; 4. Determine sign.',
+        keyFormula: '取值 ⟹ 作差 ⟹ 变形 ⟹ 定号',
+        keyFormulaEn: 'Choose ⟹ Subtract ⟹ Factorize ⟹ Determine Sign'
       }
     ],
     selfCheckQuiz: [
       {
         question: '已知函数 f(x) = -x^2 + 2x，在区间 (-∞, 1] 上 f(x) 是（ ）。',
+        questionEn: 'For f(x) = -x^2 + 2x, on the interval (-∞, 1], f(x) is ( ).',
         options: ['增函数', '减函数', '先增后减', '常数函数'],
+        optionsEn: ['Increasing', 'Decreasing', 'Increasing then decreasing', 'Constant'],
         correctIndex: 0,
-        explanation: '二次函数对称轴为 x = 1，开口向下，在对称轴左侧 (-∞, 1] 上递增。'
+        explanation: '二次函数对称轴为 x = 1，开口向下，在对称轴左侧 (-∞, 1] 上递增。',
+        explanationEn: 'The axis of symmetry is x = 1 and the parabola opens downward, meaning it increases on (-∞, 1].'
       }
     ],
     questionsToAskTeacher: [
       '在写函数的单调递增区间时，为什么两个独立的递增区间中间不能用“∪”（并集符号）连接，而要用“和”或逗号隔开？',
       '除了作差法之外，未来我们在导数中将如何更快速地判断单调性？'
+    ],
+    questionsToAskTeacherEn: [
+      'Why shouldn\'t union symbols (∪) be used between disjoint monotonic intervals?',
+      'How does calculus/derivatives streamline monotonicity proofs in higher grades?'
     ]
   }
 ];
 
 export const INITIAL_CLASSROOM_LESSONS: ClassroomLesson[] = [
   {
+    id: 'lesson-english-chu1-simple-present',
+    subject: '英语',
+    topic: '七年级英语核心语法：一般现在时、动词三单变形与日常交际',
+    topicEn: 'Grade 7 English: Simple Present Tense & 3rd Person Singular Masterclass',
+    gradeLevel: '初一',
+    semester: '上学期',
+    countryRegion: '中国大陆',
+    educationSystem: '人教版 (七年级新目标 Go for it!)',
+    teacherName: '智学名师 · Emily 老师',
+    teacherNameEn: 'Master Teacher · Emily',
+    lectureTitle: '初一英语名师讲堂：一般现在时、动词三单规律与日常会话突破',
+    lectureTitleEn: 'Grade 7 English Masterclass: Simple Present Tense, Verb Inflections & Daily Dialogues',
+    objective: '全面掌握一般现在时的核心含义、频度标志词，熟练运用动词第三人称单数 4 大变化法则与助动词 do/does 疑问否定转换。',
+    objectiveEn: 'Master Simple Present tense, frequency adverbs, 4 third-person singular conjugation rules, and do/does auxiliary questions.',
+    lectureSections: [
+      {
+        sectionTitle: '一、场景导入：什么是“一般现在时”？频度副词大揭秘',
+        sectionTitleEn: 'Section 1: What is the Simple Present Tense & Frequency Adverbs',
+        objective: '理解一般现在时的核心概念及 5 大频度标志词',
+        objectiveEn: 'Understand the concept of Simple Present Tense and frequency adverbs',
+        content: '### 一般现在时两大核心语境\n1. **经常性、习惯性的动作**：例如每天早起（*I get up at 6:30 every day.*）、每周打篮球。\n2. **客观事实与真理**：例如太阳从东方升起（*The sun rises in the east.*）。\n\n### 频度副词“五兄弟”\n- **always (100%)**：总是，一直 ⟹ *She always helps her classmates.*\n- **usually (80%)**：通常 ⟹ *He usually rides his bike to school.*\n- **often (60%)**：经常 ⟹ *We often read books in the library.*\n- **sometimes (40%)**：有时 ⟹ *Sometimes I watch TV after dinner.*\n- **never (0%)**：从不 ⟹ *They never arrive late for class.*',
+        contentEn: '### Two Core Usages of Simple Present Tense\n1. **Habitual actions**: Daily routines (e.g., *I get up at 6:30 every day*).\n2. **General truths and objective facts**: (*The sun rises in the east*).\n\n### Frequency Adverbs Scale\n- **always (100%)**: all the time\n- **usually (80%)**: standard routine\n- **often (60%)**: frequent occurrence\n- **sometimes (40%)**: occasional occurrence\n- **never (0%)**: zero occurrence',
+        keyTakeaway: '看见 always, usually, often, every day 就要立刻联想到【一般现在时】！',
+        keyTakeawayEn: 'Time markers like always, usually, often, and every day signal the Simple Present Tense!',
+        checkpoint: {
+          question: '下列句子中表示客观真理或经常性习惯、应使用一般现在时的是：',
+          questionEn: 'Which sentence describes a general habit or truth requiring Simple Present Tense?',
+          options: [
+            'A. Light travels faster than sound.',
+            'B. I bought a new bicycle yesterday.',
+            'C. He will visit Beijing next month.',
+            'D. They were having dinner when I arrived.'
+          ],
+          optionsEn: [
+            'A. Light travels faster than sound.',
+            'B. I bought a new bicycle yesterday.',
+            'C. He will visit Beijing next month.',
+            'D. They were having dinner when I arrived.'
+          ],
+          correctIndex: 0,
+          explanation: '“光速比声速快”是客观科学真理，必须使用一般现在时（主语 Light 为不可数单数，动词 travel 变三单 travels）。选 A。',
+          explanationEn: '"Light travels faster than sound" is a scientific truth, strictly requiring the Simple Present Tense with the third-person singular "travels". Option A.'
+        }
+      },
+      {
+        sectionTitle: '二、核心口诀与实战：动词第三人称单数 (3rd Person Singular) 4 大变化法则',
+        sectionTitleEn: 'Section 2: 4 Rules of 3rd Person Singular Verb Inflections',
+        objective: '掌握实义动词变为第三人称单数的规则与发音',
+        objectiveEn: 'Master verb conjugations for third-person singular subjects',
+        content: '### 主语是“他、她、它、单数名词”时，动词要变身！\n1. **一般情况直接加 -s**：\n   - *work ⟹ works*；*play ⟹ plays*；*read ⟹ reads*\n2. **以 s, x, ch, sh, o 结尾加 -es**（口诀：“吃西瓜(ch,sh,x,s)噢(o)加 -es”）：\n   - *teach ⟹ teaches*；*watch ⟹ watches*；*wash ⟹ washes*；*pass ⟹ passes*；*go ⟹ goes*；*do ⟹ does*\n3. **辅音字母 + y 结尾，变 y 为 i 再加 -es**：\n   - *study ⟹ studies*；*fly ⟹ flies*；*carry ⟹ carries*（注意：元音+y直接加s，如 *play ⟹ plays*）\n4. **特殊不规则变形**：\n   - *have ⟹ has*；*be ⟹ is*',
+        contentEn: '### When Subject is He, She, It, or Singular Noun, Conjugate the Verb!\n1. **General rule (+s)**: *work ⟹ works*, *read ⟹ reads*, *play ⟹ plays*.\n2. **Ending in s, x, ch, sh, o (+es)**: *watch ⟹ watches*, *wash ⟹ washes*, *go ⟹ goes*, *do ⟹ does*.\n3. **Consonant + y (change y to i + es)**: *study ⟹ studies*, *fly ⟹ flies* (Contrast: vowel+y *play ⟹ plays*).\n4. **Irregular**: *have ⟹ has*, *be ⟹ is*.',
+        keyTakeaway: '动词三单口诀：“吃西瓜噢加 -es，辅音加 y 变 ies，特殊 have 变 has，其余直接加个 s”！',
+        keyTakeawayEn: 'Mnemonic: Add -es after s/x/ch/sh/o; turn consonant+y into -ies; change have into has; add -s for others!',
+        checkpoint: {
+          question: '请选出下列动词第三人称单数变化全部正确的一组：',
+          questionEn: 'Which group contains all correct third-person singular forms?',
+          options: [
+            'A. study->studys, watch->watches, have->haves',
+            'B. study->studies, watch->watches, have->has',
+            'C. study->studies, watch->watchs, have->has',
+            'D. study->studyes, watch->watches, have->has'
+          ],
+          optionsEn: [
+            'A. study->studys, watch->watches, have->haves',
+            'B. study->studies, watch->watches, have->has',
+            'C. study->studies, watch->watchs, have->has',
+            'D. study->studyes, watch->watches, have->has'
+          ],
+          correctIndex: 1,
+          explanation: 'study 以辅音字母+y结尾，变 y 为 i 加 es (studies)；watch 以 ch 结尾加 es (watches)；have 为特殊不规则变形 (has)。选 B。',
+          explanationEn: 'study ⟹ studies (consonant+y to -ies); watch ⟹ watches (+es); have ⟹ has (irregular). Option B.'
+        }
+      },
+      {
+        sectionTitle: '三、助动词 do / does 疑问与否定句转换的“打回原形”法则',
+        sectionTitleEn: 'Section 3: Auxiliary Do/Does Question & Negative Transformation',
+        objective: '掌握助动词 do/does 的用法及动词原形恢复原则',
+        objectiveEn: 'Master questions and negatives with auxiliary verbs and base verbs',
+        content: '### 助动词就像“照妖镜”！\n- **陈述句**：*He likes apples.*\n- **否定句（借助 doesn\'t）**：*He doesn\'t **like** apples.*（注意：likes 变回原形 like！）\n- **一般疑问句（句首加 Does）**：*Does he **like** apples?*\n  - **肯定回答**：*Yes, he does.*\n  - **否定回答**：*No, he doesn\'t.*\n\n### 易错陷阱警示\n⚠️ 很多同学容易写成：*Does he likes apples?*（❌ 错误！一个句子里助动词 does 已经体现了三单，后面的动词必须**还原成原形**！）',
+        contentEn: '### The Base-Form Golden Rule!\n- **Affirmative**: *He likes apples.*\n- **Negative (with doesn\'t)**: *He doesn\'t **like** apples.* (Verb reverts to base form!)\n- **Interrogative (with Does)**: *Does he **like** apples?*\n  - **Yes**: *Yes, he does.*\n  - **No**: *No, he doesn\'t.*\n\n### Trap Alert\n⚠️ Never write *Does he likes...?* Because "does" already handles the singular third-person, the main verb MUST revert to its base form!',
+        keyTakeaway: '句中一旦出现 does / doesn\'t，后面的实义动词必须【立刻打回原形】！',
+        keyTakeawayEn: 'Once does or doesn\'t appears in a clause, the main verb immediately reverts to base form!',
+        checkpoint: {
+          question: '— _______ your sister often _______ her bedroom on Sundays?\n— Yes, she does.',
+          questionEn: '— _______ your sister often _______ her bedroom on Sundays?\n— Yes, she does.',
+          options: [
+            'A. Do; cleans',
+            'B. Does; clean',
+            'C. Does; cleans',
+            'D. Is; clean'
+          ],
+          optionsEn: [
+            'A. Do; cleans',
+            'B. Does; clean',
+            'C. Does; cleans',
+            'D. Is; clean'
+          ],
+          correctIndex: 1,
+          explanation: '主语 your sister 是第三人称单数，一般疑问句助动词用 Does；助动词后谓语动词用原形 clean。选 B。',
+          explanationEn: 'The subject "your sister" is singular, so the question begins with "Does", followed by the base-form verb "clean". Option B.'
+        }
+      }
+    ],
+    simplifiedExplanation: '我们可以把动词的第三人称单数想象成“穿上带 s 的红马甲”：平时主语是 I, you, we, they 时，动词穿平民装（原形）；一旦碰到 he, she, it 这种大人物，动词就要穿上带 s 的红马甲（如 likes, plays）！而当警卫员 does/doesn\'t 出来巡逻时，动词就把马甲脱掉交给他，自己变回平民原形！',
+    simplifiedExplanationEn: 'Think of 3rd person singular as putting on a special "S-jacket": when the subject is he/she/it, the verb wears the S-jacket (likes, plays). But when the bodyguard "does/doesn\'t" arrives, the verb takes off the jacket and reverts to its comfortable base form!',
+    checkQuestionPrompt: '同学们，关于“动词三单 4 大变化法则”与“助动词 does 后动词打回原形”，你全部听懂了吗？',
+    checkQuestionPromptEn: 'Students, did you understand the 4 verb conjugation rules and the base-form reversion rule after "does"?',
+    homeworkQuiz: [
+      {
+        id: 'hw-chu1-eng-1',
+        subject: '英语',
+        gradeStage: '初中',
+        gradeLevel: '初一',
+        topic: '一般现在时动词单复数',
+        topicEn: 'Simple Present Subject-Verb Agreement',
+        question: 'Tom usually _______ (walk) to school, but his twin brothers always _______ (ride) bikes.',
+        questionEn: 'Tom usually _______ (walk) to school, but his twin brothers always _______ (ride) bikes.',
+        options: ['walks; ride', 'walk; rides', 'walks; rides', 'walk; ride'],
+        optionsEn: ['walks; ride', 'walk; rides', 'walks; rides', 'walk; ride'],
+        correctIndex: 0,
+        explanation: 'Tom 是第三人称单数，动词 walk 变三单 walks；his twin brothers 是复数主语，动词用原形 ride。选 A。',
+        explanationEn: 'Tom is singular, taking "walks". "his twin brothers" is plural, taking the base form "ride". Option A.',
+        questionType: 'choice',
+        difficulty: 'easy',
+        keyPoints: ['主谓一致', '一般现在时动词三单']
+      },
+      {
+        id: 'hw-chu1-eng-2',
+        subject: '英语',
+        gradeStage: '初中',
+        gradeLevel: '初一',
+        topic: 'There be 句型与就近原则',
+        topicEn: 'There be Proximity Rule',
+        question: 'There _______ an eraser and two pencils in my pencil box.',
+        questionEn: 'There _______ an eraser and two pencils in my pencil box.',
+        options: ['is', 'are', 'have', 'be'],
+        optionsEn: ['is', 'are', 'have', 'be'],
+        correctIndex: 0,
+        explanation: 'There be 句型遵循就近原则，紧靠 be 动词的名词 an eraser 为单数，用 is。选 A。',
+        explanationEn: 'By the Proximity Rule in "There be" sentences, the nearest noun "an eraser" is singular, requiring "is". Option A.',
+        questionType: 'choice',
+        difficulty: 'easy',
+        keyPoints: ['There be 句型', '就近原则']
+      },
+      {
+        id: 'hw-chu1-eng-3',
+        subject: '英语',
+        gradeStage: '初中',
+        gradeLevel: '初一',
+        topic: '情态动词 can 与能力表达',
+        topicEn: 'Modal Verb Can & Abilities',
+        question: '— Can your sister speak Japanese?\n— No, she can\'t, but she _______ (sing) English songs very well.',
+        questionEn: '— Can your sister speak Japanese?\n— No, she can\'t, but she _______ (sing) English songs very well.',
+        options: ['sings', 'sing', 'singing', 'to sing'],
+        optionsEn: ['sings', 'sing', 'singing', 'to sing'],
+        correctIndex: 0,
+        explanation: '后半句是 she 作主语的肯定陈述句，she 是第三人称单数，动词 sing 变三单 sings。选 A。',
+        explanationEn: 'The second clause is an affirmative statement with subject "she", requiring singular "sings". Option A.',
+        questionType: 'choice',
+        difficulty: 'medium',
+        keyPoints: ['动词三单', '日常交际']
+      }
+    ]
+  },
+  {
+    id: 'lesson-english-gaozhong-grammar',
+    subject: '英语',
+    topic: '非谓语动词作定语与状语秒杀攻略',
+    topicEn: 'Mastering Non-Finite Verbs as Modifiers & Adverbials',
+    gradeLevel: '高三/高考',
+    semester: '上学期',
+    countryRegion: '中国大陆',
+    educationSystem: '人教版 (高中英语新课标)',
+    teacherName: '智学名师 · Sarah 老师',
+    teacherNameEn: 'Master Teacher · Sarah',
+    lectureTitle: '高考英语名师讲堂：非谓语动词作定语与状语秒杀法',
+    lectureTitleEn: 'High School English Masterclass: Demystifying Non-Finite Verbs in Context',
+    objective: '掌握非谓语动词的三大形态（to do / doing / done），熟练运用逻辑主语判定主被动与时态。',
+    objectiveEn: 'Master the three non-finite verb forms and apply logical subject tests to determine voice and aspect.',
+    lectureSections: [
+      {
+        sectionTitle: '一、场景导入：破解高考长难句的“黄金钥匙”',
+        sectionTitleEn: 'Section 1: The Golden Key to Complex Sentence Structures',
+        objective: '掌握非谓语动词的核心概念与逻辑主语判定法',
+        objectiveEn: 'Understand core concepts and logical subject identification',
+        content: '### 高考长难句突破核心\n- **核心地位**：语法填空与阅读中超 **40%** 语法考点聚焦于非谓语动词。\n- **核心本质**：动词不再充当谓语，转而充当定语、状语或补足语。\n- **解题第一步**：精准锁定修饰对象的**逻辑主语**，判定主动还是被动关系！',
+        contentEn: '### Mastering Complex Syntactic Structures\n- **Significance**: Over **40%** of high-level examination items focus on non-finite forms.\n- **Grammatical Role**: Verbs step down from predicate roles to act as adjectives or adverbials.\n- **Golden First Step**: Identify the **logical subject** to determine active vs passive relationships!',
+        keyTakeaway: '非谓语动词判定第一步：找准它的【逻辑主语】，判定主动还是被动！',
+        keyTakeawayEn: 'First rule of non-finite verbs: pinpoint the logical subject to verify active vs passive voice!',
+        checkpoint: {
+          question: '判断句子中非谓语动词的主被动形式，最关键的第一步是：',
+          questionEn: 'What is the most crucial first step in determining the form of a non-finite verb?',
+          options: ['A. 找句子的宾语', 'B. 找非谓语动词的逻辑主语', 'C. 翻译整段中文', 'D. 判断句子字数'],
+          optionsEn: ['A. Find the sentence object', 'B. Find its logical subject', 'C. Translate the paragraph', 'D. Count the words'],
+          correctIndex: 1,
+          explanation: '非谓语动词的形态（doing/done/to do）完全取决于它与其“逻辑主语”之间的主被动及时间关系。',
+          explanationEn: 'The form of a non-finite verb is governed by its active or passive relationship with its logical subject.'
+        }
+      },
+      {
+        sectionTitle: '二、核心口诀与实战推导：doing 与 done 的瞬间秒杀',
+        sectionTitleEn: 'Section 2: Instant Rules for Doing (Active) vs Done (Passive)',
+        objective: '掌握 doing（主动进行）、done（被动完成）与 to do（目的将来）的用法',
+        objectiveEn: 'Differentiate doing (active), done (passive), and to-do (future/purpose)',
+        content: '### 三大形态速记法则\n1. **doing（现在分词）**：表示与逻辑主语为**主动关系**或**正在进行**。\n2. **done（过去分词）**：表示与逻辑主语为**被动关系**或**已经完成**。\n3. **to do（不定式）**：表示**目的**、**结果**或**将要发生**。\n- **实战例句**：*Inspired by the talk, students studied hard.*（学生被激励，用 done）。',
+        contentEn: '### Three Core Forms at a Glance\n1. **doing (Present Participle)**: Expresses **active** or **ongoing** action.\n2. **done (Past Participle)**: Expresses **passive** or **completed** action.\n3. **to do (Infinitive)**: Expresses **purpose**, **result**, or **future action**.\n- **Example**: *Inspired by the speech, students worked harder.* (Passive inspiration requires "done").',
+        keyTakeaway: '口诀：“主动进行用 doing，被动完成用 done，目的将来用 to do”！',
+        keyTakeawayEn: 'Mnemonic: "Active/ongoing requires -ing, passive/completed requires -ed, purpose/future requires to-do"!',
+        checkpoint: {
+          question: '_______ (hear) the good news, all the children jumped with joy.',
+          questionEn: '_______ (hear) the good news, all the children jumped with joy.',
+          options: ['A. Hearing', 'B. Heard', 'C. To hear', 'D. Having heard being'],
+          optionsEn: ['A. Hearing', 'B. Heard', 'C. To hear', 'D. Having heard being'],
+          correctIndex: 0,
+          explanation: '逻辑主语 all the children 与 hear 之间是主动关系（孩子们主动听到好消息），作伴随状语用现在分词 Hearing。',
+          explanationEn: 'The logical subject "the children" actively performs the action "hear", which requires the present participle "Hearing".'
+        }
+      }
+    ],
+    simplifiedExplanation: '我们可以把非谓语动词想象成动词的“兼职变形金刚”：它不再当主句的大当家（谓语），而是变成形容词或副词去修饰别人。如果是它自己主动去干的事情，就穿上 doing 战袍；如果是被别人干的事情，就穿上 done 战袍！',
+    simplifiedExplanationEn: 'Think of non-finite verbs as part-time Transformers: they step down from being the main sentence leader (predicate) and act as adjectives or adverbs. If the subject actively does the work, it wears the "-ing" armor; if it receives the action, it wears the "-ed" armor!',
+    checkQuestionPrompt: '同学们，上面关于“逻辑主语主动用 doing、被动用 done”的核心推导法则，你听懂了吗？',
+    checkQuestionPromptEn: 'Students, did you understand the core deduction rule that active voice takes "doing" while passive takes "done"?',
+    homeworkQuiz: [
+      {
+        id: 'hw-eng-gaosan-1',
+        subject: '英语',
+        gradeStage: '高中',
+        gradeLevel: '高三/高考',
+        topic: '非谓语动词',
+        topicEn: 'Non-Finite Verbs',
+        question: 'The bridge _______ (build) last year has greatly improved the local transportation.',
+        questionEn: 'The bridge _______ (build) last year has greatly improved the local transportation.',
+        options: ['building', 'built', 'to build', 'having built'],
+        optionsEn: ['building', 'built', 'to build', 'having built'],
+        correctIndex: 1,
+        explanation: '句子谓语是 has improved。bridge 与 build 之间是被动且已完成关系，作定语修饰 the bridge，填 built。选 B。',
+        explanationEn: 'The predicate verb of the sentence is "has improved". "The bridge" receives the action of "build", requiring the past participle "built" as an adjective modifier.',
+        questionType: 'choice',
+        difficulty: 'medium',
+        keyPoints: ['非谓语作后置定语', '过去分词表被动完成']
+      },
+      {
+        id: 'hw-eng-gaosan-2',
+        subject: '英语',
+        gradeStage: '高中',
+        gradeLevel: '高三/高考',
+        topic: '非谓语动词作目的状语',
+        topicEn: 'Infinitive of Purpose',
+        question: '_______ (improve) our environment, we should plant more trees in our community.',
+        questionEn: '_______ (improve) our environment, we should plant more trees in our community.',
+        options: ['To improve', 'Improving', 'Improved', 'Improve'],
+        optionsEn: ['To improve', 'Improving', 'Improved', 'Improve'],
+        correctIndex: 0,
+        explanation: '句首表示“为了改善环境”，表示目的，用不定式 To improve 作目的状语。选 A。',
+        explanationEn: 'The phrase express the purpose ("in order to improve"), requiring the infinitive "To improve".',
+        questionType: 'choice',
+        difficulty: 'easy',
+        keyPoints: ['不定式作目的状语']
+      }
+    ]
+  },
+  {
+    id: 'lesson-english-chuzhong-tenses',
+    subject: '英语',
+    topic: '中考英语核心语法：现在完成时与过去时高频易错辨析',
+    topicEn: 'Present Perfect vs Past Simple Masterclass',
+    gradeLevel: '初三/中考',
+    semester: '上学期',
+    countryRegion: '中国大陆',
+    educationSystem: '人教版 (九年级)',
+    teacherName: '智学名师 · Mark 老师',
+    teacherNameEn: 'Master Teacher · Mark',
+    lectureTitle: '中考英语名师讲堂：现在完成时与一般过去时深度辨析',
+    lectureTitleEn: 'Junior High English Masterclass: Present Perfect vs Past Simple Decoded',
+    objective: '厘清现在完成时与一般过去时的本质差异，掌握短暂动词与延续性状态转换法则。',
+    objectiveEn: 'Master the distinction between Present Perfect and Past Simple and learn durative verb conversions.',
+    lectureSections: [
+      {
+        sectionTitle: '一、导入：为什么很多同学分不清 have done 和 did？',
+        sectionTitleEn: 'Section 1: Why Students Confuse "Have Done" with "Did"',
+        objective: '掌握现在完成时与一般过去时的核心语境差异',
+        objectiveEn: 'Understand core contextual differences between tenses',
+        content: '### 核心时态本质区分\n- **一般过去时**：单纯陈述**过去的某一具体时刻**发生的事实（如 *yesterday*, *last year*）。\n- **现在完成时**：强调过去发生的动作**对现在造成的影响**，或动作从过去**一直持续到现在**。\n- **核心公式**：主语 + have/has + 动词过去分词 (p.p.)。',
+        contentEn: '### Essential Tense Distinctions\n- **Past Simple**: Reports historical facts at a **specific past timestamp** (*yesterday*, *in 2020*).\n- **Present Perfect**: Bridges past actions with **present consequences** or **ongoing continuity**.\n- **Structure**: Subject + have/has + Past Participle (p.p.).',
+        keyTakeaway: '区别秘诀：过去时着眼于过去（带具体过去时间），现在完成时着眼于现在！',
+        keyTakeawayEn: 'Key rule: Past Simple looks back at a specific point in time; Present Perfect connects with the present moment!',
+        checkpoint: {
+          question: '句子 "I _______ my homework already." 应填入的时态形式是：',
+          questionEn: 'Which verb form correctly completes "I _______ my homework already."?',
+          options: ['A. finished', 'B. have finished', 'C. finish', 'D. will finish'],
+          optionsEn: ['A. finished', 'B. have finished', 'C. finish', 'D. will finish'],
+          correctIndex: 1,
+          explanation: '句末有标志词 already，强调过去完成作业对现在产生的影响（现在作业已做完），使用现在完成时 have finished。',
+          explanationEn: 'The time marker "already" emphasizes the present result of a completed action, requiring Present Perfect.'
+        }
+      },
+      {
+        sectionTitle: '二、高频考点突破：延续性动词转化与时间标志词',
+        sectionTitleEn: 'Section 2: Durative Verbs Transformation & Time Markers',
+        objective: '掌握短暂性动词与 for/since 搭配时的延续性状态转换',
+        objectiveEn: 'Convert momentary verbs into continuous states with for/since',
+        content: '### 中考必考动词转换表\n- **buy ⟹ have**：*He has had the book for 3 days.*\n- **join ⟹ be in / be a member of**：*She has been in the club since May.*\n- **die ⟹ be dead**：*The dog has been dead for two months.*\n- **leave ⟹ be away**：*They have been away for a week.*',
+        contentEn: '### Vital Durative Verb Transformations\n- **buy ⟹ have**: *He has had the book for 3 days.*\n- **join ⟹ be a member of**: *She has been a member since May.*\n- **die ⟹ be dead**: *The tree has been dead for months.*\n- **leave ⟹ be away**: *They have been away for a week.*',
+        keyTakeaway: '中考必背口诀：for/since 连用找延续，短暂动词变状态！',
+        keyTakeawayEn: 'Exam rule: Pair for/since with ongoing states rather than momentary action verbs!',
+        checkpoint: {
+          question: '下列句子中表达完全正确的是：',
+          questionEn: 'Which of the following sentences is grammatically correct?',
+          options: [
+            'A. He has joined the army for 2 years.',
+            'B. He has been in the army for 2 years.',
+            'C. He joined the army since 2 years ago.',
+            'D. He has bought the bike for two weeks.'
+          ],
+          optionsEn: [
+            'A. He has joined the army for 2 years.',
+            'B. He has been in the army for 2 years.',
+            'C. He joined the army since 2 years ago.',
+            'D. He has bought the bike for two weeks.'
+          ],
+          correctIndex: 1,
+          explanation: 'joined 和 bought 均为瞬间短暂动词，不能与 for + 段时间连用。需转换为延续性状态 has been in the army。选 B。',
+          explanationEn: '"join" is a momentary action. With "for 2 years", it must be converted into the durative state "has been in the army".'
+        }
+      }
+    ],
+    simplifiedExplanation: '我们可以用“照片”与“连线”做比喻：一般过去时就像一张泛黄的老照片，只定格在过去的那个瞬间；而现在完成时就像一根拉扯的橡皮筋，一头连在过去，另一头紧紧系在现在的你身上！',
+    simplifiedExplanationEn: 'Think of Past Simple as a vintage photograph frozen at a specific moment in the past. Present Perfect is like an elastic band: anchored in the past, but stretched right up to touch you in the present!',
+    checkQuestionPrompt: '同学们，上面关于“短暂动词变状态”与 for/since 连用规则，你听懂了吗？',
+    checkQuestionPromptEn: 'Students, did you grasp the rule of converting momentary action verbs into ongoing states when used with for/since?',
+    homeworkQuiz: [
+      {
+        id: 'hw-eng-chusan-1',
+        subject: '英语',
+        gradeStage: '初中',
+        gradeLevel: '初三/中考',
+        topic: '现在完成时延续性动词',
+        topicEn: 'Present Perfect Durative Verbs',
+        question: 'His grandfather _______ for five years, but he still misses him very much.',
+        questionEn: 'His grandfather _______ for five years, but he still misses him very much.',
+        options: ['has died', 'died', 'has been dead', 'is dying'],
+        optionsEn: ['has died', 'died', 'has been dead', 'is dying'],
+        correctIndex: 2,
+        explanation: '句子有 for five years 时间段，die 为瞬间动词不能直接连用，需转化为延续性状态 has been dead。选 C。',
+        explanationEn: 'With "for five years", the momentary verb "die" must be converted into the durative state "has been dead".',
+        questionType: 'choice',
+        difficulty: 'medium',
+        keyPoints: ['现在完成时短暂动词转化', 'for + 时间段']
+      }
+    ]
+  },
+  {
     id: 'lesson-chu1-math',
     subject: '数学',
     topic: '有理数与数轴绝对值图解',
+    topicEn: 'Rational Numbers, Number Lines & Absolute Value Geometry',
     gradeLevel: '初一',
     semester: '上学期',
     countryRegion: '中国大陆',
     educationSystem: '人教版 (七年级)',
     teacherName: '智学名师 · 陈老师',
+    teacherNameEn: 'Master Teacher · Chen',
     lectureTitle: '初一数学名师讲堂：有理数、数轴与绝对值几何化简破局',
+    lectureTitleEn: 'Junior 1 Math Masterclass: Rational Numbers & Absolute Value Demystified',
     lectureSections: [
       {
         sectionTitle: '一、概念通俗透视：从正负数到数轴上的几何距离',
+        sectionTitleEn: 'Section 1: Geometric Distance on the Number Line',
         content: '同学们好！欢迎来到初一数学名师讲堂。进入初中后，数学学习的第一大飞跃就是从【非负数】扩展到了【有理数】。很多同学觉得正负数运算容易出错，特别是绝对值符号不知道怎么去。今天陈老师教大家用“数轴几何距离”法则，秒杀一切绝对值化简题！',
-        keyTakeaway: '绝对值 |a| 的几何意义就是数轴上点 a 到原点的【距离】，距离永远是非负数（≥ 0）！'
+        contentEn: 'Hello students! Welcome to Junior 1 Math Masterclass. Transitioning to middle school expands our horizon from non-negative numbers to rational numbers. Today, let us master the geometric distance principle on the number line to conquer absolute value simplifications effortlessly!',
+        keyTakeaway: '绝对值 |a| 的几何意义就是数轴上点 a 到原点的【距离】，距离永远是非负数（≥ 0）！',
+        keyTakeawayEn: 'The geometric meaning of |a| is the non-negative distance from point a to the origin on the number line!'
       },
       {
         sectionTitle: '二、核心解法精讲：去绝对值符号的标准三步法',
+        sectionTitleEn: 'Section 2: Standard 3-Step Absolute Value Removal',
         content: '我们来看一道初一期中常考压轴题：已知 a < 0 < b，且 |a| > |b|，如何化简 |a| + |b| - |a+b|？第一步：判断各绝对值内部代数式的正负号！因为 a < 0，所以 |a| = -a；因为 b > 0，所以 |b| = b；因为 a<0 且 |a|>|b|，可知 a+b < 0，所以 |a+b| = -(a+b) = -a-b。第二步：代入原式：(-a) + b - (-a - b) = -a + b + a + b = 2b！大家看，去掉符号后再合并同类项，是不是非常工整简单？',
-        keyTakeaway: '绝对值去符号口诀：“正数直接去，负数变相反，零去依然零”！'
+        contentEn: 'Let us solve a classic exam problem: Given a < 0 < b and |a| > |b|, simplify |a| + |b| - |a+b|. Step 1: Determine the sign of each inner expression: |a| = -a, |b| = b, and since a+b < 0, |a+b| = -(a+b) = -a-b. Step 2: Substitute and simplify: (-a) + b - (-a - b) = 2b. Clean and elegant!',
+        keyTakeaway: '绝对值去符号口诀：“正数直接去，负数变相反，零去依然零”！',
+        keyTakeawayEn: 'Mnemonic: "Positive stays positive, negative flips its sign, zero remains zero"!'
       }
     ],
     simplifiedExplanation: '如果觉得抽象，我们可以把数轴想象成一条直线跑道：原点是起点 0。往右走是正数，往左走是负数。绝对值 |a| 就是你从起点 0 走到点 a 所跑的【实际步数】。不管你往左跑还是往右跑，跑过的步数（距离）永远是正数！',
+    simplifiedExplanationEn: 'Think of the number line as a running track with 0 as the starting block. Moving right is positive; moving left is negative. The absolute value is simply the actual step count or distance you traveled, which is always positive!',
     checkQuestionPrompt: '同学们，上面关于“绝对值几何意义与去符号口诀”，你听懂了吗？',
+    checkQuestionPromptEn: 'Students, did you understand the geometric meaning of absolute values and the sign removal rule?',
     homeworkQuiz: [
       {
         id: 'hw-chu1-1',
@@ -1023,10 +2046,14 @@ export const INITIAL_CLASSROOM_LESSONS: ClassroomLesson[] = [
         gradeStage: '初中',
         gradeLevel: '初一',
         topic: '绝对值去符号',
+        topicEn: 'Absolute Value Simplification',
         question: '若 |x - 2| = 2 - x，则 x 的取值范围是（ ）。',
+        questionEn: 'If |x - 2| = 2 - x, what is the range of values for x?',
         options: ['A. x > 2', 'B. x ≥ 2', 'C. x < 2', 'D. x ≤ 2'],
+        optionsEn: ['A. x > 2', 'B. x ≥ 2', 'C. x < 2', 'D. x ≤ 2'],
         correctIndex: 3,
         explanation: '因 |x - 2| = -(x - 2) = 2 - x，说明绝对值里面的代数式 x - 2 必为非正数，即 x - 2 ≤ 0 ⟹ x ≤ 2。答案选 D。',
+        explanationEn: 'Since |x - 2| = -(x - 2), x - 2 must be non-positive, meaning x - 2 ≤ 0 ⟹ x ≤ 2.',
         questionType: 'choice',
         difficulty: 'medium',
         keyPoints: ['绝对值非负性', '去绝对值变号法则']
@@ -1037,26 +2064,37 @@ export const INITIAL_CLASSROOM_LESSONS: ClassroomLesson[] = [
     id: 'lesson-1-gaosan',
     subject: '物理',
     topic: '牛顿第二定律综合应用与受力分析',
+    topicEn: 'Newton\'s Second Law & Force Analysis Masterclass',
     gradeLevel: '高三/高考',
     semester: '上学期',
     countryRegion: '中国大陆',
     educationSystem: '人教版 (新高考新教材)',
     teacherName: '智学名师 · 张特级',
+    teacherNameEn: 'Master Teacher · Zhang',
     lectureTitle: '高考物理一轮复习：牛顿第二定律综合模型与受力分析破局',
+    lectureTitleEn: 'Physics Masterclass: Newton\'s Second Law & Force Decomposition Models',
     lectureSections: [
       {
         sectionTitle: '一、经典场景导入：为什么受力分析决定高考物理成败？',
+        sectionTitleEn: 'Section 1: Why Force Analysis Decides Physics Success',
         content: '同学们好！欢迎来到高考物理名师讲堂。高三一轮复习中，力学是整座物理大厦的基石。很多同学觉得“公式我都背过（F=ma），但一做高考大题就毫无头绪”。根本原因在于：你没有真正掌握【受力分析三步法】与【瞬时性判定】。今天张老师带大家彻底拿下这个必考核心模型！',
-        keyTakeaway: '受力分析是解题的第一要素，F合 与 a 具有瞬时对应性与同向性！'
+        contentEn: 'Welcome students to our Physics Masterclass! Mechanics is the bedrock of physics. The most common stumbling block is not memorizing F=ma, but mastering systematic free-body diagrams and instantaneous vector analysis. Today, let us dismantle this essential topic step by step!',
+        keyTakeaway: '受力分析是解题的第一要素，F合 与 a 具有瞬时对应性与同向性！',
+        keyTakeawayEn: 'Free-body diagrams are the foremost step in physics; net force and acceleration share instantaneous proportionality and direction!'
       },
       {
         sectionTitle: '二、核心推导与解题规范：斜面滑块与超重失重拆解',
+        sectionTitleEn: 'Section 2: Inclined Plane Decomposition & Apparent Weight',
         content: '我们来看一道高考真题变式：质量为 m 的物体放在倾角为 θ 的粗糙斜面上，受到水平向右的拉力 F。如何判断它的运动趋势？首先，隔离物体 m；第二步，画出重力 mg（竖直向下）、支持力 N（垂直斜面向上）、拉力 F（水平向右）；第三步，将所有力沿【平行斜面】和【垂直斜面】建立直角坐标系正交分解！垂直斜面方向无加速度：N = mg*cosθ + F*sinθ；平行斜面方向：若拉力分量大于重力分量与最大静摩擦力，物体将向上加速：F*cosθ - mg*sinθ - f = m*a。大家看，思路是不是瞬间清爽了？',
-        keyTakeaway: '建系原则：顺着加速度方向建 x 轴，垂直加速度建 y 轴，分解不受力的“斜力”。'
+        contentEn: 'Let us examine a block of mass m on a rough incline of angle θ under horizontal pulling force F. Step 1: Isolate mass m. Step 2: Identify gravity (mg downwards), normal force (N perpendicular to incline), and pulling force (F horizontal). Step 3: Decompose forces orthogonally along and perpendicular to the incline. Perpendicular: N = mg*cosθ + F*sinθ. Along the incline: F*cosθ - mg*sinθ - f = m*a. The logic is rigorous and transparent!',
+        keyTakeaway: '建系原则：顺着加速度方向建 x 轴，垂直加速度建 y 轴，分解不受力的“斜力”。',
+        keyTakeawayEn: 'Coordinate rule: align the x-axis with acceleration, y-axis perpendicular, and decompose inclined force vectors.'
       }
     ],
     simplifiedExplanation: '如果觉得抽象，我们可以用“推购物车上斜坡”来比喻：拉力 F 往右拉，一部分力用来把车往斜坡上拽（F*cosθ），一部分力把车往斜坡面上压（F*sinθ，增加了地面摩擦）。只有向上的拽力大于重力下滑力与摩擦力之和，车子才会加速跑起来！',
+    simplifiedExplanationEn: 'Think of pushing a shopping cart up a ramp: your pushing force splits into an upward pull along the ramp (F*cosθ) and a downward press onto the surface (F*sinθ). Only when the upward pull overcomes gravity\'s downward component and friction will the cart accelerate!',
     checkQuestionPrompt: '同学们，上面关于斜面正交分解与 F合=ma 的推导逻辑，你听懂了吗？',
+    checkQuestionPromptEn: 'Students, did you understand the orthogonal force decomposition and F_net=ma deduction?',
     homeworkQuiz: [
       {
         id: 'hw-gaosan-1',
@@ -1064,10 +2102,14 @@ export const INITIAL_CLASSROOM_LESSONS: ClassroomLesson[] = [
         gradeStage: '高中',
         gradeLevel: '高三/高考',
         topic: '牛顿第二定律',
+        topicEn: 'Newton\'s Second Law',
         question: '质量为 2kg 的物体在倾角 30° 的光滑斜面上下滑，重力加速度 g=10m/s²。求物体的加速度大小为：',
+        questionEn: 'An object of mass 2kg slides down a smooth incline of 30° with g=10m/s². What is its acceleration?',
         options: ['A. 2.5 m/s²', 'B. 5.0 m/s²', 'C. 8.6 m/s²', 'D. 10 m/s²'],
+        optionsEn: ['A. 2.5 m/s²', 'B. 5.0 m/s²', 'C. 8.6 m/s²', 'D. 10 m/s²'],
         correctIndex: 1,
         explanation: '在光滑斜面上，合外力只有重力沿斜面的分力：F合 = mg*sin30° = 2*10*0.5 = 10N。根据 F合 = ma，a = 10/2 = 5m/s²。答案选 B。',
+        explanationEn: 'Net force along smooth incline is F = mg*sin30° = 2 * 10 * 0.5 = 10N. By F=ma, a = 10/2 = 5.0 m/s².',
         questionType: 'choice',
         difficulty: 'medium',
         keyPoints: ['牛顿第二定律', '斜面受力分析']
@@ -1078,10 +2120,14 @@ export const INITIAL_CLASSROOM_LESSONS: ClassroomLesson[] = [
         gradeStage: '高中',
         gradeLevel: '高三/高考',
         topic: '超重与失重',
+        topicEn: 'Apparent Weight',
         question: '人站在电梯中的体重计上，当电梯以 2m/s² 的加速度加速上升时，体重计的示数与静止时相比：',
+        questionEn: 'A person stands on a scale in an elevator accelerating upward at 2 m/s². The scale reading compared to at rest is:',
         options: ['A. 增大（超重）', 'B. 减小（失重）', 'C. 不变', 'D. 变为零'],
+        optionsEn: ['A. Increases (Overweight)', 'B. Decreases', 'C. Unchanged', 'D. Zero'],
         correctIndex: 0,
         explanation: '加速度向上时，N - mg = ma => N = m(g+a) > mg，此时人处于超重状态，示数增大。答案选 A。',
+        explanationEn: 'With upward acceleration, N - mg = ma ⟹ N = m(g+a) > mg, producing an apparent weight increase (hypergravity).',
         questionType: 'choice',
         difficulty: 'easy',
         keyPoints: ['超重与失重', '加速度方向判断']
@@ -1092,26 +2138,37 @@ export const INITIAL_CLASSROOM_LESSONS: ClassroomLesson[] = [
     id: 'lesson-2-gaoyi',
     subject: '数学',
     topic: '二次函数的图像与区间最值（轴动区间定模型）',
+    topicEn: 'Quadratic Function Extrema on Closed Intervals',
     gradeLevel: '高一',
     semester: '上学期',
     countryRegion: '中国大陆',
     educationSystem: '人教版',
     teacherName: '智学名师 · 王老师',
+    teacherNameEn: 'Master Teacher · Wang',
     lectureTitle: '高一数学必修一：二次函数区间最值的分类讨论精讲',
+    lectureTitleEn: 'Senior High Math: Quadratic Function Extrema on Defined Intervals',
     lectureSections: [
       {
         sectionTitle: '一、引入：初高中数学衔接的最大难点',
+        sectionTitleEn: 'Section 1: The Transition from Middle to High School Math',
         content: '同学们好！初中我们学二次函数，自变量 x 通常是全体实数，最值直接看顶点。但到了高一，自变量被限制在指定闭区间 [m, n] 上！这就演变成了高中数学第一个高频考点——分类讨论。今天王老师教大家用“对称轴与区间相对位置”三步解题！',
-        keyTakeaway: '区间最值看两要素：抛物线开口方向 + 对称轴在区间的左侧、内部还是右侧！'
+        contentEn: 'Hello students! In junior high, the domain of a quadratic function is typically all real numbers. In high school, the domain is constrained to closed intervals [m, n], requiring systematic casework based on the position of the axis of symmetry relative to the interval.',
+        keyTakeaway: '区间最值看两要素：抛物线开口方向 + 对称轴在区间的左侧、内部还是右侧！',
+        keyTakeawayEn: 'Interval extrema depend on two factors: parabola orientation + axis of symmetry position relative to the interval!'
       },
       {
         sectionTitle: '二、模型拆解：开口向上 f(x)=x^2-2ax+1 在 [0, 2] 上的最小值',
+        sectionTitleEn: 'Section 2: Model Dissection for f(x)=x^2-2ax+1 on [0, 2]',
         content: '我们来看开口向上的二次函数 f(x) = (x-a)^2 + 1-a^2，对称轴为 x = a。当对称轴 a 在区间左侧（a < 0）时，函数在 [0, 2] 上单调递增，最小值在左端点 f(0) 处取得；当对称轴在区间内部（0 ≤ a ≤ 2）时，最小值就是顶点的纵坐标 f(a)；当对称轴在区间右侧（a > 2）时，函数在 [0, 2] 上单调递减，最小值在右端点 f(2) 处取得。三种情况全面覆盖，绝漏掉任何一种！',
-        keyTakeaway: '分类讨论标准：对称轴 < 左端点、对称轴在区间内、对称轴 > 右端点。'
+        contentEn: 'Consider f(x) = (x-a)^2 + 1-a^2 with axis of symmetry x = a on interval [0, 2]. Case 1: When a < 0, f(x) strictly increases on [0, 2], so the minimum is at f(0). Case 2: When 0 ≤ a ≤ 2, the minimum is the vertex f(a). Case 3: When a > 2, f(x) strictly decreases on [0, 2], so the minimum is at f(2). Three complete cases leaving zero loopholes!',
+        keyTakeaway: '分类讨论标准：对称轴 < 左端点、对称轴在区间内、对称轴 > 右端点。',
+        keyTakeawayEn: 'Standard casework: Axis < Left endpoint, Axis inside interval, Axis > Right endpoint.'
       }
     ],
     simplifiedExplanation: '我们可以想象在滑滑梯：区间 [0, 2] 就是你滑滑梯的活动范围。如果最底端（顶点）落在你的范围内，最低点就是滑滑梯的最底端；如果最底端在你左边远处，那你活动范围内最左边就是最低的；反之最右边就是最低的。',
+    simplifiedExplanationEn: 'Picture a playground slide: [0, 2] is your segment of the slide. If the lowest curve point sits within your segment, that is the minimum. If the bottom curve lies far to your left, the leftmost boundary is the lowest point!',
     checkQuestionPrompt: '同学们，上面关于“对称轴与区间相对位置”的 3 种分类讨论方法，你听懂了吗？',
+    checkQuestionPromptEn: 'Students, did you understand the 3-case breakdown based on the symmetry axis and interval?',
     homeworkQuiz: [
       {
         id: 'hw-gaoyi-1',
@@ -1119,10 +2176,14 @@ export const INITIAL_CLASSROOM_LESSONS: ClassroomLesson[] = [
         gradeStage: '高中',
         gradeLevel: '高一',
         topic: '二次函数最值',
+        topicEn: 'Quadratic Function Extrema',
         question: '函数 f(x) = (x-1)^2 + 2 在区间 [2, 4] 上的最小值是：',
+        questionEn: 'The minimum value of f(x) = (x-1)^2 + 2 on the interval [2, 4] is:',
         options: ['A. 2', 'B. 3', 'C. 11', 'D. 6'],
+        optionsEn: ['A. 2', 'B. 3', 'C. 11', 'D. 6'],
         correctIndex: 1,
         explanation: '对称轴为 x = 1，区间为 [2, 4]。对称轴在区间左侧，因此 f(x) 在 [2, 4] 上递增。最小值在 x = 2 处，f(2) = (2-1)^2 + 2 = 3。答案选 B。',
+        explanationEn: 'The axis is x = 1, located to the left of [2, 4]. f(x) increases on [2, 4], so minimum is at x = 2: f(2) = (2-1)^2 + 2 = 3.',
         questionType: 'choice',
         difficulty: 'easy',
         keyPoints: ['二次函数区间最值', '对称轴判定']
@@ -1133,26 +2194,37 @@ export const INITIAL_CLASSROOM_LESSONS: ClassroomLesson[] = [
     id: 'lesson-3-chusan',
     subject: '化学',
     topic: '质量守恒定律与化学方程式配平精讲',
+    topicEn: 'Law of Conservation of Mass & Chemical Equation Balancing',
     gradeLevel: '初三/中考',
     semester: '上学期',
     countryRegion: '中国大陆',
     educationSystem: '人教版',
     teacherName: '智学名师 · 李老师',
+    teacherNameEn: 'Master Teacher · Li',
     lectureTitle: '初三化学中考冲刺：质量守恒定律微观本质与配平技巧',
+    lectureTitleEn: 'Junior 3 Chemistry: Law of Conservation of Mass & Equation Balancing',
     lectureSections: [
       {
         sectionTitle: '一、导入：为什么化学反应前后质量不会凭空消失？',
+        sectionTitleEn: 'Section 1: Why Mass Never Vanishes in Reactions',
         content: '同学们好！化学是一门以实验为基础的学科。很多初三同学做实验时疑问：木炭燃烧后只剩下灰烬，质量变小了，难道质量守恒定律错了吗？当然没有！因为生成的二氧化碳气体逸散到了空气中。如果在密闭容器中，反应前后的总质量必定严格相等！',
-        keyTakeaway: '质量守恒定律微观本质：化学反应前后，原子的种类、数目、质量均保持不变！'
+        contentEn: 'Hello students! Welcome to Chemistry Masterclass. When charcoal burns into ash, it seems lighter—did mass disappear? Absolutely not: carbon dioxide gas escaped into the atmosphere. In a sealed container, total reactant mass precisely equals total product mass!',
+        keyTakeaway: '质量守恒定律微观本质：化学反应前后，原子的种类、数目、质量均保持不变！',
+        keyTakeawayEn: 'Microscopic essence: The types, counts, and individual masses of atoms remain constant in chemical reactions!'
       },
       {
         sectionTitle: '二、中考必考配平技巧：最小公倍数法与奇偶配平法',
+        sectionTitleEn: 'Section 2: Least Common Multiple Equation Balancing',
         content: '配平化学方程式时，不要盲目凑数。例如配平 Fe + O2 -> Fe3O4：反应前 O 为 2 个，反应后 O 为 4 个，最小公倍数是 4，所以在 O2 前填 2；反应后 Fe 为 3 个，所以在 Fe 前填 3。即 3Fe + 2O2 = Fe3O4（点燃）。记准“六不变”：原子种类、数目、质量不变；元素种类、质量不变；物质总质量不变。',
-        keyTakeaway: '化学反应宏观与微观“六不变”，抓准原子个数守恒即能快速配平。'
+        contentEn: 'To balance Fe + O2 -> Fe3O4: Oxygen has 2 atoms on left and 4 on right (LCM = 4), so place 2 before O2. Iron has 3 atoms on right, so place 3 before Fe. Balanced: 3Fe + 2O2 = Fe3O4. Remember the six invariants of chemical reactions!',
+        keyTakeaway: '化学反应宏观与微观“六不变”，抓准原子个数守恒即能快速配平。',
+        keyTakeawayEn: 'Six invariants: atom species, numbers, mass; element species, mass; total mass.'
       }
     ],
     simplifiedExplanation: '质量守恒就好像玩积木：反应前你有 3 个红积木和 4 个蓝积木，拆开后重新拼成新的模型，积木的总个数和总重量依然是 3 个红 + 4 个蓝，一个都没有掉，也没有凭空多出来！',
+    simplifiedExplanationEn: 'Conservation of mass is like building blocks: if you start with 3 red and 4 blue blocks and rebuild them into a new model, the total count and weight remains 3 red and 4 blue blocks!',
     checkQuestionPrompt: '同学们，上面关于“原子种类与数目不变”及最小公倍数配平法，你听懂了吗？',
+    checkQuestionPromptEn: 'Students, did you understand the conservation of atoms and the balancing method?',
     homeworkQuiz: [
       {
         id: 'hw-chusan-1',
@@ -1160,10 +2232,14 @@ export const INITIAL_CLASSROOM_LESSONS: ClassroomLesson[] = [
         gradeStage: '初中',
         gradeLevel: '初三/中考',
         topic: '质量守恒定律',
+        topicEn: 'Law of Conservation of Mass',
         question: '在化学反应 A + 2B = C + 2D 中，已知 6g A 与足量 B 充分反应后生成 8g C 和 10g D，则参加反应的 B 的质量为：',
+        questionEn: 'In reaction A + 2B = C + 2D, 6g of A reacts with B to produce 8g of C and 10g of D. What mass of B reacted?',
         options: ['A. 12g', 'B. 14g', 'C. 16g', 'D. 18g'],
+        optionsEn: ['A. 12g', 'B. 14g', 'C. 16g', 'D. 18g'],
         correctIndex: 0,
         explanation: '根据质量守恒定律：反应物总质量 = 生成物总质量。m(A) + m(B) = m(C) + m(D) => 6g + m(B) = 8g + 10g = 18g => m(B) = 12g。答案选 A。',
+        explanationEn: 'By conservation of mass: m(A) + m(B) = m(C) + m(D) ⟹ 6g + m(B) = 8g + 10g = 18g ⟹ m(B) = 12g.',
         questionType: 'choice',
         difficulty: 'easy',
         keyPoints: ['质量守恒定律计算', '质量守恒定律微观本质']

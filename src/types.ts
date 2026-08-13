@@ -134,29 +134,40 @@ export type QuestionDifficulty = '基础' | '中等' | '拔高' | 'easy' | 'medi
 export interface CoursePreviewGuide {
   id: string;
   title: string;
+  titleEn?: string;
   chapterTitle?: string;
   subject: string;
   gradeLevel: string; // e.g. '初中', '高中'
   semester?: string; // e.g. '上学期', '下学期'
   publisher?: string; // e.g. '人教版', '沪教版'
   overview: string;
+  overviewEn?: string;
   estimatedTimeMinutes: number;
   estimatedMinutes?: number;
   learningObjectives: string[];
+  learningObjectivesEn?: string[];
   prerequisites: string[];
+  prerequisitesEn?: string[];
   coreDefinitions: Array<{
     name: string;
+    nameEn?: string;
     explanation: string;
+    explanationEn?: string;
     keyFormula?: string;
+    keyFormulaEn?: string;
   }>;
   selfCheckQuiz: Array<{
     id?: string;
     question: string;
+    questionEn?: string;
     options: string[];
+    optionsEn?: string[];
     correctIndex: number;
     explanation: string;
+    explanationEn?: string;
   }>;
   questionsToAskTeacher: string[];
+  questionsToAskTeacherEn?: string[];
 }
 
 export interface UserProfile {
@@ -198,13 +209,27 @@ export interface QuestionBankItem {
   keyPoints: string[];
 }
 
+export interface ClassroomCheckpoint {
+  question: string;
+  questionEn?: string;
+  options?: string[];
+  optionsEn?: string[];
+  correctIndex?: number;
+  explanation: string;
+  explanationEn?: string;
+  type?: 'choice' | 'open';
+}
+
 export interface ClassroomSection {
   sectionTitle: string;
   sectionTitleEn?: string;
+  objective?: string;
+  objectiveEn?: string;
   content: string;
   contentEn?: string;
   keyTakeaway: string;
   keyTakeawayEn?: string;
+  checkpoint?: ClassroomCheckpoint;
 }
 
 export interface ClassroomLesson {
@@ -220,6 +245,8 @@ export interface ClassroomLesson {
   teacherNameEn?: string;
   lectureTitle: string;
   lectureTitleEn?: string;
+  objective?: string;
+  objectiveEn?: string;
   lectureSections: ClassroomSection[];
   simplifiedExplanation: string;
   simplifiedExplanationEn?: string;

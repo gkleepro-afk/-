@@ -1176,6 +1176,66 @@ export const TRANSLATIONS = {
     zh: '确认并继续复习',
     en: 'Confirm & Continue',
     bilingual: '确认并继续复习 / Confirm & Continue',
+  },
+  lectureLanguageMode: {
+    zh: '讲堂授课语言',
+    en: 'Lecture Language',
+    bilingual: '讲堂授课语言 / Lecture Language',
+  },
+  lectureLangZh: {
+    zh: '🇨🇳 中文授课',
+    en: '🇨🇳 Chinese Lecture',
+    bilingual: '🇨🇳 中文授课 / Chinese',
+  },
+  lectureLangEn: {
+    zh: '🇬🇧 英文授课',
+    en: '🇬🇧 English Lecture',
+    bilingual: '🇬🇧 英文授课 / English',
+  },
+  lectureLangBi: {
+    zh: '🌐 中英双语',
+    en: '🌐 Bilingual',
+    bilingual: '🌐 中英双语 / Bilingual',
+  },
+  selectVoicePrompt: {
+    zh: '名师发音与音色',
+    en: 'Teacher Voice',
+    bilingual: '名师音色 / Teacher Voice',
+  },
+  voiceZhGroup: {
+    zh: '中文发音 (Mandarin)',
+    en: 'Chinese Voices',
+    bilingual: '中文发音 / Chinese Voices',
+  },
+  voiceEnGroup: {
+    zh: '英语发音 (English)',
+    en: 'English Voices',
+    bilingual: '英语发音 / English Voices',
+  },
+  voiceSpeed: {
+    zh: '语速',
+    en: 'Speed',
+    bilingual: '语速 / Speed',
+  },
+  readAloudPreview: {
+    zh: '朗读预习指南',
+    en: 'Read Aloud Guide',
+    bilingual: '朗读预习指南 / Read Aloud',
+  },
+  stopAudio: {
+    zh: '停止朗读',
+    en: 'Stop Audio',
+    bilingual: '停止朗读 / Stop Audio',
+  },
+  listenLecture: {
+    zh: '名师原声讲课',
+    en: 'Audio Lecture',
+    bilingual: '名师原声讲课 / Audio Lecture',
+  },
+  nextSectionAudio: {
+    zh: '下一节讲课',
+    en: 'Next Section',
+    bilingual: '下一节讲课 / Next Section',
   }
 };
 
