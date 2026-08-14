@@ -2,94 +2,320 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* CSS Theme Variables (Light & Dark Mode) */
+/* ==========================================================================
+   CSS Theme Variables (Light & Dark System)
+   ========================================================================== */
+
 :root {
+  /* Surface & Background Hierarchy */
   --bg-primary: #f8fafc;
   --bg-secondary: #ffffff;
   --bg-tertiary: #f1f5f9;
   --bg-card: #ffffff;
+  --bg-card-hover: #f8fafc;
   --bg-input: #ffffff;
+  --bg-input-focus: #ffffff;
   --bg-hover: #f1f5f9;
+  --bg-active: #e2e8f0;
+  --bg-modal: #ffffff;
+  --bg-popover: #ffffff;
+  --bg-dropdown: #ffffff;
+  
+  /* Translucent Glass & Overlays (Light) */
+  --bg-overlay: rgba(15, 23, 42, 0.45);
+  --bg-glass: rgba(255, 255, 255, 0.85);
+  --bg-glass-card: rgba(255, 255, 255, 0.92);
+  --bg-glass-subtle: rgba(248, 250, 252, 0.8);
 
+  /* Typography & Foreground Hierarchy */
   --text-primary: #0f172a;
   --text-secondary: #475569;
   --text-muted: #94a3b8;
   --text-inverse: #ffffff;
+  --text-placeholder: #94a3b8;
 
+  /* Borders & Dividers */
   --border-color: #e2e8f0;
   --border-light: #f1f5f9;
+  --border-hover: #cbd5e1;
   --border-focus: #3b82f6;
+  --border-glass: rgba(226, 232, 240, 0.8);
+  --border-subtle: rgba(226, 232, 240, 0.5);
 
+  /* Brand Accent & Functional Palettes */
   --accent-primary: #2563eb;
   --accent-hover: #1d4ed8;
   --accent-light: #eff6ff;
+  --accent-text: #1d4ed8;
+  --accent-border: #bfdbfe;
 
+  --success-bg: #f0fdf4;
+  --success-text: #16a34a;
+  --success-border: #bbf7d0;
+
+  --warning-bg: #fffbeb;
+  --warning-text: #d97706;
+  --warning-border: #fde68a;
+
+  --error-bg: #fef2f2;
+  --error-text: #dc2626;
+  --error-border: #fecaca;
+
+  --purple-bg: #faf5ff;
+  --purple-text: #9333ea;
+  --purple-border: #e9d5ff;
+
+  /* Table Specific Variables */
+  --table-bg: #ffffff;
+  --table-header-bg: #f8fafc;
+  --table-header-text: #475569;
+  --table-border: #e2e8f0;
+  --table-row-hover: #f1f5f9;
+  --table-stripe-bg: #f8fafc;
+
+  /* Code & Syntax Highlighting */
   --code-bg: #f1f5f9;
   --code-text: #0284c7;
+  --code-border: #e2e8f0;
 
+  /* Scrollbars */
   --scrollbar-thumb: rgba(148, 163, 184, 0.4);
   --scrollbar-thumb-hover: rgba(100, 116, 139, 0.7);
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  /* Elevation Shadows */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
 [data-theme='dark'],
 .dark {
+  /* Surface & Background Hierarchy */
   --bg-primary: #0b0f19;
   --bg-secondary: #111827;
   --bg-tertiary: #1e293b;
   --bg-card: #111827;
+  --bg-card-hover: #172033;
   --bg-input: #1e293b;
+  --bg-input-focus: #1e293b;
   --bg-hover: #1e293b;
+  --bg-active: #334155;
+  --bg-modal: #111827;
+  --bg-popover: #1e293b;
+  --bg-dropdown: #1e293b;
 
+  /* Translucent Glass & Overlays (Dark) */
+  --bg-overlay: rgba(0, 0, 0, 0.75);
+  --bg-glass: rgba(17, 24, 39, 0.85);
+  --bg-glass-card: rgba(30, 41, 59, 0.85);
+  --bg-glass-subtle: rgba(15, 23, 42, 0.8);
+
+  /* Typography & Foreground Hierarchy */
   --text-primary: #f8fafc;
   --text-secondary: #cbd5e1;
   --text-muted: #64748b;
   --text-inverse: #0f172a;
+  --text-placeholder: #64748b;
 
+  /* Borders & Dividers */
   --border-color: #334155;
   --border-light: #1e293b;
+  --border-hover: #475569;
   --border-focus: #60a5fa;
+  --border-glass: rgba(51, 65, 85, 0.6);
+  --border-subtle: rgba(51, 65, 85, 0.35);
 
+  /* Brand Accent & Functional Palettes */
   --accent-primary: #3b82f6;
   --accent-hover: #60a5fa;
   --accent-light: rgba(59, 130, 246, 0.15);
+  --accent-text: #93c5fd;
+  --accent-border: rgba(59, 130, 246, 0.3);
 
+  --success-bg: rgba(34, 197, 94, 0.12);
+  --success-text: #4ade80;
+  --success-border: rgba(34, 197, 94, 0.25);
+
+  --warning-bg: rgba(245, 158, 11, 0.12);
+  --warning-text: #fbbf24;
+  --warning-border: rgba(245, 158, 11, 0.25);
+
+  --error-bg: rgba(239, 68, 68, 0.12);
+  --error-text: #f87171;
+  --error-border: rgba(239, 68, 68, 0.25);
+
+  --purple-bg: rgba(168, 85, 247, 0.12);
+  --purple-text: #c084fc;
+  --purple-border: rgba(168, 85, 247, 0.25);
+
+  /* Table Specific Variables */
+  --table-bg: #111827;
+  --table-header-bg: #1e293b;
+  --table-header-text: #cbd5e1;
+  --table-border: #334155;
+  --table-row-hover: #1e293b;
+  --table-stripe-bg: #172033;
+
+  /* Code & Syntax Highlighting */
   --code-bg: #1e293b;
   --code-text: #38bdf8;
+  --code-border: #334155;
 
+  /* Scrollbars */
   --scrollbar-thumb: rgba(71, 85, 105, 0.6);
   --scrollbar-thumb-hover: rgba(100, 116, 139, 0.85);
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  /* Elevation Shadows (Dark) */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 1px 2px -1px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -4px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.7), 0 8px 10px -6px rgba(0, 0, 0, 0.6);
+  --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.85);
 }
 
-/* Global smooth transition for theme switching */
+/* ==========================================================================
+   Global Base Styles
+   ========================================================================== */
+
 html {
   transition: background-color 0.25s ease, color 0.25s ease;
   background-color: var(--bg-primary);
   color: var(--text-primary);
 }
 
-/* Custom scrollbars */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+/* Custom Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb);
   border-radius: 9999px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-thumb-hover);
 }
 
-/* Markdown body rendering styles using CSS Variables */
+/* ==========================================================================
+   Dark Mode Component Overrides ([data-theme='dark'] & .dark)
+   ========================================================================== */
+
+/* Form Controls & Inputs */
+[data-theme='dark'] input:not([type="checkbox"]):not([type="radio"]):not([type="button"]):not([type="submit"]),
+[data-theme='dark'] textarea,
+[data-theme='dark'] select,
+.dark input:not([type="checkbox"]):not([type="radio"]):not([type="button"]):not([type="submit"]),
+.dark textarea,
+.dark select {
+  color-scheme: dark;
+}
+
+[data-theme='dark'] input::placeholder,
+[data-theme='dark'] textarea::placeholder,
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: var(--text-placeholder);
+}
+
+/* Table Elements */
+[data-theme='dark'] table,
+.dark table {
+  background-color: var(--table-bg);
+  border-color: var(--table-border);
+}
+
+[data-theme='dark'] thead,
+[data-theme='dark'] th,
+.dark thead,
+.dark th {
+  background-color: var(--table-header-bg);
+  color: var(--table-header-text);
+  border-color: var(--table-border);
+}
+
+[data-theme='dark'] td,
+.dark td {
+  border-color: var(--table-border);
+  color: var(--text-primary);
+}
+
+[data-theme='dark'] tbody tr:hover,
+.dark tbody tr:hover {
+  background-color: var(--table-row-hover);
+}
+
+/* Modal Dialogs & Backdrops */
+[data-theme='dark'] .modal-backdrop,
+[data-theme='dark'] .modal-overlay,
+.dark .modal-backdrop,
+.dark .modal-overlay {
+  background-color: var(--bg-overlay) !important;
+  backdrop-filter: blur(4px);
+}
+
+[data-theme='dark'] .modal-content,
+[data-theme='dark'] .modal-container,
+[data-theme='dark'] [role="dialog"],
+.dark .modal-content,
+.dark .modal-container,
+.dark [role="dialog"] {
+  background-color: var(--bg-modal);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  box-shadow: var(--shadow-modal);
+}
+
+/* Glassmorphism & Translucent Overlays */
+[data-theme='dark'] .glass-panel,
+[data-theme='dark'] .glass-card,
+.dark .glass-panel,
+.dark .glass-card {
+  background-color: var(--bg-glass-card);
+  border-color: var(--border-glass);
+  backdrop-filter: blur(8px);
+}
+
+/* Dropdown Menus & Popovers */
+[data-theme='dark'] .dropdown-menu,
+[data-theme='dark'] .popover-panel,
+.dark .dropdown-menu,
+.dark .popover-panel {
+  background-color: var(--bg-dropdown);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-xl);
+}
+
+/* Card & Container Components */
+[data-theme='dark'] .card,
+[data-theme='dark'] .panel,
+.dark .card,
+.dark .panel {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   Markdown Rich-Text Typography Styles
+   ========================================================================== */
+
 .markdown-body h1 {
   font-size: 1.25rem;
   font-weight: 700;
@@ -97,6 +323,7 @@ html {
   margin-bottom: 0.5rem;
   color: var(--text-primary);
 }
+
 .markdown-body h2 {
   font-size: 1.125rem;
   font-weight: 700;
@@ -104,6 +331,7 @@ html {
   margin-bottom: 0.375rem;
   color: var(--text-primary);
 }
+
 .markdown-body h3 {
   font-size: 1rem;
   font-weight: 700;
@@ -111,41 +339,89 @@ html {
   margin-bottom: 0.25rem;
   color: var(--text-secondary);
 }
+
 .markdown-body p {
   margin-bottom: 0.625rem;
   line-height: 1.65;
   color: inherit;
 }
+
 .markdown-body ul {
   list-style-type: disc;
   padding-left: 1.25rem;
   margin-bottom: 0.625rem;
 }
+
 .markdown-body ol {
   list-style-type: decimal;
   padding-left: 1.25rem;
   margin-bottom: 0.625rem;
 }
+
 .markdown-body li {
   margin-bottom: 0.25rem;
 }
+
+.markdown-body blockquote {
+  border-left: 4px solid var(--accent-primary);
+  padding-left: 1rem;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-secondary);
+  background-color: var(--bg-tertiary);
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-radius: 0 0.375rem 0.375rem 0;
+}
+
 .markdown-body strong {
   font-weight: 700;
   color: var(--text-primary);
 }
+
 .markdown-body code {
   background-color: var(--code-bg);
   padding: 0.125rem 0.375rem;
   border-radius: 0.375rem;
   font-size: 0.875em;
   color: var(--code-text);
+  border: 1px solid var(--code-border);
 }
 
-/* Print specific styles for question papers & error logs */
+.markdown-body pre {
+  background-color: var(--code-bg);
+  border: 1px solid var(--code-border);
+  padding: 0.875rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.markdown-body pre code {
+  background-color: transparent;
+  padding: 0;
+  border: none;
+  color: var(--text-primary);
+}
+
+.markdown-body hr {
+  border: 0;
+  border-top: 1px solid var(--border-color);
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+/* ==========================================================================
+   Print Specific Styles (Paper Exports & Offline Study)
+   ========================================================================== */
+
 @media print {
   body {
-    background: white !important;
-    color: black !important;
+    background: #ffffff !important;
+    color: #000000 !important;
   }
   aside, nav, header, .no-print, button:not(.print-include) {
     display: none !important;

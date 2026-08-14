@@ -85,15 +85,19 @@ export default function App() {
     const applyTheme = () => {
       if (themeMode === 'dark') {
         root.classList.add('dark');
+        root.setAttribute('data-theme', 'dark');
       } else if (themeMode === 'light') {
         root.classList.remove('dark');
+        root.setAttribute('data-theme', 'light');
       } else {
         // System preference
         const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         if (systemPrefersDark) {
           root.classList.add('dark');
+          root.setAttribute('data-theme', 'dark');
         } else {
           root.classList.remove('dark');
+          root.setAttribute('data-theme', 'light');
         }
       }
     };
