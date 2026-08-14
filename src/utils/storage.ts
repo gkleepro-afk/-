@@ -13,6 +13,25 @@ const KEYS = {
   EXAM_PAPERS: 'zhixue_exam_papers_v1',
   EXAM_SUBMISSIONS: 'zhixue_exam_submissions_v1',
   CLASSROOM_LESSONS: 'zhixue_classroom_lessons_v1',
+  THEME_MODE: 'zhixue_theme_mode_v1',
+};
+
+export type ThemeMode = 'light' | 'dark' | 'system';
+
+export const getStoredThemeMode = (): ThemeMode => {
+  try {
+    const raw = localStorage.getItem(KEYS.THEME_MODE);
+    if (raw === 'light' || raw === 'dark' || raw === 'system') {
+      return raw;
+    }
+    return 'system';
+  } catch {
+    return 'system';
+  }
+};
+
+export const saveThemeMode = (mode: ThemeMode) => {
+  localStorage.setItem(KEYS.THEME_MODE, mode);
 };
 
 const mergeById = <T extends { id: string }>(initial: T[], stored: T[]): T[] => {
@@ -256,4 +275,50 @@ export const getStoredClassroomLessons = (): ClassroomLesson[] => {
 export const saveClassroomLessons = (lessons: ClassroomLesson[]) => {
   localStorage.setItem(KEYS.CLASSROOM_LESSONS, JSON.stringify(lessons));
 };
+
+// Full Study Data Backup & Restore
+export const exportAllStudyDataJSON = (): string => {
+  const data = {
+    version: '1.0',
+    exportedAt: new Date().toISOString(),
+    userProfile: getStoredUserProfile(),
+    userStats: getStoredStats(),
+    tasks: getStoredTasks(),
+    flashcards: getStoredFlashcards(),
+    plans: getStoredPlans(),
+    quizzes: getStoredQuizzes(),
+    questionBank: getStoredQuestionBank(),
+    coursePreviews: getStoredCoursePreviews(),
+    examPapers: getStoredExamPapers(),
+    examSubmissions: getStoredExamSubmissions(),
+    classroomLessons: getStoredClassroomLessons(),
+    themeMode: getStoredThemeMode(),
+  };
+  return JSON.stringify(data, null, 2);
+};
+
+export const importAllStudyDataJSON = (jsonString: string): boolean => {
+  try {
+    const data = JSON.parse(jsonString);
+    if (!data || typeof data !== 'object') return false;
+
+    if (data.userProfile) localStorage.setItem(KEYS.USER_PROFILE, JSON.stringify(data.userProfile));
+    if (data.userStats) localStorage.setItem(KEYS.STATS, JSON.stringify(data.userStats));
+    if (data.tasks) localStorage.setItem(KEYS.TASKS, JSON.stringify(data.tasks));
+    if (data.flashcards) localStorage.setItem(KEYS.FLASHCARDS, JSON.stringify(data.flashcards));
+    if (data.plans) localStorage.setItem(KEYS.PLANS, JSON.stringify(data.plans));
+    if (data.quizzes) localStorage.setItem(KEYS.QUIZZES, JSON.stringify(data.quizzes));
+    if (data.questionBank) localStorage.setItem(KEYS.QUESTION_BANK, JSON.stringify(data.questionBank));
+    if (data.coursePreviews) localStorage.setItem(KEYS.COURSE_PREVIEWS, JSON.stringify(data.coursePreviews));
+    if (data.examPapers) localStorage.setItem(KEYS.EXAM_PAPERS, JSON.stringify(data.examPapers));
+    if (data.examSubmissions) localStorage.setItem(KEYS.EXAM_SUBMISSIONS, JSON.stringify(data.examSubmissions));
+    if (data.classroomLessons) localStorage.setItem(KEYS.CLASSROOM_LESSONS, JSON.stringify(data.classroomLessons));
+    if (data.themeMode) localStorage.setItem(KEYS.THEME_MODE, data.themeMode);
+
+    return true;
+  } catch {
+    return false;
+  }
+};
+
 

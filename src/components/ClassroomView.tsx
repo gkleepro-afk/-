@@ -428,22 +428,22 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
   };
 
   return (
-    <div className="flex-1 overflow-y-auto bg-slate-50 pb-20">
+    <div className="flex-1 overflow-y-auto bg-slate-50 dark:bg-slate-950 pb-20 text-slate-900 dark:text-slate-100 transition-colors duration-200">
       {/* Header Banner */}
-      <header className="bg-white border-b border-slate-200 px-6 sm:px-8 py-6 sticky top-0 z-10 shadow-2xs">
+      <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 sm:px-8 py-6 sticky top-0 z-10 shadow-2xs">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-3">
-              <h2 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-                <GraduationCap className="w-7 h-7 text-blue-600" />
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+                <GraduationCap className="w-7 h-7 text-blue-600 dark:text-blue-400" />
                 {t('classroomTitle')}
               </h2>
-              <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 border border-blue-100 flex items-center gap-1">
+              <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-800 flex items-center gap-1">
                 <Sparkles className="w-3.5 h-3.5" />
                 Interactive Classroom Speech
               </span>
             </div>
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
               {t('classroomSubtitle')}
             </p>
           </div>
@@ -492,24 +492,24 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         </div>
 
         {/* Lesson Navigation & Filter */}
-        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-2xs space-y-3">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+        <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs space-y-3">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-800 pb-3">
             <div className="flex items-center gap-2">
-              <BookOpen className="w-4 h-4 text-blue-600" />
-              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+              <BookOpen className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+              <span className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                 {t('lessonListTitle')}
               </span>
             </div>
 
             <div className="flex items-center gap-2">
-              <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-xs">
+              <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-0.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs">
                 <button
                   type="button"
                   onClick={() => setFilterMode('matched')}
                   className={`px-2.5 py-1 rounded-md font-medium transition-all ${
                     filterMode === 'matched'
-                      ? 'bg-white text-blue-700 shadow-xs font-bold'
-                      : 'text-slate-600 hover:text-slate-900'
+                      ? 'bg-white dark:bg-slate-700 text-blue-700 dark:text-blue-300 shadow-xs font-bold'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
                   {uiLang === 'en' ? `Grade: ${currentGrade}` : `【${currentGrade}】(${matchedGradeLessons.length})`}
@@ -519,8 +519,8 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                   onClick={() => setFilterMode('all')}
                   className={`px-2.5 py-1 rounded-md font-medium transition-all ${
                     filterMode === 'all'
-                      ? 'bg-white text-blue-700 shadow-xs font-bold'
-                      : 'text-slate-600 hover:text-slate-900'
+                      ? 'bg-white dark:bg-slate-700 text-blue-700 dark:text-blue-300 shadow-xs font-bold'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
                   {uiLang === 'en' ? `All (${lessons.length})` : `全部课程 (${lessons.length})`}
@@ -546,13 +546,13 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                     className={`px-4 py-3 rounded-xl text-xs font-bold transition-all shrink-0 text-left border ${
                       isActive
                         ? 'bg-blue-600 text-white border-blue-600 shadow-xs'
-                        : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200'
+                        : 'bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700'
                     }`}
                   >
                     <p className="line-clamp-1">{getText(l.lectureTitle, l.lectureTitleEn)}</p>
                     <span
                       className={`text-[10px] block mt-1 ${
-                        isActive ? 'text-blue-100' : 'text-slate-400'
+                        isActive ? 'text-blue-100' : 'text-slate-400 dark:text-slate-500'
                       }`}
                     >
                       {l.subject} · {l.gradeLevel} · {getText(l.teacherName, l.teacherNameEn)}
@@ -561,7 +561,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                 );
               })
             ) : (
-              <div className="text-center py-4 text-xs text-slate-400 w-full flex items-center justify-center gap-2">
+              <div className="text-center py-4 text-xs text-slate-400 dark:text-slate-500 w-full flex items-center justify-center gap-2">
                 <span>
                   {uiLang === 'en'
                     ? `No default lessons for 【${currentGrade}】. Click AI Generate!`
@@ -571,7 +571,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                 </span>
                 <button
                   onClick={() => setShowGenModal(true)}
-                  className="text-blue-600 font-bold underline"
+                  className="text-blue-600 dark:text-blue-400 font-bold underline"
                 >
                   {t('goToAiGenBtn')}
                 </button>
@@ -584,7 +584,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
         {activeLesson && (
           <div className="space-y-6">
             {/* Phase 1: Teacher Lecture Card */}
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden">
               {/* Lecture Top Bar */}
               <div className="bg-slate-900 text-white p-6 sm:p-8 space-y-4">
                 <div className="flex flex-wrap items-center justify-between gap-3">
@@ -731,8 +731,8 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                       }}
                       className={`space-y-4 p-5 sm:p-6 rounded-2xl transition-all duration-300 border ${
                         isCurrentSpeaking
-                          ? 'bg-blue-50/70 border-blue-400 shadow-md ring-2 ring-blue-400/50 scale-[1.01]'
-                          : 'bg-white border-slate-100 hover:border-slate-200'
+                          ? 'bg-blue-50/70 dark:bg-blue-950/30 border-blue-400 dark:border-blue-600 shadow-md ring-2 ring-blue-400/50 scale-[1.01]'
+                          : 'bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 hover:border-slate-200 dark:hover:border-slate-700'
                       }`}
                     >
                       <div className="flex items-center justify-between">
@@ -741,13 +741,13 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                             className={`w-7 h-7 rounded-xl font-bold text-xs flex items-center justify-center shrink-0 border ${
                               isCurrentSpeaking
                                 ? 'bg-blue-600 text-white border-blue-600'
-                                : 'bg-blue-50 text-blue-600 border-blue-100'
+                                : 'bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border-blue-100 dark:border-blue-800'
                             }`}
                           >
                             {idx + 1}
                           </span>
                           <div>
-                            <h4 className="text-base font-bold text-slate-900">
+                            <h4 className="text-base font-bold text-slate-900 dark:text-white">
                               {sec.sectionTitle}
                             </h4>
                           </div>
@@ -755,7 +755,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
                         <div className="flex items-center gap-2">
                           {isCurrentSpeaking && (
-                            <span className="text-[11px] font-bold text-blue-700 bg-blue-100 px-2.5 py-0.5 rounded-full border border-blue-200 flex items-center gap-1 animate-pulse">
+                            <span className="text-[11px] font-bold text-blue-700 dark:text-blue-300 bg-blue-100 dark:bg-blue-900/60 px-2.5 py-0.5 rounded-full border border-blue-200 dark:border-blue-700 flex items-center gap-1 animate-pulse">
                               <Volume2 className="w-3.5 h-3.5" />
                               {t('speakingThisSection')}
                             </span>
@@ -766,7 +766,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                               const snippetText = `${sec.sectionTitle}。${sec.content}。${t('keyTakeawayHeader')}${sec.keyTakeaway}`;
                               handleSpeakSnippet(snippetText, idx, 'zh-CN');
                             }}
-                            className="text-xs font-bold text-slate-600 hover:text-blue-600 bg-slate-100 hover:bg-blue-50 px-3 py-1.5 rounded-lg border border-slate-200 transition flex items-center gap-1 cursor-pointer"
+                            className="text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-950/50 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 transition flex items-center gap-1 cursor-pointer"
                             title="Read section"
                           >
                             <Volume2 className="w-3.5 h-3.5" />
@@ -777,27 +777,27 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
                       {/* Section Objective */}
                       {sec.objective && (
-                        <div className="sm:ml-9 px-3.5 py-1.5 bg-blue-50/80 border border-blue-100 rounded-xl text-xs text-blue-900 font-medium flex items-center gap-2">
-                          <span className="font-bold text-blue-600">🎯 本节目标：</span>
+                        <div className="sm:ml-9 px-3.5 py-1.5 bg-blue-50/80 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900 rounded-xl text-xs text-blue-900 dark:text-blue-300 font-medium flex items-center gap-2">
+                          <span className="font-bold text-blue-600 dark:text-blue-400">🎯 本节目标：</span>
                           <span>{sec.objective}</span>
                         </div>
                       )}
 
                       {/* Markdown Formatted Content */}
                       <div className="pl-1 sm:ml-9">
-                        <div className="markdown-body text-slate-700 text-sm leading-relaxed">
+                        <div className="markdown-body text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
                           <Markdown>{sec.content}</Markdown>
                         </div>
                       </div>
 
                       {/* Key Takeaway & Formula */}
-                      <div className="sm:ml-9 bg-amber-50 border border-amber-200/80 rounded-xl p-3.5 flex items-start gap-3">
-                        <Lightbulb className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                      <div className="sm:ml-9 bg-amber-50 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-800/60 rounded-xl p-3.5 flex items-start gap-3">
+                        <Lightbulb className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
                         <div className="w-full">
-                          <span className="text-xs font-bold text-amber-800 uppercase tracking-wider block">
+                          <span className="text-xs font-bold text-amber-800 dark:text-amber-300 uppercase tracking-wider block">
                             {t('keyTakeawayHeader')}
                           </span>
-                          <p className="text-xs text-amber-900 font-medium mt-0.5">
+                          <p className="text-xs text-amber-900 dark:text-amber-200 font-medium mt-0.5">
                             {sec.keyTakeaway}
                           </p>
                         </div>
@@ -805,13 +805,13 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
                       {/* Interactive Section Checkpoint (随堂小试) */}
                       {checkpoint && (
-                        <div className="sm:ml-9 bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50/30 border border-blue-200/70 rounded-2xl p-4 sm:p-5 space-y-3.5">
+                        <div className="sm:ml-9 bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50/30 dark:from-slate-850 dark:via-blue-950/20 dark:to-indigo-950/20 border border-blue-200/70 dark:border-blue-800/60 rounded-2xl p-4 sm:p-5 space-y-3.5">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                               <span className="px-2.5 py-0.5 bg-blue-600 text-white rounded-lg text-[11px] font-bold flex items-center gap-1 shadow-2xs">
                                 ⚡ Checkpoint {idx + 1}
                               </span>
-                              <span className="text-xs font-bold text-slate-800">
+                              <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
                                 本节随堂小试 (即刻自测)
                               </span>
                             </div>
@@ -824,7 +824,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                                   'zh-CN'
                                 );
                               }}
-                              className="text-[11px] font-bold text-blue-600 hover:text-blue-700 bg-white px-2.5 py-1 rounded-lg border border-slate-200 shadow-2xs transition flex items-center gap-1 cursor-pointer"
+                              className="text-[11px] font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 bg-white dark:bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 shadow-2xs transition flex items-center gap-1 cursor-pointer"
                               title="Read checkpoint"
                             >
                               <Volume2 className="w-3.5 h-3.5" />
@@ -833,7 +833,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                           </div>
 
                           {/* Question Text */}
-                          <div className="text-xs sm:text-sm font-bold text-slate-900 leading-snug">
+                          <div className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white leading-snug">
                             {checkpoint.question}
                           </div>
 
@@ -843,7 +843,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                               {checkpoint.options.map((opt, optIdx) => {
                                 const isSelected = selectedCpOpt === optIdx;
                                 let btnStyle =
-                                  'bg-white text-slate-700 border-slate-200 hover:bg-blue-50/50 hover:border-blue-300';
+                                  'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-blue-50/50 dark:hover:bg-slate-750';
 
                                 if (isCpSubmitted) {
                                   if (optIdx === checkpoint.correctIndex) {
@@ -888,21 +888,21 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
                           {/* Checkpoint Explanation & Actions */}
                           {isCpSubmitted && (
-                            <div className="pt-2.5 border-t border-slate-200/80 space-y-2 animate-in fade-in duration-150">
+                            <div className="pt-2.5 border-t border-slate-200/80 dark:border-slate-750 space-y-2 animate-in fade-in duration-150">
                               <div className="flex items-center justify-between">
                                 <span
                                   className={`text-xs font-bold flex items-center gap-1.5 ${
-                                    isCpCorrect ? 'text-emerald-700' : 'text-amber-700'
+                                    isCpCorrect ? 'text-emerald-700 dark:text-emerald-400' : 'text-amber-700 dark:text-amber-400'
                                   }`}
                                 >
                                   {isCpCorrect ? (
                                     <>
-                                      <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                                      <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                                       <span>太棒了！完全答对，本节核心要点已掌握！</span>
                                     </>
                                   ) : (
                                     <>
-                                      <HelpCircle className="w-4 h-4 text-amber-600" />
+                                      <HelpCircle className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                                       <span>答错了别灰心，点击查看名师解题关键：</span>
                                     </>
                                   )}
@@ -917,7 +917,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                                         'zh-CN'
                                       );
                                     }}
-                                    className="text-[11px] font-bold text-blue-700 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-2 py-1 rounded-lg border border-blue-200 transition cursor-pointer flex items-center gap-1"
+                                    className="text-[11px] font-bold text-blue-700 dark:text-blue-300 hover:text-blue-800 bg-blue-50 dark:bg-blue-950/50 hover:bg-blue-100 px-2 py-1 rounded-lg border border-blue-200 dark:border-blue-800 transition cursor-pointer flex items-center gap-1"
                                   >
                                     <Volume2 className="w-3 h-3" />
                                     <span>朗读解析</span>
@@ -932,15 +932,15 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                                         return next;
                                       });
                                     }}
-                                    className="text-[11px] font-bold text-slate-600 hover:text-slate-800 bg-white px-2 py-1 rounded-lg border border-slate-200 transition cursor-pointer"
+                                    className="text-[11px] font-bold text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 bg-white dark:bg-slate-800 px-2 py-1 rounded-lg border border-slate-200 dark:border-slate-700 transition cursor-pointer"
                                   >
                                     重做
                                   </button>
                                 </div>
                               </div>
 
-                              <div className="bg-white/90 p-3 rounded-xl border border-slate-200/80 text-xs text-slate-700 leading-relaxed font-medium">
-                                <span className="font-bold text-slate-900 block mb-0.5">
+                              <div className="bg-white/90 dark:bg-slate-800/90 p-3 rounded-xl border border-slate-200/80 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
+                                <span className="font-bold text-slate-900 dark:text-white block mb-0.5">
                                   💡 即时解析：
                                 </span>
                                 {checkpoint.explanation}
@@ -956,7 +956,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             </div>
 
             {/* Phase 2: Comprehension Checkpoint (导师听懂问询与互动) */}
-            <div className="bg-gradient-to-r from-indigo-50 via-blue-50 to-slate-50 border border-blue-200/80 rounded-2xl p-6 sm:p-8 space-y-6 shadow-2xs">
+            <div className="bg-gradient-to-r from-indigo-50 via-blue-50 to-slate-50 dark:from-indigo-950/30 dark:via-blue-950/20 dark:to-slate-900 border border-blue-200/80 dark:border-blue-800/60 rounded-2xl p-6 sm:p-8 space-y-6 shadow-2xs">
               <div className="flex items-start justify-between gap-3.5">
                 <div className="flex items-start gap-3.5">
                   <div className="w-10 h-10 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-bold text-lg shrink-0 shadow-sm">
@@ -964,18 +964,18 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-bold text-blue-600 bg-blue-100/80 px-2.5 py-0.5 rounded-full">
+                      <span className="text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-100/80 dark:bg-blue-950/60 px-2.5 py-0.5 rounded-full">
                         {t('interactiveAskTitle')}
                       </span>
-                      <span className="text-xs text-slate-400">Phase 2 Checkpoint</span>
+                      <span className="text-xs text-slate-400 dark:text-slate-500">Phase 2 Checkpoint</span>
                     </div>
-                    <h4 className="text-base sm:text-lg font-bold text-slate-900 mt-1">
+                    <h4 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mt-1">
                       {getText(
                         activeLesson.checkQuestionPrompt || `同学们，上面关于《${activeLesson.topic}》的推导与讲解，你听懂了吗？`,
                         activeLesson.checkQuestionPromptEn
                       )}
                     </h4>
-                    <p className="text-xs text-slate-500 mt-0.5">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                       {t('checkPromptGuidance')}
                     </p>
                   </div>
@@ -991,9 +991,9 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                       -2
                     )
                   }
-                  className="px-3 py-1.5 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold rounded-xl border border-slate-200 transition flex items-center gap-1 cursor-pointer shrink-0"
+                  className="px-3 py-1.5 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-300 text-xs font-bold rounded-xl border border-slate-200 dark:border-slate-700 transition flex items-center gap-1 cursor-pointer shrink-0"
                 >
-                  <Volume2 className="w-3.5 h-3.5 text-blue-600" />
+                  <Volume2 className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                   <span>{t('voicePromptBtn')}</span>
                 </button>
               </div>
@@ -1005,7 +1005,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                   className={`p-4 rounded-xl border font-bold text-xs flex items-center justify-between transition-all cursor-pointer ${
                     understandingStatus === 'understood'
                       ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
-                      : 'bg-white text-slate-700 border-slate-200 hover:bg-emerald-50 hover:border-emerald-300'
+                      : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 hover:border-emerald-300 dark:hover:border-emerald-700'
                   }`}
                 >
                   <div className="flex items-center gap-2">
@@ -1025,7 +1025,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                   className={`p-4 rounded-xl border font-bold text-xs flex items-center justify-between transition-all cursor-pointer ${
                     understandingStatus === 'needs_simplification'
                       ? 'bg-amber-600 text-white border-amber-600 shadow-sm'
-                      : 'bg-white text-slate-700 border-slate-200 hover:bg-amber-50 hover:border-amber-300'
+                      : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:border-amber-300 dark:hover:border-amber-700'
                   }`}
                 >
                   <div className="flex items-center gap-2">
@@ -1039,7 +1039,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                   className={`p-4 rounded-xl border font-bold text-xs flex items-center justify-between transition-all cursor-pointer ${
                     understandingStatus === 'asked_question'
                       ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
-                      : 'bg-white text-slate-700 border-slate-200 hover:bg-blue-50 hover:border-blue-300'
+                      : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-blue-50 dark:hover:bg-blue-950/30 hover:border-blue-300 dark:hover:border-blue-700'
                   }`}
                 >
                   <div className="flex items-center gap-2">
@@ -1051,10 +1051,10 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
               {/* Simplified Explanation Box */}
               {understandingStatus === 'needs_simplification' && (
-                <div className="bg-amber-50/90 border border-amber-200 rounded-2xl p-5 space-y-3 animate-in fade-in duration-200">
+                <div className="bg-amber-50/90 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60 rounded-2xl p-5 space-y-3 animate-in fade-in duration-200">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-amber-900 font-bold text-sm">
-                      <Lightbulb className="w-5 h-5 text-amber-600" />
+                    <div className="flex items-center gap-2 text-amber-900 dark:text-amber-300 font-bold text-sm">
+                      <Lightbulb className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                       <span>{t('analogyBoxHeader')}</span>
                     </div>
 
@@ -1065,14 +1065,14 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                           -3
                         )
                       }
-                      className="px-3 py-1 bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-bold rounded-lg transition flex items-center gap-1 cursor-pointer"
+                      className="px-3 py-1 bg-amber-100 dark:bg-amber-900/60 hover:bg-amber-200 dark:hover:bg-amber-900 text-amber-900 dark:text-amber-200 text-xs font-bold rounded-lg transition flex items-center gap-1 cursor-pointer"
                     >
                       <Volume2 className="w-3.5 h-3.5" />
                       <span>{t('readAnalogyBtn')}</span>
                     </button>
                   </div>
 
-                  <p className="text-xs text-amber-950 leading-relaxed font-medium bg-white/80 p-4 rounded-xl border border-amber-100">
+                  <p className="text-xs text-amber-950 dark:text-amber-200 leading-relaxed font-medium bg-white/80 dark:bg-slate-800/80 p-4 rounded-xl border border-amber-100 dark:border-amber-900">
                     {getText(activeLesson.simplifiedExplanation, activeLesson.simplifiedExplanationEn)}
                   </p>
 
@@ -1089,9 +1089,9 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
               {/* Ask Teacher Chat Field */}
               {(understandingStatus === 'asked_question' || studentQuestion) && (
-                <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-4 animate-in fade-in duration-200">
-                  <div className="flex items-center gap-2 text-slate-900 font-bold text-sm">
-                    <MessageSquare className="w-4 h-4 text-blue-600" />
+                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-4 animate-in fade-in duration-200">
+                  <div className="flex items-center gap-2 text-slate-900 dark:text-white font-bold text-sm">
+                    <MessageSquare className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                     <span>{t('askTeacherTitle')}</span>
                   </div>
 
@@ -1101,7 +1101,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                       value={studentQuestion}
                       onChange={(e) => setStudentQuestion(e.target.value)}
                       placeholder={t('askTeacherPlaceholder')}
-                      className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 font-medium"
+                      className="flex-1 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white font-medium"
                     />
                     <button
                       type="submit"
@@ -1118,9 +1118,9 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                   </form>
 
                   {teacherAnswer && (
-                    <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 space-y-2">
+                    <div className="bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 rounded-xl p-4 space-y-2">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-blue-900">
+                        <span className="text-xs font-bold text-blue-900 dark:text-blue-300">
                           👨‍🏫 {getText(activeLesson.teacherName, activeLesson.teacherNameEn)} {t('teacherAnswerHeader')}
                         </span>
 
@@ -1131,14 +1131,14 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                               -3
                             )
                           }
-                          className="px-2.5 py-1 bg-blue-100 hover:bg-blue-200 text-blue-900 text-[11px] font-bold rounded-lg transition flex items-center gap-1 cursor-pointer"
+                          className="px-2.5 py-1 bg-blue-100 dark:bg-blue-900/60 hover:bg-blue-200 dark:hover:bg-blue-900 text-blue-900 dark:text-blue-200 text-[11px] font-bold rounded-lg transition flex items-center gap-1 cursor-pointer"
                         >
                           <Volume2 className="w-3.5 h-3.5" />
                           <span>{t('readTeacherAnswer')}</span>
                         </button>
                       </div>
 
-                      <p className="text-xs text-slate-800 leading-relaxed font-medium">
+                      <p className="text-xs text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
                         {teacherAnswer}
                       </p>
 
@@ -1157,24 +1157,24 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             </div>
 
             {/* Phase 3: Homework & Quiz (课后巩固测试) */}
-            <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 space-y-6 shadow-xs">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 space-y-6 shadow-xs">
+              <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center font-bold">
+                  <div className="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
                     <BookMarked className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-slate-900">
+                    <h3 className="text-base font-bold text-slate-900 dark:text-white">
                       Phase 3: {t('homeworkSectionTitle')} ({activeLesson.homeworkQuiz?.length || 0} {uiLang === 'en' ? 'Questions' : '题'})
                     </h3>
-                    <p className="text-xs text-slate-500 mt-0.5">
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                       {t('homeworkSubtitle')}
                     </p>
                   </div>
                 </div>
 
                 {understandingStatus !== 'understood' && (
-                  <span className="text-xs text-amber-600 font-bold bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">
+                  <span className="text-xs text-amber-600 dark:text-amber-400 font-bold bg-amber-50 dark:bg-amber-950/40 px-2.5 py-1 rounded-lg border border-amber-200 dark:border-amber-800">
                     {uiLang === 'en' ? 'Please complete Phase 2 first' : '请先在 Phase 2 确认听懂状况'}
                   </span>
                 )}
@@ -1199,13 +1199,13 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                     return (
                       <div
                         key={qIdx}
-                        className="p-5 rounded-2xl border border-slate-200 bg-slate-50/60 space-y-4"
+                        className="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-850 space-y-4"
                       >
                         <div className="flex items-start justify-between gap-3">
-                          <h4 className="text-sm font-bold text-slate-900 leading-snug">
+                          <h4 className="text-sm font-bold text-slate-900 dark:text-white leading-snug">
                             {qIdx + 1}. {qText}
                           </h4>
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-100 text-blue-700 shrink-0">
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300 shrink-0">
                             {q.difficulty === 'easy'
                               ? uiLang === 'en' ? 'Easy' : '基础'
                               : q.difficulty === 'hard'
@@ -1220,7 +1220,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                             {qOptions.map((opt, optIdx) => {
                               const isSelected = selectedOpt === optIdx;
                               let btnStyle =
-                                'bg-white text-slate-700 border-slate-200 hover:bg-slate-100';
+                                'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-750';
 
                               if (submittedQuiz) {
                                 if (optIdx === q.correctIndex) {
@@ -1257,11 +1257,11 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
                         {/* Explanation after submission */}
                         {submittedQuiz && (
-                          <div className="pt-3 border-t border-slate-200 space-y-2">
+                          <div className="pt-3 border-t border-slate-200 dark:border-slate-700 space-y-2">
                             <div className="flex items-center justify-between">
                               <span
                                 className={`text-xs font-bold ${
-                                  isCorrect ? 'text-emerald-600' : 'text-red-600'
+                                  isCorrect ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'
                                 }`}
                               >
                                 {isCorrect
@@ -1277,7 +1277,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                                       -3
                                     )
                                   }
-                                  className="text-[11px] font-bold text-blue-700 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-2.5 py-1 rounded-lg border border-blue-200 transition cursor-pointer flex items-center gap-1"
+                                  className="text-[11px] font-bold text-blue-700 dark:text-blue-300 hover:text-blue-800 bg-blue-50 dark:bg-blue-950/50 hover:bg-blue-100 px-2.5 py-1 rounded-lg border border-blue-200 dark:border-blue-800 transition cursor-pointer flex items-center gap-1"
                                 >
                                   <Volume2 className="w-3 h-3" />
                                   <span>{uiLang === 'en' ? 'Read' : '朗读解析'}</span>
@@ -1286,7 +1286,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                                 <button
                                   onClick={() => handleSaveToMistakes(qIdx, q)}
                                   disabled={savedQuestions[qIdx]}
-                                  className="text-[11px] font-bold text-amber-700 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 px-2.5 py-1 rounded-lg border border-amber-200 transition cursor-pointer flex items-center gap-1"
+                                  className="text-[11px] font-bold text-amber-700 dark:text-amber-300 hover:text-amber-800 bg-amber-50 dark:bg-amber-950/50 hover:bg-amber-100 px-2.5 py-1 rounded-lg border border-amber-200 dark:border-amber-800 transition cursor-pointer flex items-center gap-1"
                                 >
                                   <Plus className="w-3 h-3" />
                                   <span>{savedQuestions[qIdx] ? t('savedToMistakeLog') : t('addToMistakeLog')}</span>
@@ -1294,7 +1294,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                               </div>
                             </div>
 
-                            <p className="text-xs text-slate-700 leading-relaxed font-medium bg-white p-3 rounded-xl border border-slate-200">
+                            <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-medium bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
                               {qExplanation}
                             </p>
                           </div>
@@ -1314,7 +1314,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                       </button>
                     ) : (
                       <div className="flex items-center gap-3">
-                        <span className="text-xs font-bold text-slate-700">
+                        <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
                           {t('myScore')}:{' '}
                           {
                             activeLesson.homeworkQuiz.filter(
@@ -1328,7 +1328,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                             setSubmittedQuiz(false);
                             setUserAnswers({});
                           }}
-                          className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition cursor-pointer"
+                          className="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs rounded-xl transition cursor-pointer"
                         >
                           {t('retryQuizBtn')}
                         </button>
@@ -1337,7 +1337,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                   </div>
                 </div>
               ) : (
-                <p className="text-xs text-slate-400 py-4 text-center">
+                <p className="text-xs text-slate-400 dark:text-slate-500 py-4 text-center">
                   {uiLang === 'en' ? 'No homework exercises yet.' : '暂无课后练习题。'}
                 </p>
               )}
@@ -1349,17 +1349,17 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
       {/* AI Generator Modal */}
       {showGenModal && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-in fade-in duration-150">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-2xl border border-slate-100">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-2xl border border-slate-100 dark:border-slate-800 text-slate-900 dark:text-slate-100 transition-colors duration-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
+                <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
                   <Sparkles className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-slate-900">
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white">
                     {uiLang === 'en' ? 'AI Custom Lesson Generator' : 'AI 定制年级/地区专属讲堂'}
                   </h3>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
                     {uiLang === 'en'
                       ? `Generated specifically for Grade 【${currentGrade} · ${currentSemester}】 syllabus`
                       : `完全依据【${currentGrade} · ${currentSemester}】大纲生成讲教案与习题`}
@@ -1368,7 +1368,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
               </div>
               <button
                 onClick={() => setShowGenModal(false)}
-                className="text-slate-400 hover:text-slate-600 text-sm font-bold p-1"
+                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-sm font-bold p-1 cursor-pointer"
               >
                 ✕
               </button>
@@ -1376,13 +1376,13 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
 
             <div className="space-y-4 text-xs font-medium">
               <div>
-                <label className="text-slate-700 font-bold block mb-1">
+                <label className="text-slate-700 dark:text-slate-300 font-bold block mb-1">
                   {uiLang === 'en' ? 'Subject' : '学科领域'}
                 </label>
                 <select
                   value={genSubject}
                   onChange={(e) => setGenSubject(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-900 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold"
+                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-slate-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold"
                 >
                   <option value="物理">物理 (Physics)</option>
                   <option value="数学">数学 (Mathematics)</option>
@@ -1395,7 +1395,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
               </div>
 
               <div>
-                <label className="text-slate-700 font-bold block mb-1">
+                <label className="text-slate-700 dark:text-slate-300 font-bold block mb-1">
                   {uiLang === 'en' ? 'Lecture Topic / Key Concept' : '讲座主题 / 核心考点课题'}
                 </label>
                 <input
@@ -1403,11 +1403,11 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
                   value={genTopic}
                   onChange={(e) => setGenTopic(e.target.value)}
                   placeholder={uiLang === 'en' ? 'e.g., Newton\'s Laws / Derivatives' : '如：牛顿第二定律综合应用 / 导数求最值'}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-900 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
+                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-slate-900 dark:text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
                 />
               </div>
 
-              <div className="bg-blue-50 p-3 rounded-xl text-[11px] text-blue-900 space-y-1 border border-blue-100">
+              <div className="bg-blue-50 dark:bg-blue-950/40 p-3 rounded-xl text-[11px] text-blue-900 dark:text-blue-300 space-y-1 border border-blue-100 dark:border-blue-900">
                 <p className="font-bold">🎯 {uiLang === 'en' ? 'System Syllabus Lock Active:' : '系统考纲锁已开启：'}</p>
                 <p>• {uiLang === 'en' ? 'Target Grade' : '目标年级'}：{currentGrade}</p>
                 <p>• {uiLang === 'en' ? 'Target Semester' : '目标学期'}：{currentSemester}</p>
@@ -1418,7 +1418,7 @@ export const ClassroomView: React.FC<ClassroomViewProps> = ({
             <div className="flex items-center justify-end gap-3 pt-2">
               <button
                 onClick={() => setShowGenModal(false)}
-                className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition"
+                className="px-4 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs rounded-xl transition cursor-pointer"
               >
                 {uiLang === 'en' ? 'Cancel' : '取消'}
               </button>

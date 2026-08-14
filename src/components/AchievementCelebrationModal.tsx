@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { Achievement } from '../types';
 import { UILanguage } from '../utils/translations';
+import { soundEngine } from '../utils/audio';
 
 interface AchievementCelebrationModalProps {
   isOpen: boolean;
@@ -36,6 +37,7 @@ export const AchievementCelebrationModal: React.FC<AchievementCelebrationModalPr
   useEffect(() => {
     if (isOpen && achievement) {
       setClaimed(achievement.claimed || false);
+      soundEngine.playChime('achievement');
       // Generate celebratory particles
       const colors = ['#f59e0b', '#fbbf24', '#3b82f6', '#8b5cf6', '#ec4899', '#10b981'];
       const newParticles = Array.from({ length: 32 }).map((_, i) => ({
@@ -55,6 +57,7 @@ export const AchievementCelebrationModal: React.FC<AchievementCelebrationModalPr
 
   const handleClaim = () => {
     setClaimed(true);
+    soundEngine.playChime('achievement');
     if (onClaimReward) {
       onClaimReward(achievement);
     }

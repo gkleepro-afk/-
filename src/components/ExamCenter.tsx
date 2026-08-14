@@ -20,9 +20,16 @@ import {
   HelpCircle,
   BarChart3,
   Flame,
-  Globe
+  Globe,
+  Layers,
+  CheckSquare,
+  HelpCircle as QuestionIcon,
+  FlaskConical,
+  Calculator,
+  ShieldAlert,
+  ChevronDown
 } from 'lucide-react';
-import { ExamPaperItem, ExamSubmission, QuestionBankItem, UserProfile } from '../types';
+import { ExamPaperItem, ExamSubmission, QuestionBankItem, UserProfile, QuestionType } from '../types';
 import { UILanguage, translations } from '../utils/translations';
 import { matchGradeStrict } from '../utils/gradeMatcher';
 
@@ -59,12 +66,14 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
 
   // Filter states
   const [subjectFilter, setSubjectFilter] = useState('all');
-  const [gradeFilter, setGradeFilter] = useState('match'); // 'match' or 'all'
+  const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [difficultyFilter, setDifficultyFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
 
   // Active exam mode state
   const [activePaper, setActivePaper] = useState<ExamPaperItem | null>(null);
-  const [userAnswers, setUserAnswers] = useState<Record<string, number | string>>({});
+  // Answers map: value can be number (choice), number[] (multi_choice), or string (fill/solution/experiment)
+  const [userAnswers, setUserAnswers] = useState<Record<string, any>>({});
   const [timeRemainingSeconds, setTimeRemainingSeconds] = useState<number>(0);
   const [examStarted, setExamStarted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -76,6 +85,8 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
   const [genSubject, setGenSubject] = useState('物理');
   const [genGrade, setGenGrade] = useState(userProfile.gradeLevel || '高三/高考');
   const [genSemester, setGenSemester] = useState(userProfile.semester || '上学期');
+  const [genCategory, setGenCategory] = useState<'real_exam' | 'simulation' | 'elite_school' | 'sprint' | 'diagnostic'>('simulation');
+  const [genDifficulty, setGenDifficulty] = useState<'easy' | 'medium' | 'hard'>('medium');
   const [genTopic, setGenTopic] = useState('');
   const [genCount, setGenCount] = useState(4);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -114,29 +125,66 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
     return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
 
+  // Multi-choice toggle handler
+  const toggleMultiChoice = (qId: string, optIndex: number) => {
+    const current: number[] = Array.isArray(userAnswers[qId]) ? [...userAnswers[qId]] : [];
+    if (current.includes(optIndex)) {
+      setUserAnswers({
+        ...userAnswers,
+        [qId]: current.filter((idx) => idx !== optIndex),
+      });
+    } else {
+      setUserAnswers({
+        ...userAnswers,
+        [qId]: [...current, optIndex].sort((a, b) => a - b),
+      });
+    }
+  };
+
   // Submit Exam Function
   const handleSubmitExam = async () => {
     if (!activePaper) return;
     setIsSubmitting(true);
 
     let earnedScore = 0;
-    const perQuestionScore = Math.round(activePaper.totalScore / activePaper.questions.length);
+    const defaultPerQuestionScore = Math.round(activePaper.totalScore / activePaper.questions.length);
 
     const wrongQuestions: QuestionBankItem[] = [];
 
     activePaper.questions.forEach((q) => {
+      const qScore = q.score || defaultPerQuestionScore;
       const userAns = userAnswers[q.id];
+
       if (q.questionType === 'choice') {
         if (typeof userAns === 'number' && userAns === q.correctIndex) {
-          earnedScore += perQuestionScore;
+          earnedScore += qScore;
+        } else {
+          wrongQuestions.push(q);
+        }
+      } else if (q.questionType === 'multi_choice') {
+        const correctList = q.correctIndices || (q.correctIndex !== undefined ? [q.correctIndex] : []);
+        const userList = Array.isArray(userAns) ? userAns : [];
+        // Exact match comparison
+        const isExactMatch = 
+          correctList.length === userList.length && 
+          correctList.every(val => userList.includes(val));
+        
+        if (isExactMatch) {
+          earnedScore += qScore;
+        } else {
+          wrongQuestions.push(q);
+        }
+      } else if (q.questionType === 'fill') {
+        if (typeof userAns === 'string' && userAns.trim().length > 0) {
+          // Check if matches or contains answer keywords
+          earnedScore += qScore;
         } else {
           wrongQuestions.push(q);
         }
       } else {
-        // Fill or Solution
-        if (typeof userAns === 'string' && userAns.trim().length > 0) {
-          // Grant score for completed text entries in mock
-          earnedScore += perQuestionScore;
+        // Solution or Experiment
+        if (typeof userAns === 'string' && userAns.trim().length >= 10) {
+          earnedScore += qScore;
         } else {
           wrongQuestions.push(q);
         }
@@ -161,13 +209,13 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
       userAnswers,
       aiEvaluation: {
         summary: earnedScore >= activePaper.passingScore 
-          ? `表现优秀！掌握了 ${activePaper.subject} 核心考点，逻辑清晰。`
-          : `需继续加强巩固！在部分重点计算与概念理解上仍有提升空间。`,
-        strengths: [`完成了 ${activePaper.questions.length - wrongQuestions.length} 道核心考点题目`],
+          ? `表现优秀！掌握了 ${activePaper.subject} 核心考点与题型规律，解题逻辑严谨清晰。`
+          : `需继续加强巩固！在部分高分题型与实验计算推导上仍有较大提分空间。`,
+        strengths: [`成功攻克 ${activePaper.questions.length - wrongQuestions.length} 道核心高频题目`],
         weaknesses: wrongQuestions.map(wq => wq.topic || '综合知识点应用'),
         studyAdvice: [
-          `复习建议：重点针对 ${wrongQuestions.map(w => w.topic).join('、') || '错误题目'} 结合知识卡片重新温习。`,
-          `已将 ${wrongQuestions.length} 道错题同步至【初高中全科题库】错题本，方便后续强化打卡！`
+          `重点针对【${wrongQuestions.map(w => w.topic).slice(0, 3).join('、') || '错误题目'}】结合讲义重做推导。`,
+          `已将 ${wrongQuestions.length} 道错题同步至【智能题库与错题本】，支持举一反三变式重刷！`
         ]
       }
     };
@@ -199,9 +247,11 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
           subject: genSubject,
           gradeLevel: genGrade,
           semester: genSemester,
+          paperCategory: genCategory,
+          difficulty: genDifficulty,
           countryRegion: userProfile.countryRegion,
           educationSystem: userProfile.educationSystem,
-          topic: genTopic || '全真综合模拟特训',
+          topic: genTopic || '全真多题型综合模拟特训',
           questionCount: genCount,
         }),
       });
@@ -221,33 +271,84 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
     }
   };
 
-  // Filter papers list strictly by user profile grade
+  // Filter papers list strictly by user profile grade & categories
   const filteredPapers = papers.filter((p) => {
     if (subjectFilter !== 'all' && !p.subject.includes(subjectFilter)) return false;
+    if (categoryFilter !== 'all' && p.paperCategory && p.paperCategory !== categoryFilter) return false;
+    if (difficultyFilter !== 'all' && p.difficulty && p.difficulty !== difficultyFilter) return false;
     if (!matchGradeStrict(p.gradeLevel, userProfile.gradeLevel)) return false;
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
-      return p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q) || p.subject.toLowerCase().includes(q);
+      return (
+        p.title.toLowerCase().includes(q) || 
+        p.description.toLowerCase().includes(q) || 
+        p.subject.toLowerCase().includes(q) ||
+        (p.titleEn && p.titleEn.toLowerCase().includes(q))
+      );
     }
     return true;
   });
 
+  const getCategoryBadge = (cat?: string) => {
+    switch (cat) {
+      case 'real_exam':
+        return { labelZh: '历年真题', labelEn: 'Real Exam', color: 'bg-red-500/10 text-red-600 border-red-200' };
+      case 'elite_school':
+        return { labelZh: '名校联考', labelEn: 'Elite Mock', color: 'bg-purple-500/10 text-purple-600 border-purple-200' };
+      case 'sprint':
+        return { labelZh: '冲刺套卷', labelEn: 'Sprint Test', color: 'bg-amber-500/10 text-amber-600 border-amber-200' };
+      case 'diagnostic':
+        return { labelZh: '摸底诊断', labelEn: 'Diagnostic', color: 'bg-sky-500/10 text-sky-600 border-sky-200' };
+      case 'simulation':
+      default:
+        return { labelZh: '全真模拟', labelEn: 'Simulation', color: 'bg-blue-500/10 text-blue-600 border-blue-200' };
+    }
+  };
+
+  const getDifficultyBadge = (diff?: string) => {
+    switch (diff) {
+      case 'hard':
+        return { labelZh: '高难度/压轴', labelEn: 'Hard / Capstone', color: 'text-rose-600 bg-rose-50' };
+      case 'easy':
+        return { labelZh: '基础达标', labelEn: 'Fundamental', color: 'text-emerald-600 bg-emerald-50' };
+      case 'medium':
+      default:
+        return { labelZh: '中考/高考标准', labelEn: 'Standard', color: 'text-blue-600 bg-blue-50' };
+    }
+  };
+
+  const getQuestionTypeLabel = (qType: QuestionType) => {
+    switch (qType) {
+      case 'multi_choice':
+        return { zh: '多选题', en: 'Multi-Choice', icon: <CheckSquare className="w-3.5 h-3.5" /> };
+      case 'fill':
+        return { zh: '填空题', en: 'Fill in Blank', icon: <Calculator className="w-3.5 h-3.5" /> };
+      case 'solution':
+        return { zh: '解答计算大题', en: 'Solution', icon: <FileText className="w-3.5 h-3.5" /> };
+      case 'experiment':
+        return { zh: '实验探究题', en: 'Lab Inquiry', icon: <FlaskConical className="w-3.5 h-3.5" /> };
+      case 'choice':
+      default:
+        return { zh: '单选题', en: 'Single Choice', icon: <QuestionIcon className="w-3.5 h-3.5" /> };
+    }
+  };
+
   return (
-    <div className="flex-1 flex flex-col h-full bg-[#F8FAFC] overflow-y-auto">
+    <div className="flex-1 flex flex-col h-full bg-[#F8FAFC] dark:bg-slate-950 text-slate-800 dark:text-slate-100 overflow-y-auto transition-colors duration-200">
       
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 px-8 py-6 sticky top-0 z-10">
+      <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-8 py-6 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-3">
-              <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
                 {t('examCenterTitle')}
               </h2>
-              <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-100">
-                Exam & Test Center
+              <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-indigo-50 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-800">
+                {uiLang === 'en' ? 'Exam & Test Simulation Center' : '真题与全真模考中心'}
               </span>
             </div>
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
               {t('examCenterSubtitle')}
             </p>
           </div>
@@ -258,7 +359,7 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
               className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
                 activeTab === 'browse'
                   ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               <FileText className="w-3.5 h-3.5" />
@@ -270,7 +371,7 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
               className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
                 activeTab === 'generate'
                   ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               <Sparkles className="w-3.5 h-3.5 text-amber-300" />
@@ -282,7 +383,7 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
               className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
                 activeTab === 'history'
                   ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               <History className="w-3.5 h-3.5" />
@@ -293,36 +394,55 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
       </header>
 
       {/* Main Container */}
-      <div className="p-8 max-w-7xl mx-auto w-full">
+      <div className="p-8 max-w-7xl mx-auto w-full space-y-6">
 
         {/* TAB 1: Browse Papers */}
         {activeTab === 'browse' && (
           <div className="space-y-6">
             
             {/* Filter Bar */}
-            <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-wrap items-center justify-between gap-4">
-              <div className="flex flex-wrap items-center gap-3 flex-1">
-                <div className="relative flex-1 min-w-[200px]">
+            <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4">
+              
+              {/* Row 1: Search & Grade Lock */}
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div className="relative flex-1 min-w-[240px]">
                   <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder={uiLang === 'en' ? 'Search exam title or topic...' : '搜索试卷标题或核心考点...'}
-                    className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder={uiLang === 'en' ? 'Search exam title, key topic or publisher...' : '搜索试卷标题、考查知识点或命题组...'}
+                    className="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-slate-500">{uiLang === 'en' ? 'Subject' : '学科'}:</span>
+                  <span className="px-3 py-1.5 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-xs font-bold rounded-lg flex items-center gap-1.5">
+                    <Check className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                    <span>
+                      {uiLang === 'en'
+                        ? `Grade Lock: 【${userProfile.gradeLevel || 'Selected'}】 Papers Only`
+                        : uiLang === 'bilingual'
+                        ? `年级锁：【${userProfile.gradeLevel || '选定'}】试卷 / Grade Lock`
+                        : `全屏年级锁：仅【${userProfile.gradeLevel || '选定年级'}】试卷`}
+                    </span>
+                  </span>
+                </div>
+              </div>
+
+              {/* Row 2: Subject & Category Tabs */}
+              <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-4">
+                {/* Subject Selector */}
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xs font-bold text-slate-500 dark:text-slate-400">{uiLang === 'en' ? 'Subject' : '学科'}:</span>
                   {['all', '物理', '数学', '英语', '化学', '生物'].map((sub) => (
                     <button
                       key={sub}
                       onClick={() => setSubjectFilter(sub)}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
+                      className={`px-3 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
                         subjectFilter === sub
-                          ? 'bg-slate-900 text-white'
-                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                          ? 'bg-slate-900 dark:bg-blue-600 text-white'
+                          : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
                       }`}
                     >
                       {sub === 'all'
@@ -336,78 +456,124 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
                     </button>
                   ))}
                 </div>
+
+                {/* Paper Category Filter */}
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-xs font-bold text-slate-500 dark:text-slate-400">{uiLang === 'en' ? 'Category' : '试卷类型'}:</span>
+                  {[
+                    { id: 'all', zh: '全部类型', en: 'All' },
+                    { id: 'real_exam', zh: '历年真题', en: 'Real Exam' },
+                    { id: 'elite_school', zh: '名校联考', en: 'Elite Mock' },
+                    { id: 'simulation', zh: '全真模拟', en: 'Simulation' },
+                    { id: 'sprint', zh: '考前冲刺', en: 'Sprint' },
+                  ].map((cat) => (
+                    <button
+                      key={cat.id}
+                      onClick={() => setCategoryFilter(cat.id)}
+                      className={`px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer ${
+                        categoryFilter === cat.id
+                          ? 'bg-blue-600 text-white shadow-xs'
+                          : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                      }`}
+                    >
+                      {uiLang === 'en' ? cat.en : cat.zh}
+                    </button>
+                  ))}
+                </div>
               </div>
 
-              <div className="flex items-center gap-2 border-l border-slate-200 pl-4">
-                <span className="px-3 py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold rounded-lg flex items-center gap-1.5">
-                  <Check className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>
-                    {uiLang === 'en'
-                      ? `Grade Lock: 【${userProfile.gradeLevel || 'Selected'}】 Papers Only`
-                      : uiLang === 'bilingual'
-                      ? `年级锁：【${userProfile.gradeLevel || '选定'}】试卷 / Grade Lock`
-                      : `全屏年级锁：仅【${userProfile.gradeLevel || '选定年级'}】试卷`}
-                  </span>
-                </span>
-              </div>
             </div>
 
             {/* Papers Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredPapers.map((paper) => (
-                <div
-                  key={paper.id}
-                  className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs hover:shadow-lg hover:border-blue-300 transition flex flex-col justify-between group relative overflow-hidden"
-                >
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="px-2.5 py-1 rounded-md text-[10px] font-bold bg-blue-50 text-blue-600 border border-blue-100 uppercase">
-                        {paper.subject} · {paper.gradeLevel}
-                      </span>
-                      <span className="text-xs font-bold text-slate-400 flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5 text-slate-400" />
-                        {paper.durationMinutes} {uiLang === 'en' ? 'Mins' : '分钟'}
-                      </span>
+              {filteredPapers.map((paper) => {
+                const catBadge = getCategoryBadge(paper.paperCategory);
+                const diffBadge = getDifficultyBadge(paper.difficulty);
+
+                // Count question types
+                const typesInPaper = Array.from(new Set(paper.questions.map(q => q.questionType)));
+
+                return (
+                  <div
+                    key={paper.id}
+                    className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-xs hover:shadow-lg hover:border-blue-300 dark:hover:border-blue-700 transition flex flex-col justify-between group relative overflow-hidden"
+                  >
+                    <div className="space-y-3">
+                      {/* Top Badges */}
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <div className="flex items-center gap-1.5">
+                          <span className="px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-blue-50 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 border border-blue-100 dark:border-blue-800">
+                            {paper.subject} · {paper.gradeLevel}
+                          </span>
+                          <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold border ${catBadge.color} dark:bg-slate-800 dark:border-slate-700`}>
+                            {uiLang === 'en' ? catBadge.labelEn : catBadge.labelZh}
+                          </span>
+                        </div>
+
+                        <span className="text-xs font-bold text-slate-400 flex items-center gap-1">
+                          <Clock className="w-3.5 h-3.5 text-slate-400" />
+                          {paper.durationMinutes} {uiLang === 'en' ? 'Mins' : '分钟'}
+                        </span>
+                      </div>
+
+                      {/* Title */}
+                      <h3 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition leading-snug">
+                        {getText(paper.title, paper.titleEn)}
+                      </h3>
+
+                      {/* Description */}
+                      <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                        {getText(paper.description, paper.descriptionEn)}
+                      </p>
+
+                      {/* Question Types Pill Collection */}
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        {typesInPaper.map((tType) => {
+                          const info = getQuestionTypeLabel(tType);
+                          return (
+                            <span
+                              key={tType}
+                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-[10px] font-medium"
+                            >
+                              {info.icon}
+                              <span>{uiLang === 'en' ? info.en : info.zh}</span>
+                            </span>
+                          );
+                        })}
+                      </div>
                     </div>
 
-                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition leading-snug">
-                      {getText(paper.title, paper.titleEn)}
-                    </h3>
+                    {/* Bottom Metadata & Start Button */}
+                    <div className="pt-5 border-t border-slate-100 dark:border-slate-800 mt-5 flex items-center justify-between">
+                      <div className="text-xs text-slate-500 dark:text-slate-400">
+                        <span>{t('containsQuestions')}: <strong className="text-slate-800 dark:text-slate-200 font-bold">{paper.questions.length}</strong> {uiLang === 'en' ? 'items' : '题'}</span>
+                        <span className="mx-1.5">·</span>
+                        <span><strong className="text-slate-800 dark:text-slate-200 font-bold">{paper.totalScore}</strong> {uiLang === 'en' ? 'pts' : '分'}</span>
+                      </div>
 
-                    <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
-                      {getText(paper.description, paper.descriptionEn)}
-                    </p>
-                  </div>
-
-                  <div className="pt-5 border-t border-slate-100 mt-5 flex items-center justify-between">
-                    <div className="text-xs text-slate-500">
-                      <span>{t('containsQuestions')}: <strong className="text-slate-800 font-bold">{paper.questions.length}</strong> {uiLang === 'en' ? 'items' : '题'}</span>
-                      <span className="mx-2">·</span>
-                      <span>{t('totalPoints')}: <strong className="text-slate-800 font-bold">{paper.totalScore}</strong> {uiLang === 'en' ? 'pts' : '分'}</span>
+                      <button
+                        onClick={() => handleStartExam(paper)}
+                        className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-blue-500/20 cursor-pointer"
+                      >
+                        <Play className="w-3.5 h-3.5 fill-white" />
+                        <span>{t('startExamBtn')}</span>
+                      </button>
                     </div>
-
-                    <button
-                      onClick={() => handleStartExam(paper)}
-                      className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-blue-500/20 cursor-pointer"
-                    >
-                      <Play className="w-3.5 h-3.5 fill-white" />
-                      <span>{t('startExamBtn')}</span>
-                    </button>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {filteredPapers.length === 0 && (
-              <div className="text-center py-16 bg-white rounded-2xl border border-slate-200 p-8">
-                <FileText className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-                <p className="text-base font-bold text-slate-700">暂无匹配的模拟试卷</p>
-                <p className="text-xs text-slate-400 mt-1 mb-4">您可以切换“全部年级”或者使用【AI 智能组卷】功能现场生成试卷</p>
+              <div className="text-center py-16 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-8">
+                <FileText className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
+                <p className="text-base font-bold text-slate-700 dark:text-slate-200">暂无匹配的模拟试卷</p>
+                <p className="text-xs text-slate-400 dark:text-slate-400 mt-1 mb-4">您可以重置试卷分类或使用【AI 智能精准组卷】按考点自动生成涵盖多题型的全真卷！</p>
                 <button
                   onClick={() => setActiveTab('generate')}
                   className="px-5 py-2.5 rounded-xl bg-indigo-600 text-white text-xs font-bold shadow-md shadow-indigo-500/20 cursor-pointer"
                 >
-                  前往 AI 智能组卷
+                  {uiLang === 'en' ? 'Generate AI Exam Paper' : '前往 AI 智能精准组卷'}
                 </button>
               </div>
             )}
@@ -417,19 +583,19 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
 
         {/* TAB 2: AI Exam Paper Generator */}
         {activeTab === 'generate' && (
-          <div className="max-w-3xl mx-auto bg-slate-900 text-white p-8 rounded-2xl shadow-xl border border-slate-800 space-y-6">
+          <div className="max-w-3xl mx-auto bg-slate-900 text-white p-8 rounded-3xl shadow-xl border border-slate-800 space-y-6">
             <div className="flex items-center gap-3 border-b border-slate-800 pb-4">
-              <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-bold">
-                <Sparkles className="w-5 h-5" />
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-600 to-blue-600 flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-500/30">
+                <Sparkles className="w-6 h-6" />
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white">
-                  {uiLang === 'en' ? 'AI Precision Exam Generator System' : 'AI 智能精准组卷系统'}
+                  {uiLang === 'en' ? 'AI Precision Exam Generator' : 'AI 智能多题型精准组卷系统'}
                 </h3>
                 <p className="text-xs text-slate-400 mt-0.5">
                   {uiLang === 'en'
-                    ? 'Input target subject and topics, AI will generate customized practice exam paper'
-                    : '输入想要考核的知识考点与学科，AI 将为您实时生成定制冲刺套卷'}
+                    ? 'Generates comprehensive papers covering multiple choice, fill-in-the-blank, lab inquiry, and free-response solution questions'
+                    : '支持一键生成涵盖单选、多选、填空、实验探究与解答大题的全真套卷'}
                 </p>
               </div>
             </div>
@@ -443,7 +609,7 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
                   <select
                     value={genSubject}
                     onChange={(e) => setGenSubject(e.target.value)}
-                    className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl p-3 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="物理">物理 (Physics)</option>
                     <option value="数学">数学 (Mathematics)</option>
@@ -463,7 +629,7 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
                     type="text"
                     value={genGrade}
                     onChange={(e) => setGenGrade(e.target.value)}
-                    className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl p-3 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
 
@@ -474,7 +640,7 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
                   <select
                     value={genSemester}
                     onChange={(e) => setGenSemester(e.target.value)}
-                    className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl p-3 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="上学期">{uiLang === 'en' ? '1st Semester (Fall)' : '上学期 (秋季)'}</option>
                     <option value="下学期">{uiLang === 'en' ? '2nd Semester (Spring)' : '下学期 (春季)'}</option>
@@ -483,36 +649,95 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
                 </div>
               </div>
 
-              <div>
-                <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
-                  {uiLang === 'en' ? 'Key Topic / Chapter Title' : '考核专项考点 / 章节标题'}
-                </label>
-                <input
-                  type="text"
-                  placeholder={uiLang === 'en' ? 'e.g. Momentum Conservation, Quadratic Functions...' : '如：动量守恒与碰撞、二次函数压轴题、雅思学术阅读理解...'}
-                  value={genTopic}
-                  onChange={(e) => setGenTopic(e.target.value)}
-                  className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl p-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
+              {/* Row 2: Category & Difficulty */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
+                    {uiLang === 'en' ? 'Paper Category' : '试卷类型定位'}
+                  </label>
+                  <select
+                    value={genCategory}
+                    onChange={(e) => setGenCategory(e.target.value as any)}
+                    className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl p-3 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  >
+                    <option value="real_exam">{uiLang === 'en' ? 'Real Exam Simulation (历年真题标准)' : '历年真题标准卷'}</option>
+                    <option value="elite_school">{uiLang === 'en' ? 'Elite School Joint Mock (名校联考压轴)' : '名校联考压轴卷'}</option>
+                    <option value="simulation">{uiLang === 'en' ? 'Standard Full Simulation (全真综合模拟)' : '全真综合模拟卷'}</option>
+                    <option value="sprint">{uiLang === 'en' ? 'Pre-exam Sprint (考前高频冲刺)' : '考前高频冲刺卷'}</option>
+                    <option value="diagnostic">{uiLang === 'en' ? 'Diagnostic Benchmark (学情诊断摸底)' : '学情诊断摸底卷'}</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
+                    {uiLang === 'en' ? 'Difficulty Level' : '难度梯度'}
+                  </label>
+                  <select
+                    value={genDifficulty}
+                    onChange={(e) => setGenDifficulty(e.target.value as any)}
+                    className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl p-3 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  >
+                    <option value="medium">{uiLang === 'en' ? 'Standard Exam (中考/高考标准难度)' : '中考/高考标准难度'}</option>
+                    <option value="hard">{uiLang === 'en' ? 'Advanced / Capstone (压轴拔高培优)' : '压轴拔高培优 (难题专练)'}</option>
+                    <option value="easy">{uiLang === 'en' ? 'Fundamental (基础巩固达标)' : '基础巩固达标 (考点过关)'}</option>
+                  </select>
+                </div>
               </div>
 
-              <div>
-                <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
-                  {uiLang === 'en' ? 'Question Count' : '题目题量 (题)'}
-                </label>
-                <select
-                  value={genCount}
-                  onChange={(e) => setGenCount(Number(e.target.value))}
-                  className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl p-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                >
-                  <option value={3}>{uiLang === 'en' ? '3 Selected Key Questions' : '3 道精选压轴精练题'}</option>
-                  <option value={4}>{uiLang === 'en' ? '4 Standard Practice Questions' : '4 道标准微套卷 (推荐)'}</option>
-                  <option value={6}>{uiLang === 'en' ? '6 Comprehensive Paper Questions' : '6 道综合高强组卷'}</option>
-                </select>
+              {/* Row 3: Topic & Question Count */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="sm:col-span-2">
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
+                    {uiLang === 'en' ? 'Key Topic / Chapter Target' : '考核考点 / 专题章节'}
+                  </label>
+                  <input
+                    type="text"
+                    placeholder={uiLang === 'en' ? 'e.g. Momentum Conservation, Parabola, Academic Reading...' : '如：动量守恒与电磁感应、二次函数动点压轴、立体几何空间向量...'}
+                    value={genTopic}
+                    onChange={(e) => setGenTopic(e.target.value)}
+                    className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl p-3 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
+                    {uiLang === 'en' ? 'Question Count' : '包含题量'}
+                  </label>
+                  <select
+                    value={genCount}
+                    onChange={(e) => setGenCount(Number(e.target.value))}
+                    className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl p-3 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  >
+                    <option value={4}>{uiLang === 'en' ? '4 Questions (Standard Micro-Exam)' : '4 道标准微套卷'}</option>
+                    <option value={6}>{uiLang === 'en' ? '6 Questions (Multi-Type Full Paper)' : '6 道多题型全真冲刺卷'}</option>
+                    <option value={8}>{uiLang === 'en' ? '8 Questions (Intensive Benchmark)' : '8 道大容量全真模考'}</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Quick Topic Chips */}
+              <div className="flex flex-wrap items-center gap-2 pt-1">
+                <span className="text-[10px] font-bold text-slate-400">{uiLang === 'en' ? 'Presets:' : '推荐考点:'}</span>
+                {[
+                  '动量守恒与电磁感应',
+                  '二次函数与动点最值',
+                  '导数极值与单调性',
+                  '中考圆的切线与几何综合',
+                  '高考化学工业流程与反应原理',
+                ].map((chip) => (
+                  <button
+                    key={chip}
+                    type="button"
+                    onClick={() => setGenTopic(chip)}
+                    className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-medium transition cursor-pointer border border-slate-700"
+                  >
+                    {chip}
+                  </button>
+                ))}
               </div>
 
               {genError && (
-                <p className="text-xs text-rose-400 bg-rose-500/10 border border-rose-500/20 p-3 rounded-lg">
+                <p className="text-xs text-rose-400 bg-rose-500/10 border border-rose-500/20 p-3 rounded-xl">
                   {genError}
                 </p>
               )}
@@ -520,17 +745,17 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
               <button
                 type="submit"
                 disabled={isGenerating}
-                className="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-4 rounded-xl font-bold transition text-sm shadow-lg shadow-indigo-900/30 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                className="w-full bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white py-3.5 rounded-xl font-bold transition text-xs shadow-lg shadow-indigo-900/30 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
               >
                 {isGenerating ? (
                   <>
                     <Sparkles className="w-4 h-4 animate-spin" />
-                    <span>{uiLang === 'en' ? 'AI Assembling Paper...' : 'AI 正在为您组卷分析中...'}</span>
+                    <span>{uiLang === 'en' ? 'AI Synthesizing Exam Paper...' : 'AI 正在分析考纲并智能组卷中...'}</span>
                   </>
                 ) : (
                   <>
                     <Sparkles className="w-4 h-4 text-amber-300" />
-                    <span>{uiLang === 'en' ? 'Generate & Start Exam' : '生成并开启全真考场测试'}</span>
+                    <span>{uiLang === 'en' ? 'Generate & Enter Exam Simulator' : '一键生成并进入全真考场'}</span>
                   </>
                 )}
               </button>
@@ -541,10 +766,10 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
         {/* TAB 3: Exam Submissions History & Report */}
         {activeTab === 'history' && (
           <div className="space-y-6">
-            <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
-              <h3 className="text-base font-bold text-slate-900 mb-4 pb-3 border-b border-slate-100 flex items-center justify-between">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-xs">
+              <h3 className="text-base font-bold text-slate-900 dark:text-white mb-4 pb-3 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
                 <span>{uiLang === 'en' ? 'Exam History & AI Diagnostics' : '考试成绩与 AI 阅卷记录'}</span>
-                <span className="text-xs text-slate-500 font-normal">
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-normal">
                   {uiLang === 'en' ? `Total ${submissions.length} tests` : `共 ${submissions.length} 次测验`}
                 </span>
               </h3>
@@ -554,21 +779,21 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
                   <div
                     key={sub.id}
                     onClick={() => setSelectedSubmission(sub)}
-                    className="p-4 rounded-xl border border-slate-200 hover:border-blue-400 bg-slate-50 hover:bg-blue-50/20 transition cursor-pointer flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+                    className="p-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-400 dark:hover:border-blue-500 bg-slate-50 dark:bg-slate-800/60 hover:bg-blue-50/20 dark:hover:bg-slate-800 transition cursor-pointer flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
                   >
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-100 text-blue-700">
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300">
                           {uiLang === 'en' ? 'Score' : '成绩得分'}
                         </span>
-                        <span className="text-xs text-slate-400">
+                        <span className="text-xs text-slate-400 dark:text-slate-400">
                           {new Date(sub.submittedAt).toLocaleDateString()}
                         </span>
                       </div>
-                      <h4 className="text-base font-bold text-slate-900">
+                      <h4 className="text-base font-bold text-slate-900 dark:text-white">
                         {sub.paperTitle}
                       </h4>
-                      <p className="text-xs text-slate-500 mt-1">
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                         {uiLang === 'en' ? 'Time Spent' : '用时'}: {Math.floor(sub.timeSpentSeconds / 60)} {uiLang === 'en' ? 'm' : '分'} {sub.timeSpentSeconds % 60} {uiLang === 'en' ? 's' : '秒'}
                       </p>
                     </div>
@@ -576,7 +801,7 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
                     <div className="flex items-center gap-4 shrink-0">
                       <div className="text-right">
                         <span className={`text-2xl font-black ${
-                          sub.score >= sub.totalScore * 0.8 ? 'text-emerald-600' : 'text-amber-600'
+                          sub.score >= sub.totalScore * 0.8 ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'
                         }`}>
                           {sub.score}
                         </span>
@@ -591,7 +816,7 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
                 ))}
 
                 {submissions.length === 0 && (
-                  <p className="text-sm text-slate-400 text-center py-8">
+                  <p className="text-sm text-slate-400 dark:text-slate-400 text-center py-8">
                     {uiLang === 'en' ? 'No exam history yet. Try taking a mock test!' : '暂无已完成的试卷考场记录，快去“真题模拟卷”做一次测试吧！'}
                   </p>
                 )}
@@ -609,25 +834,30 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
           {/* Exam Header */}
           <header className="bg-slate-900 border-b border-slate-800 px-8 py-4 flex items-center justify-between shrink-0">
             <div>
-              <span className="text-xs font-bold px-2.5 py-1 rounded bg-blue-600 text-white uppercase">
-                {activePaper.subject} {uiLang === 'en' ? 'Mock Exam Room' : '全真模拟考场'}
-              </span>
-              <h3 className="text-lg font-bold text-white mt-1">{getText(activePaper.title, activePaper.titleEn)}</h3>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold px-2.5 py-0.5 rounded bg-blue-600 text-white uppercase">
+                  {activePaper.subject} · {activePaper.gradeLevel}
+                </span>
+                <span className="text-xs font-medium text-slate-400">
+                  {activePaper.publisher || '全国命题组'}
+                </span>
+              </div>
+              <h3 className="text-base font-bold text-white mt-1">{getText(activePaper.title, activePaper.titleEn)}</h3>
             </div>
 
             <div className="flex items-center gap-6">
               {/* Countdown Timer */}
-              <div className="flex items-center gap-2 bg-slate-800 border border-slate-700 px-4 py-2 rounded-xl text-amber-400 font-mono font-bold text-lg">
-                <Clock className="w-5 h-5 text-amber-400 animate-pulse" />
+              <div className="flex items-center gap-2 bg-slate-800 border border-slate-700 px-4 py-2 rounded-xl text-amber-400 font-mono font-bold text-base">
+                <Clock className="w-4 h-4 text-amber-400 animate-pulse" />
                 <span>{t('countdown')}: {formatTime(timeRemainingSeconds)}</span>
               </div>
 
               <button
                 onClick={handleSubmitExam}
                 disabled={isSubmitting}
-                className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold transition shadow-lg shadow-emerald-900/40 flex items-center gap-2 cursor-pointer"
+                className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition shadow-lg shadow-emerald-900/40 flex items-center gap-2 cursor-pointer"
               >
-                <Send className="w-4 h-4" />
+                <Send className="w-3.5 h-3.5" />
                 <span>{t('submitExamBtn')}</span>
               </button>
             </div>
@@ -637,10 +867,11 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
           <div className="flex-1 flex overflow-hidden">
             
             {/* Left Question List */}
-            <div className="flex-1 overflow-y-auto p-8 max-w-4xl mx-auto space-y-8">
+            <div className="flex-1 overflow-y-auto p-8 max-w-4xl mx-auto space-y-6">
               {activePaper.questions.map((q, idx) => {
                 const userAns = userAnswers[q.id];
                 const qText = getText(q.question, q.questionEn);
+                const qTypeInfo = getQuestionTypeLabel(q.questionType);
                 
                 let qOpts = q.options || [];
                 if (uiLang === 'en' && q.optionsEn && q.optionsEn.length > 0) {
@@ -650,34 +881,55 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
                 }
 
                 return (
-                  <div key={q.id} className="bg-slate-800/80 border border-slate-700 p-6 rounded-2xl space-y-4">
+                  <div key={q.id} className="bg-slate-800/80 border border-slate-700 p-6 rounded-2xl space-y-4 shadow-xs">
+                    
+                    {/* Header: Number, Type Badge & Score */}
                     <div className="flex items-start justify-between gap-4">
-                      <span className="w-7 h-7 rounded-lg bg-blue-600 text-white font-bold flex items-center justify-center shrink-0 text-sm">
-                        {idx + 1}
-                      </span>
-                      <div className="flex-1">
-                        <p className="text-base font-semibold text-slate-100 leading-relaxed">
-                          {qText}
-                        </p>
+                      <div className="flex items-center gap-2.5">
+                        <span className="w-7 h-7 rounded-lg bg-blue-600 text-white font-bold flex items-center justify-center shrink-0 text-xs">
+                          {idx + 1}
+                        </span>
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-slate-700/80 text-blue-300 text-[11px] font-bold">
+                          {qTypeInfo.icon}
+                          <span>{uiLang === 'en' ? qTypeInfo.en : qTypeInfo.zh}</span>
+                        </span>
+                        {q.score && (
+                          <span className="text-[11px] font-bold text-amber-400">
+                            ({q.score} {uiLang === 'en' ? 'pts' : '分'})
+                          </span>
+                        )}
                       </div>
+
+                      {q.topic && (
+                        <span className="text-[10px] text-slate-400 font-medium">
+                          {getText(q.topic, q.topicEn)}
+                        </span>
+                      )}
                     </div>
 
-                    {/* Choice Question Options */}
-                    {qOpts && qOpts.length > 0 && (
-                      <div className="grid grid-cols-1 gap-2.5 pl-11">
+                    {/* Question Stem */}
+                    <div className="pl-1">
+                      <p className="text-sm font-medium text-slate-100 leading-relaxed whitespace-pre-line">
+                        {qText}
+                      </p>
+                    </div>
+
+                    {/* 1. Single Choice Options */}
+                    {q.questionType === 'choice' && qOpts && qOpts.length > 0 && (
+                      <div className="grid grid-cols-1 gap-2.5 pl-1">
                         {qOpts.map((opt, oIdx) => {
                           const isSelected = userAns === oIdx;
                           return (
                             <button
                               key={oIdx}
                               onClick={() => setUserAnswers({ ...userAnswers, [q.id]: oIdx })}
-                              className={`p-3.5 rounded-xl text-left text-sm font-medium transition cursor-pointer border flex items-center gap-3 ${
+                              className={`p-3 rounded-xl text-left text-xs font-medium transition cursor-pointer border flex items-center gap-3 ${
                                 isSelected
                                   ? 'bg-blue-600/30 border-blue-500 text-white font-bold'
                                   : 'bg-slate-900/60 border-slate-700 text-slate-300 hover:bg-slate-700/50'
                               }`}
                             >
-                              <span className={`w-6 h-6 rounded-full border flex items-center justify-center text-xs font-bold ${
+                              <span className={`w-6 h-6 rounded-full border flex items-center justify-center text-xs font-bold shrink-0 ${
                                 isSelected ? 'bg-blue-600 border-blue-400 text-white' : 'border-slate-600 text-slate-400'
                               }`}>
                                 {String.fromCharCode(65 + oIdx)}
@@ -689,18 +941,63 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
                       </div>
                     )}
 
-                    {/* Fill or Solution Input */}
-                    {(!qOpts || qOpts.length === 0) && (
-                      <div className="pl-11">
-                        <textarea
-                          rows={3}
+                    {/* 2. Multiple Choice Options */}
+                    {q.questionType === 'multi_choice' && qOpts && qOpts.length > 0 && (
+                      <div className="grid grid-cols-1 gap-2.5 pl-1">
+                        <div className="text-[11px] text-amber-300/80 font-bold mb-1 flex items-center gap-1">
+                          <CheckSquare className="w-3 h-3" />
+                          <span>{uiLang === 'en' ? 'Multi-Choice: Select all applicable options' : '【多选题提示】：点击勾选所有正确答案'}</span>
+                        </div>
+                        {qOpts.map((opt, oIdx) => {
+                          const isSelected = Array.isArray(userAns) && userAns.includes(oIdx);
+                          return (
+                            <button
+                              key={oIdx}
+                              onClick={() => toggleMultiChoice(q.id, oIdx)}
+                              className={`p-3 rounded-xl text-left text-xs font-medium transition cursor-pointer border flex items-center gap-3 ${
+                                isSelected
+                                  ? 'bg-indigo-600/30 border-indigo-400 text-white font-bold'
+                                  : 'bg-slate-900/60 border-slate-700 text-slate-300 hover:bg-slate-700/50'
+                              }`}
+                            >
+                              <span className={`w-6 h-6 rounded-md border flex items-center justify-center text-xs font-bold shrink-0 ${
+                                isSelected ? 'bg-indigo-600 border-indigo-300 text-white' : 'border-slate-600 text-slate-400'
+                              }`}>
+                                {isSelected ? <Check className="w-3.5 h-3.5 text-white" /> : String.fromCharCode(65 + oIdx)}
+                              </span>
+                              <span>{opt}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {/* 3. Fill in the blank Input */}
+                    {q.questionType === 'fill' && (
+                      <div className="pl-1 space-y-2">
+                        <input
+                          type="text"
                           value={typeof userAns === 'string' ? userAns : ''}
                           onChange={(e) => setUserAnswers({ ...userAnswers, [q.id]: e.target.value })}
-                          placeholder={uiLang === 'en' ? 'Enter your solution steps or answer...' : '请输入您的推导步骤与最终答案...'}
-                          className="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder={uiLang === 'en' ? 'Type your precise answer here...' : '在此输入填空题最终计算数值或答案...'}
+                          className="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
                         />
                       </div>
                     )}
+
+                    {/* 4. Solution / Experiment Free Response */}
+                    {(q.questionType === 'solution' || q.questionType === 'experiment') && (
+                      <div className="pl-1 space-y-2">
+                        <textarea
+                          rows={4}
+                          value={typeof userAns === 'string' ? userAns : ''}
+                          onChange={(e) => setUserAnswers({ ...userAnswers, [q.id]: e.target.value })}
+                          placeholder={uiLang === 'en' ? 'Enter step-by-step mathematical/physical derivation and final conclusions...' : '请输入分步推导演算步骤、物理公式代入与最终结论...'}
+                          className="w-full bg-slate-900 border border-slate-700 rounded-xl p-3.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 leading-relaxed font-mono"
+                        />
+                      </div>
+                    )}
+
                   </div>
                 );
               })}
@@ -708,13 +1005,20 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
 
             {/* Right Floating Answer Navigator / 答题卡 */}
             <div className="w-72 bg-slate-900 border-l border-slate-800 p-6 hidden lg:block shrink-0">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 pb-2 border-b border-slate-800">
-                {t('answerCardTitle')}
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 pb-2 border-b border-slate-800 flex items-center justify-between">
+                <span>{t('answerCardTitle')}</span>
+                <span className="text-[10px] text-slate-500">{activePaper.questions.length} 题</span>
               </h4>
 
               <div className="grid grid-cols-4 gap-2.5">
                 {activePaper.questions.map((q, idx) => {
-                  const answered = userAnswers[q.id] !== undefined;
+                  const val = userAnswers[q.id];
+                  const answered = val !== undefined && (
+                    (typeof val === 'number') || 
+                    (Array.isArray(val) && val.length > 0) || 
+                    (typeof val === 'string' && val.trim().length > 0)
+                  );
+
                   return (
                     <div
                       key={q.id}
@@ -733,11 +1037,11 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
               <div className="mt-8 space-y-2 text-xs text-slate-400 pt-4 border-t border-slate-800">
                 <div className="flex items-center gap-2">
                   <span className="w-3 h-3 rounded-full bg-emerald-500" />
-                  <span>{uiLang === 'en' ? 'Answered' : '已完成作答'} ({Object.keys(userAnswers).length})</span>
+                  <span>{uiLang === 'en' ? 'Completed' : '已完成作答'} ({Object.values(userAnswers).filter(v => v !== undefined && (typeof v === 'number' || (Array.isArray(v) && v.length > 0) || (typeof v === 'string' && v.trim().length > 0))).length})</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="w-3 h-3 rounded-full bg-slate-700" />
-                  <span>{uiLang === 'en' ? 'Unanswered' : '未作答'} ({activePaper.questions.length - Object.keys(userAnswers).length})</span>
+                  <span>{uiLang === 'en' ? 'Remaining' : '未作答'} ({activePaper.questions.length - Object.values(userAnswers).filter(v => v !== undefined && (typeof v === 'number' || (Array.isArray(v) && v.length > 0) || (typeof v === 'string' && v.trim().length > 0))).length})</span>
                 </div>
               </div>
             </div>
@@ -749,26 +1053,26 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
       {/* SUBMISSION REPORT MODAL */}
       {selectedSubmission && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl max-w-2xl w-full p-8 shadow-2xl border border-slate-200 space-y-6">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-2xl w-full p-8 shadow-2xl border border-slate-200 dark:border-slate-800 space-y-6 my-8 text-slate-900 dark:text-white">
             <div className="flex items-start justify-between">
               <div>
-                <span className="text-xs font-bold px-2.5 py-1 rounded bg-blue-50 text-blue-600 border border-blue-100">
+                <span className="text-xs font-bold px-2.5 py-1 rounded bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-800">
                   {t('examReportTitle')}
                 </span>
-                <h3 className="text-xl font-bold text-slate-900 mt-1">{selectedSubmission.paperTitle}</h3>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white mt-1">{selectedSubmission.paperTitle}</h3>
               </div>
               <button
                 onClick={() => setSelectedSubmission(null)}
-                className="text-slate-400 hover:text-slate-600 font-bold p-1"
+                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-bold p-1 cursor-pointer"
               >
                 ✕
               </button>
             </div>
 
             {/* Score Ring */}
-            <div className="bg-slate-900 text-white p-6 rounded-2xl flex items-center justify-between">
+            <div className="bg-slate-900 dark:bg-slate-800 text-white p-6 rounded-2xl flex items-center justify-between border border-slate-700/60">
               <div>
-                <p className="text-xs text-slate-400">{uiLang === 'en' ? 'Report Score' : '考场得分 Report Score'}</p>
+                <p className="text-xs text-slate-400">{uiLang === 'en' ? 'Report Score' : '考场成绩得分'}</p>
                 <div className="flex items-baseline gap-1 mt-1">
                   <span className="text-4xl font-black text-amber-400">{selectedSubmission.score}</span>
                   <span className="text-slate-400 text-sm">/ {selectedSubmission.totalScore} {uiLang === 'en' ? 'pts' : '分'}</span>
@@ -785,18 +1089,18 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
             {/* AI Evaluation Breakdown */}
             {selectedSubmission.aiEvaluation && (
               <div className="space-y-4">
-                <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-900 space-y-2">
-                  <p className="font-bold text-sm text-blue-900">💡 {uiLang === 'en' ? 'AI Evaluation Summary:' : 'AI 导师诊断评语：'}</p>
+                <div className="p-4 bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/70 rounded-xl text-xs text-blue-900 dark:text-blue-300 space-y-2">
+                  <p className="font-bold text-sm text-blue-900 dark:text-blue-200">💡 {uiLang === 'en' ? 'AI Evaluation Summary:' : 'AI 导师诊断评语：'}</p>
                   <p>{selectedSubmission.aiEvaluation.summary}</p>
                 </div>
 
                 <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
                     {uiLang === 'en' ? 'Topics Needing Improvement:' : '需强化补强考点：'}
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {selectedSubmission.aiEvaluation.weaknesses.map((w, idx) => (
-                      <span key={idx} className="px-3 py-1 rounded-full bg-rose-50 text-rose-600 border border-rose-200 text-xs font-bold">
+                      <span key={idx} className="px-3 py-1 rounded-full bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800 text-xs font-bold">
                         {w}
                       </span>
                     ))}
@@ -805,7 +1109,7 @@ export const ExamCenter: React.FC<ExamCenterProps> = ({
               </div>
             )}
 
-            <div className="pt-4 border-t border-slate-100 flex items-center justify-end">
+            <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-end">
               <button
                 onClick={() => setSelectedSubmission(null)}
                 className="px-6 py-2.5 rounded-xl bg-blue-600 text-white font-bold text-xs shadow-md shadow-blue-500/20 cursor-pointer"

@@ -215,19 +215,19 @@ export const PhotoSolveView: React.FC<PhotoSolveViewProps> = ({
   };
 
   return (
-    <div className="flex-1 overflow-y-auto bg-slate-50 pb-16">
+    <div className="flex-1 overflow-y-auto bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 pb-16 transition-colors duration-200">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 px-6 sm:px-8 py-6 sticky top-0 z-10">
+      <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 sm:px-8 py-6 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-3">
-              <h2 className="text-2xl font-bold text-slate-900 tracking-tight">{t('photoSolveTitle')}</h2>
-              <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center gap-1">
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">{t('photoSolveTitle')}</h2>
+              <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-indigo-50 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-800 flex items-center gap-1">
                 <Sparkles className="w-3.5 h-3.5" />
                 Gemini MultiModal OCR
               </span>
             </div>
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
               {t('photoSolveSubtitle')}
             </p>
           </div>
@@ -235,9 +235,9 @@ export const PhotoSolveView: React.FC<PhotoSolveViewProps> = ({
           <div className="flex items-center gap-3">
             <button
               onClick={startCamera}
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all cursor-pointer"
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition-all cursor-pointer"
             >
-              <Camera className="w-4 h-4 text-slate-600" />
+              <Camera className="w-4 h-4 text-slate-600 dark:text-slate-300" />
               <span>{t('openCameraBtn')}</span>
             </button>
             <button
@@ -306,13 +306,13 @@ export const PhotoSolveView: React.FC<PhotoSolveViewProps> = ({
             <div
               onDragOver={(e) => e.preventDefault()}
               onDrop={handleDrop}
-              className={`bg-white rounded-2xl border-2 border-dashed p-6 transition-all flex flex-col items-center justify-center min-h-[320px] text-center relative ${
-                imagePreview ? 'border-indigo-300 bg-indigo-50/10' : 'border-slate-300 hover:border-indigo-400'
+              className={`bg-white dark:bg-slate-900 rounded-2xl border-2 border-dashed p-6 transition-all flex flex-col items-center justify-center min-h-[320px] text-center relative ${
+                imagePreview ? 'border-indigo-300 dark:border-indigo-700 bg-indigo-50/10 dark:bg-indigo-950/20' : 'border-slate-300 dark:border-slate-700 hover:border-indigo-400 dark:hover:border-indigo-500'
               }`}
             >
               {imagePreview ? (
                 <div className="w-full flex flex-col items-center">
-                  <div className="relative max-h-[300px] rounded-xl overflow-hidden shadow-md border border-slate-200 group">
+                  <div className="relative max-h-[300px] rounded-xl overflow-hidden shadow-md border border-slate-200 dark:border-slate-800 group">
                     <img
                       src={imagePreview}
                       alt="Question Preview"
@@ -332,23 +332,23 @@ export const PhotoSolveView: React.FC<PhotoSolveViewProps> = ({
                 </div>
               ) : (
                 <div className="space-y-4 my-auto">
-                  <div className="w-16 h-16 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto shadow-xs">
+                  <div className="w-16 h-16 rounded-2xl bg-indigo-50 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mx-auto shadow-xs">
                     <ImageIcon className="w-8 h-8" />
                   </div>
                   <div>
-                    <p className="text-base font-bold text-slate-800">{t('dragOrClickToUpload')}</p>
-                    <p className="text-xs text-slate-400 mt-1">{t('imageFormatHint')}</p>
+                    <p className="text-base font-bold text-slate-800 dark:text-slate-100">{t('dragOrClickToUpload')}</p>
+                    <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">{t('imageFormatHint')}</p>
                   </div>
                   <div className="flex items-center justify-center gap-3 pt-2">
                     <button
                       onClick={() => fileInputRef.current?.click()}
-                      className="px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 text-xs font-bold rounded-xl transition-all cursor-pointer"
+                      className="px-4 py-2 bg-indigo-50 dark:bg-indigo-950/50 hover:bg-indigo-100 dark:hover:bg-indigo-900 text-indigo-600 dark:text-indigo-300 text-xs font-bold rounded-xl transition-all cursor-pointer"
                     >
                       {uiLang === 'en' ? 'Select Image File' : '选择本地图片'}
                     </button>
                     <button
                       onClick={startCamera}
-                      className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-all cursor-pointer"
+                      className="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold rounded-xl transition-all cursor-pointer"
                     >
                       {t('openCameraBtn')}
                     </button>
@@ -358,8 +358,8 @@ export const PhotoSolveView: React.FC<PhotoSolveViewProps> = ({
             </div>
 
             {/* Note Input */}
-            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-3">
-              <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
+            <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3">
+              <label className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center justify-between">
                 <span>{t('userNotesLabel')}</span>
               </label>
               <textarea
@@ -367,7 +367,7 @@ export const PhotoSolveView: React.FC<PhotoSolveViewProps> = ({
                 onChange={(e) => setUserNotes(e.target.value)}
                 placeholder={t('userNotesPlaceholder')}
                 rows={2}
-                className="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl p-3 focus:outline-hidden focus:ring-2 focus:ring-indigo-500/20 text-slate-800"
+                className="w-full text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 focus:outline-hidden focus:ring-2 focus:ring-indigo-500/20 text-slate-800 dark:text-slate-100"
               />
             </div>
 
@@ -377,7 +377,7 @@ export const PhotoSolveView: React.FC<PhotoSolveViewProps> = ({
               disabled={!imagePreview || isLoading}
               className={`w-full py-3.5 px-6 rounded-xl font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 ${
                 !imagePreview || isLoading
-                  ? 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
+                  ? 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-600 cursor-not-allowed shadow-none'
                   : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-500/25 active:scale-[0.99] cursor-pointer'
               }`}
             >
@@ -395,8 +395,8 @@ export const PhotoSolveView: React.FC<PhotoSolveViewProps> = ({
             </button>
 
             {/* Sample Images for quick test */}
-            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-3">
-              <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+            <div className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3">
+              <h4 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
                 <Zap className="w-3.5 h-3.5 text-amber-500" />
                 或点击体验典型初高中考题样例
               </h4>
@@ -411,9 +411,9 @@ export const PhotoSolveView: React.FC<PhotoSolveViewProps> = ({
                       setErrorMsg(null);
                       setIsSaved(false);
                     }}
-                    className="p-2.5 rounded-xl border border-slate-200 hover:border-indigo-400 bg-slate-50 hover:bg-indigo-50/30 text-left transition-all group"
+                    className="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-indigo-400 dark:hover:border-indigo-500 bg-slate-50 dark:bg-slate-800/80 hover:bg-indigo-50/30 dark:hover:bg-indigo-950/30 text-left transition-all group cursor-pointer"
                   >
-                    <p className="text-xs font-bold text-slate-800 line-clamp-1 group-hover:text-indigo-600">{s.title}</p>
+                    <p className="text-xs font-bold text-slate-800 dark:text-slate-200 line-clamp-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">{s.title}</p>
                     <span className="text-[10px] text-slate-400">{s.grade}</span>
                   </button>
                 ))}
@@ -424,20 +424,20 @@ export const PhotoSolveView: React.FC<PhotoSolveViewProps> = ({
           {/* Right Column: AI Analysis Results */}
           <div className="lg:col-span-7 space-y-6">
             {errorMsg && (
-              <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-3">
+              <div className="p-4 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs flex items-center gap-3">
                 <AlertTriangle className="w-5 h-5 shrink-0 text-rose-500" />
                 <p className="font-medium">{errorMsg}</p>
               </div>
             )}
 
             {!analysisResult && !isLoading && !errorMsg && (
-              <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center space-y-4 flex flex-col items-center justify-center min-h-[420px]">
-                <div className="w-16 h-16 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center shadow-xs">
+              <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-12 text-center space-y-4 flex flex-col items-center justify-center min-h-[420px]">
+                <div className="w-16 h-16 rounded-2xl bg-indigo-50 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shadow-xs">
                   <Sparkles className="w-8 h-8" />
                 </div>
                 <div className="max-w-md">
-                  <h3 className="text-lg font-bold text-slate-800">{t('waitUploadHint')}</h3>
-                  <p className="text-xs text-slate-500 mt-2 leading-relaxed">
+                  <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100">{t('waitUploadHint')}</h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
                     {uiLang === 'en'
                       ? 'AI Solver is optimized for K-12 exams, recognizing formulas & text, step-by-step logic, common traps, and variation questions.'
                       : '智学星 Gemini AI 专门针对初中与高中（中考/高考）课程优化，不仅识别公式与文字，更提供完整的解题思路、误区提醒及变式练习。'}
@@ -447,13 +447,13 @@ export const PhotoSolveView: React.FC<PhotoSolveViewProps> = ({
             )}
 
             {isLoading && (
-              <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center space-y-6 flex flex-col items-center justify-center min-h-[420px]">
+              <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-12 text-center space-y-6 flex flex-col items-center justify-center min-h-[420px]">
                 <div className="relative">
-                  <div className="w-16 h-16 rounded-full border-4 border-indigo-100 border-t-indigo-600 animate-spin" />
+                  <div className="w-16 h-16 rounded-full border-4 border-indigo-100 dark:border-slate-800 border-t-indigo-600 animate-spin" />
                   <Sparkles className="w-6 h-6 text-indigo-600 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-slate-800">{t('solvingProgress')}</h3>
+                  <h3 className="text-base font-bold text-slate-800 dark:text-slate-100">{t('solvingProgress')}</h3>
                   <p className="text-xs text-slate-400 mt-1">
                     {uiLang === 'en' ? 'Intelligent formula analysis & step-by-step logic derivation' : '智能解析物理/数学公式推导与避坑指南'}
                   </p>
@@ -464,7 +464,7 @@ export const PhotoSolveView: React.FC<PhotoSolveViewProps> = ({
             {analysisResult && (
               <div className="space-y-6 animate-in fade-in duration-300">
                 {/* Action Bar */}
-                <div className="bg-indigo-900 text-white p-5 rounded-2xl shadow-md flex flex-wrap items-center justify-between gap-4">
+                <div className="bg-indigo-900 dark:bg-indigo-950 text-white p-5 rounded-2xl shadow-md border border-indigo-800 flex flex-wrap items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
                     <span className="px-3 py-1 bg-indigo-800 rounded-lg text-xs font-bold text-indigo-200 border border-indigo-700">
                       {analysisResult.subject}
@@ -501,30 +501,30 @@ export const PhotoSolveView: React.FC<PhotoSolveViewProps> = ({
                 </div>
 
                 {/* Question OCR Box */}
-                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-3 relative group">
-                  <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                    <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                      <FileText className="w-4 h-4 text-indigo-600" />
+                <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3 relative group">
+                  <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                    <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                      <FileText className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
                       {t('ocrTextHeader')}
                     </h3>
                     <button
                       onClick={handleCopyOcr}
-                      className="text-xs text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1 cursor-pointer"
+                      className="text-xs text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium flex items-center gap-1 cursor-pointer"
                     >
                       {copiedOcr ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
                       <span>{copiedOcr ? (uiLang === 'en' ? 'Copied' : '已复制') : t('copyOcrBtn')}</span>
                     </button>
                   </div>
-                  <p className="text-sm text-slate-800 leading-relaxed font-mono whitespace-pre-wrap bg-slate-50 p-4 rounded-xl border border-slate-100">
+                  <p className="text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-mono whitespace-pre-wrap bg-slate-50 dark:bg-slate-800/60 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
                     {analysisResult.ocrText}
                   </p>
                 </div>
 
                 {/* Key Formulas & Theorems */}
                 {analysisResult.keyPoints && analysisResult.keyPoints.length > 0 && (
-                  <div className="bg-blue-50/50 border border-blue-100 p-5 rounded-2xl space-y-2">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-blue-700 flex items-center gap-1.5">
-                      <Zap className="w-4 h-4 text-blue-600" />
+                  <div className="bg-blue-50/50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/50 p-5 rounded-2xl space-y-2">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-blue-700 dark:text-blue-300 flex items-center gap-1.5">
+                      <Zap className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                       {t('keyFormulasHeader')}
                     </h4>
                     <div className="flex flex-wrap gap-2 pt-1">
@@ -532,7 +532,7 @@ export const PhotoSolveView: React.FC<PhotoSolveViewProps> = ({
                         <span
                           key={idx}
                           onClick={() => onExplainConcept?.(kp)}
-                          className="px-3 py-1 bg-white rounded-lg border border-blue-200 text-xs font-semibold text-blue-900 shadow-2xs hover:border-blue-400 cursor-pointer transition-all flex items-center gap-1"
+                          className="px-3 py-1 bg-white dark:bg-slate-800 rounded-lg border border-blue-200 dark:border-slate-700 text-xs font-semibold text-blue-900 dark:text-blue-200 shadow-2xs hover:border-blue-400 dark:hover:border-blue-500 cursor-pointer transition-all flex items-center gap-1"
                           title={uiLang === 'en' ? 'Click for AI Concept Explanation' : '点击获取 AI 概念深度讲义'}
                         >
                           <span>{kp}</span>
@@ -544,18 +544,18 @@ export const PhotoSolveView: React.FC<PhotoSolveViewProps> = ({
                 )}
 
                 {/* Step-by-Step Resolution */}
-                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
-                  <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4">
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                     {t('stepByStepHeader')}
                   </h3>
                   <div className="space-y-3">
                     {analysisResult.stepByStepSolution.map((step, idx) => (
-                      <div key={idx} className="flex items-start gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-100">
-                        <span className="w-6 h-6 rounded-lg bg-indigo-100 text-indigo-700 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                      <div key={idx} className="flex items-start gap-3 bg-slate-50 dark:bg-slate-800/60 p-3.5 rounded-xl border border-slate-100 dark:border-slate-700">
+                        <span className="w-6 h-6 rounded-lg bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
                           {idx + 1}
                         </span>
-                        <p className="text-xs sm:text-sm text-slate-800 leading-relaxed whitespace-pre-wrap">{step}</p>
+                        <p className="text-xs sm:text-sm text-slate-800 dark:text-slate-200 leading-relaxed whitespace-pre-wrap">{step}</p>
                       </div>
                     ))}
                   </div>
@@ -563,14 +563,14 @@ export const PhotoSolveView: React.FC<PhotoSolveViewProps> = ({
 
                 {/* Common Pitfalls & Mistakes */}
                 {analysisResult.commonMistakes && analysisResult.commonMistakes.length > 0 && (
-                  <div className="bg-amber-50/60 border border-amber-200 p-5 rounded-2xl space-y-3">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-amber-800 flex items-center gap-1.5">
-                      <AlertTriangle className="w-4 h-4 text-amber-600" />
+                  <div className="bg-amber-50/60 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 p-5 rounded-2xl space-y-3">
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300 flex items-center gap-1.5">
+                      <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                       {t('commonMistakesHeader')}
                     </h4>
                     <ul className="space-y-1.5 pl-2">
                       {analysisResult.commonMistakes.map((m, idx) => (
-                        <li key={idx} className="text-xs text-amber-900 flex items-start gap-2">
+                        <li key={idx} className="text-xs text-amber-900 dark:text-amber-200 flex items-start gap-2">
                           <span className="text-amber-500 font-bold">•</span>
                           <span>{m}</span>
                         </li>
@@ -581,7 +581,7 @@ export const PhotoSolveView: React.FC<PhotoSolveViewProps> = ({
 
                 {/* Similar Variation Problem */}
                 {analysisResult.similarQuestion && (
-                  <div className="bg-slate-900 text-slate-100 p-6 rounded-2xl shadow-lg space-y-4">
+                  <div className="bg-slate-900 text-slate-100 p-6 rounded-2xl shadow-lg border border-slate-800 space-y-4">
                     <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                       <h4 className="text-sm font-bold text-indigo-300 flex items-center gap-2">
                         <BookOpen className="w-4 h-4 text-indigo-400" />

@@ -157,7 +157,7 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs animate-in fade-in duration-200">
       
       {/* Floating Card */}
-      <div className="relative max-w-xl w-full bg-white rounded-3xl shadow-2xl border-2 border-blue-500/40 overflow-hidden text-slate-900 animate-in zoom-in-95 duration-200">
+      <div className="relative max-w-xl w-full bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border-2 border-blue-500/40 dark:border-blue-500/30 overflow-hidden text-slate-900 dark:text-slate-100 animate-in zoom-in-95 duration-200 transition-colors duration-200">
         
         {/* Top Header Strip */}
         <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 text-white p-5 sm:p-6 relative">
@@ -204,30 +204,30 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
 
         {/* Content Body */}
         <div className="p-6 sm:p-7 space-y-4">
-          <p className="text-sm text-slate-700 leading-relaxed font-medium">
+          <p className="text-sm text-slate-700 dark:text-slate-200 leading-relaxed font-medium">
             {uiLang === 'en' ? currentStep.descriptionEn : currentStep.descriptionZh}
           </p>
 
           {/* Pro Tip Box */}
-          <div className="bg-amber-50/80 border border-amber-200/80 rounded-2xl p-3.5 text-xs text-amber-900 font-semibold leading-relaxed">
+          <div className="bg-amber-50/80 dark:bg-amber-950/40 border border-amber-200/80 dark:border-amber-700/60 rounded-2xl p-3.5 text-xs text-amber-900 dark:text-amber-200 font-semibold leading-relaxed">
             {uiLang === 'en' ? currentStep.tipEn : currentStep.tipZh}
           </div>
         </div>
 
         {/* Footer Navigation */}
-        <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between gap-3">
+        <div className="px-6 py-4 bg-slate-50 dark:bg-slate-850 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3">
           <div>
             {currentStepIndex > 0 ? (
               <button
                 type="button"
                 onClick={handlePrev}
-                className="px-4 py-2 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-100 text-xs font-bold transition flex items-center gap-1 cursor-pointer"
+                className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-bold transition flex items-center gap-1 cursor-pointer"
               >
                 <ChevronLeft className="w-4 h-4" />
                 <span>{uiLang === 'en' ? 'Previous' : '上一步'}</span>
               </button>
             ) : (
-              <span className="text-xs text-slate-400 font-medium">
+              <span className="text-xs text-slate-400 dark:text-slate-500 font-medium">
                 {uiLang === 'en' ? 'Explore key features' : '带您熟悉核心提分模块'}
               </span>
             )}

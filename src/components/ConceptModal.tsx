@@ -111,24 +111,24 @@ export const ConceptModal: React.FC<ConceptModalProps> = ({ term, onClose, uiLan
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 max-h-[90vh] overflow-y-auto transition-colors">
         
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-5">
-          <div className="flex items-center gap-2 text-blue-600">
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4 mb-5">
+          <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400">
             <Sparkles className="w-5 h-5" />
-            <h3 className="text-lg font-bold text-slate-900">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white">
               {langMode === 'English' ? 'AI Conceptual Masterclass' : 'AI 概念透彻精讲'}
             </h3>
           </div>
           <div className="flex items-center gap-3">
             {/* Language Mode Selector */}
-            <div className="flex items-center bg-slate-100 p-0.5 rounded-lg text-xs">
+            <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-0.5 rounded-lg text-xs">
               <button
                 type="button"
                 onClick={() => setLangMode('Chinese')}
                 className={`px-2 py-1 rounded-md font-medium transition ${
-                  langMode === 'Chinese' ? 'bg-white text-blue-600 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                  langMode === 'Chinese' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-xs' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 中文
@@ -137,7 +137,7 @@ export const ConceptModal: React.FC<ConceptModalProps> = ({ term, onClose, uiLan
                 type="button"
                 onClick={() => setLangMode('Bilingual')}
                 className={`px-2 py-1 rounded-md font-medium transition ${
-                  langMode === 'Bilingual' ? 'bg-white text-blue-600 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                  langMode === 'Bilingual' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-xs' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 双语
@@ -146,7 +146,7 @@ export const ConceptModal: React.FC<ConceptModalProps> = ({ term, onClose, uiLan
                 type="button"
                 onClick={() => setLangMode('English')}
                 className={`px-2 py-1 rounded-md font-medium transition ${
-                  langMode === 'English' ? 'bg-white text-blue-600 shadow-xs' : 'text-slate-600 hover:text-slate-900'
+                  langMode === 'English' ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-xs' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 English
@@ -154,7 +154,7 @@ export const ConceptModal: React.FC<ConceptModalProps> = ({ term, onClose, uiLan
             </div>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
             >
               <X className="w-5 h-5" />
             </button>
@@ -163,8 +163,8 @@ export const ConceptModal: React.FC<ConceptModalProps> = ({ term, onClose, uiLan
 
         {loading ? (
           <div className="py-12 text-center space-y-3">
-            <Sparkles className="w-8 h-8 text-blue-600 animate-spin mx-auto" />
-            <p className="text-xs font-bold text-slate-600">
+            <Sparkles className="w-8 h-8 text-blue-600 dark:text-blue-400 animate-spin mx-auto" />
+            <p className="text-xs font-bold text-slate-600 dark:text-slate-300">
               {langMode === 'English'
                 ? `AI is dissecting concept "${term}" with rigorous depth...`
                 : `AI 正在深度剖析概念「${term}」...`}
@@ -173,39 +173,39 @@ export const ConceptModal: React.FC<ConceptModalProps> = ({ term, onClose, uiLan
         ) : data ? (
           <div className="space-y-5">
             <div>
-              <span className="text-[10px] font-bold uppercase bg-blue-50 text-blue-600 px-2.5 py-1 rounded">
+              <span className="text-[10px] font-bold uppercase bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-800 px-2.5 py-1 rounded">
                 {data.category}
               </span>
-              <h2 className="text-2xl font-black text-slate-900 mt-2">{data.term}</h2>
+              <h2 className="text-2xl font-black text-slate-900 dark:text-white mt-2">{data.term}</h2>
             </div>
 
             {/* Core Definition */}
-            <div className="p-4 bg-blue-50/70 border border-blue-100 rounded-xl">
-              <p className="text-xs font-bold uppercase text-blue-700 mb-1">
+            <div className="p-4 bg-blue-50/70 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/50 rounded-xl">
+              <p className="text-xs font-bold uppercase text-blue-700 dark:text-blue-300 mb-1">
                 {langMode === 'English' ? 'Core Definition' : '核心定义 (Core Definition)'}
               </p>
-              <p className="text-sm font-semibold text-slate-900">{data.coreDefinition}</p>
+              <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{data.coreDefinition}</p>
             </div>
 
             {/* Detailed Explanation */}
             <div>
-              <p className="text-xs font-bold uppercase text-slate-400 mb-1.5">
+              <p className="text-xs font-bold uppercase text-slate-400 dark:text-slate-500 mb-1.5">
                 {langMode === 'English' ? 'Detailed Breakdown' : '透彻精讲 (Detailed Breakdown)'}
               </p>
-              <p className="text-xs text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100">
+              <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed bg-slate-50 dark:bg-slate-800/80 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
                 {data.detailedExplanation}
               </p>
             </div>
 
             {/* Key Takeaways */}
             <div>
-              <p className="text-xs font-bold uppercase text-slate-400 mb-2 flex items-center gap-1.5">
+              <p className="text-xs font-bold uppercase text-slate-400 dark:text-slate-500 mb-2 flex items-center gap-1.5">
                 <Lightbulb className="w-4 h-4 text-amber-500" />
                 <span>{langMode === 'English' ? 'Key Takeaways' : '核心要点 (Key Takeaways)'}</span>
               </p>
               <ul className="space-y-1.5">
                 {data.keyTakeaways.map((point, i) => (
-                  <li key={i} className="flex items-start gap-2 text-xs text-slate-700">
+                  <li key={i} className="flex items-start gap-2 text-xs text-slate-700 dark:text-slate-300">
                     <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
                     <span>{point}</span>
                   </li>
@@ -216,12 +216,12 @@ export const ConceptModal: React.FC<ConceptModalProps> = ({ term, onClose, uiLan
             {/* Classic Examples */}
             {data.examples && data.examples.length > 0 && (
               <div>
-                <p className="text-xs font-bold uppercase text-slate-400 mb-2">
+                <p className="text-xs font-bold uppercase text-slate-400 dark:text-slate-500 mb-2">
                   {langMode === 'English' ? 'Worked Examples & Models' : '经典模型与应用 (Examples)'}
                 </p>
                 <div className="space-y-2">
                   {data.examples.map((ex, i) => (
-                    <div key={i} className="p-3 bg-slate-50 rounded-lg text-xs text-slate-700 border border-slate-200/80">
+                    <div key={i} className="p-3 bg-slate-50 dark:bg-slate-800/70 rounded-lg text-xs text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700">
                       {ex}
                     </div>
                   ))}
@@ -231,13 +231,13 @@ export const ConceptModal: React.FC<ConceptModalProps> = ({ term, onClose, uiLan
 
             {/* Common Pitfalls */}
             {data.commonPitfalls && data.commonPitfalls.length > 0 && (
-              <div className="p-4 bg-amber-50/70 border border-amber-200/80 rounded-xl space-y-1.5">
-                <p className="text-xs font-bold uppercase text-amber-800 flex items-center gap-1.5">
-                  <AlertTriangle className="w-4 h-4 text-amber-600" />
+              <div className="p-4 bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-900/50 rounded-xl space-y-1.5">
+                <p className="text-xs font-bold uppercase text-amber-800 dark:text-amber-300 flex items-center gap-1.5">
+                  <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                   <span>{langMode === 'English' ? 'Common Pitfalls & Warnings' : '避坑指南 (Common Pitfalls)'}</span>
                 </p>
                 {data.commonPitfalls.map((pf, i) => (
-                  <p key={i} className="text-xs text-amber-900 leading-relaxed">
+                  <p key={i} className="text-xs text-amber-900 dark:text-amber-200 leading-relaxed">
                     • {pf}
                   </p>
                 ))}
@@ -247,7 +247,7 @@ export const ConceptModal: React.FC<ConceptModalProps> = ({ term, onClose, uiLan
             <div className="pt-2 flex justify-end">
               <button
                 onClick={onClose}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl text-xs font-bold transition shadow-xs"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl text-xs font-bold transition shadow-xs cursor-pointer"
               >
                 {langMode === 'English' ? 'Understood & Marked' : '已搞懂并标记'}
               </button>

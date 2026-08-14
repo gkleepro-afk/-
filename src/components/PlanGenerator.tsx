@@ -218,17 +218,17 @@ export const PlanGenerator: React.FC<PlanGeneratorProps> = ({
   );
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-[#F8FAFC] overflow-y-auto">
+    <div className="flex-1 flex flex-col h-full bg-[#F8FAFC] dark:bg-slate-950 text-slate-800 dark:text-slate-100 overflow-y-auto transition-colors duration-200">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 px-8 py-6 sticky top-0 z-10">
+      <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-8 py-6 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-3">
-            <h2 className="text-2xl font-bold text-slate-900 tracking-tight">{t('planGeneratorTitle')}</h2>
-            <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 border border-blue-100">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">{t('planGeneratorTitle')}</h2>
+            <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-800">
               Logos Generator
             </span>
           </div>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             {t('planGeneratorDesc')}
           </p>
         </div>
@@ -239,7 +239,7 @@ export const PlanGenerator: React.FC<PlanGeneratorProps> = ({
         
         {/* Generator Form Panel */}
         <div className="lg:col-span-6 flex flex-col gap-6">
-          <div className="bg-slate-900 text-white p-8 rounded-2xl shadow-xl relative overflow-hidden">
+          <div className="bg-slate-900 dark:bg-slate-900 text-white p-8 rounded-2xl shadow-xl border border-slate-800 relative overflow-hidden">
             <div className="flex items-center gap-2 mb-6 border-b border-slate-800 pb-4">
               <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold">
                 <Sparkles className="w-4 h-4" />
@@ -394,8 +394,8 @@ export const PlanGenerator: React.FC<PlanGeneratorProps> = ({
           </div>
 
           {/* Quick Presets */}
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-3">
               {uiLang === 'en' ? 'Presets & Templates (Click to apply)' : '预设推荐案例 (点击快速填入)'}
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -403,10 +403,10 @@ export const PlanGenerator: React.FC<PlanGeneratorProps> = ({
                 <button
                   key={idx}
                   onClick={() => handleApplyPreset(pt)}
-                  className="p-3 bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 rounded-xl text-left transition group"
+                  className="p-3 bg-slate-50 dark:bg-slate-800/70 hover:bg-blue-50 dark:hover:bg-blue-950/40 border border-slate-200 dark:border-slate-700/60 hover:border-blue-200 dark:hover:border-blue-700 rounded-xl text-left transition group cursor-pointer"
                 >
-                  <p className="text-xs font-bold text-slate-800 group-hover:text-blue-600">{pt.subject}</p>
-                  <p className="text-[11px] text-slate-500 mt-1 truncate">{pt.goal}</p>
+                  <p className="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400">{pt.subject}</p>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 truncate">{pt.goal}</p>
                 </button>
               ))}
             </div>
@@ -415,12 +415,12 @@ export const PlanGenerator: React.FC<PlanGeneratorProps> = ({
 
         {/* Saved Plans List */}
         <div className="lg:col-span-6 flex flex-col gap-6">
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs flex-1">
-            <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
-              <h3 className="text-base font-bold text-slate-900">
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs flex-1">
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
+              <h3 className="text-base font-bold text-slate-900 dark:text-white">
                 {uiLang === 'zh' ? '已生成的计划库' : uiLang === 'en' ? 'Generated Plans' : '已生成的计划库 / Generated Plans'}
               </h3>
-              <span className="text-xs font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">
+              <span className="text-xs font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-full border border-slate-200/50 dark:border-slate-700/50">
                 {filteredPlans.length} {uiLang === 'en' ? 'plans' : '套方案'}
               </span>
             </div>
@@ -430,31 +430,31 @@ export const PlanGenerator: React.FC<PlanGeneratorProps> = ({
                 <div
                   key={plan.id}
                   onClick={() => onSelectExistingPlan(plan)}
-                  className="p-5 rounded-xl border border-slate-200 hover:border-blue-500 bg-white hover:bg-blue-50/30 transition cursor-pointer group relative overflow-hidden"
+                  className="p-5 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-blue-500 dark:hover:border-blue-500 bg-white dark:bg-slate-900 hover:bg-blue-50/30 dark:hover:bg-slate-800/50 transition cursor-pointer group relative overflow-hidden"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <div className="flex items-center gap-2 mb-1.5">
-                        <span className="px-2 py-0.5 text-[10px] font-bold rounded bg-blue-50 text-blue-600 uppercase">
+                        <span className="px-2 py-0.5 text-[10px] font-bold rounded bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-800 uppercase">
                           {plan.subject}
                         </span>
-                        <span className="text-[11px] text-slate-400 font-medium">
+                        <span className="text-[11px] text-slate-400 dark:text-slate-400 font-medium">
                           {plan.gradeLevel}
                         </span>
                       </div>
-                      <h4 className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition">
+                      <h4 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition">
                         {plan.title}
                       </h4>
                     </div>
 
-                    <ArrowRight className="w-5 h-5 text-slate-300 group-hover:text-blue-600 group-hover:translate-x-1 transition shrink-0 mt-1" />
+                    <ArrowRight className="w-5 h-5 text-slate-300 dark:text-slate-600 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:translate-x-1 transition shrink-0 mt-1" />
                   </div>
 
-                  <p className="text-xs text-slate-500 line-clamp-2 mt-2 leading-relaxed">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mt-2 leading-relaxed">
                     {plan.overview}
                   </p>
 
-                  <div className="flex items-center gap-4 mt-4 text-[11px] text-slate-400 font-medium pt-3 border-t border-slate-100">
+                  <div className="flex items-center gap-4 mt-4 text-[11px] text-slate-400 dark:text-slate-400 font-medium pt-3 border-t border-slate-100 dark:border-slate-800">
                     <span className="flex items-center gap-1">
                       <Calendar className="w-3.5 h-3.5 text-blue-500" />
                       {plan.dailyTasks.length} {uiLang === 'en' ? 'Days' : '天路线'}

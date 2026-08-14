@@ -16,6 +16,7 @@ import { StudyTask, UserStats, UserProfile } from '../types';
 import { UILanguage, TRANSLATIONS } from '../utils/translations';
 import { matchGradeStrict } from '../utils/gradeMatcher';
 import { EncouragementBanner } from './EncouragementBanner';
+import { soundEngine } from '../utils/audio';
 
 interface DailyRoadmapProps {
   tasks: StudyTask[];
@@ -238,29 +239,36 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
 
   const getTaskBadgeStyle = (completed: boolean, difficulty: string) => {
     if (completed) {
-      return 'bg-emerald-50 text-emerald-600 border border-emerald-200';
+      return 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800';
     }
     if (difficulty === 'hard') {
-      return 'bg-amber-50 text-amber-700 border border-amber-200';
+      return 'bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800';
     }
-    return 'bg-blue-50 text-blue-600 border border-blue-200';
+    return 'bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800';
+  };
+
+  const handleTaskCheck = (taskId: string, currentlyCompleted: boolean) => {
+    if (!currentlyCompleted) {
+      soundEngine.playChime('task_done');
+    }
+    onToggleTask(taskId);
   };
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-[#F8FAFC] overflow-y-auto">
+    <div className="flex-1 flex flex-col h-full bg-[#F8FAFC] dark:bg-slate-950 text-slate-800 dark:text-slate-100 overflow-y-auto transition-colors duration-200">
       {/* Geometric Balance Top Header */}
-      <header className="bg-white border-b border-slate-200 px-8 py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sticky top-0 z-10">
+      <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-8 py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sticky top-0 z-10">
         <div>
           <div className="flex items-center gap-3">
-            <h2 className="text-2xl font-bold text-slate-900 tracking-tight">{t('todayRoadmap')}</h2>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 border border-blue-100">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">{t('todayRoadmap')}</h2>
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 border border-blue-100 dark:border-blue-800">
               Roadmap
             </span>
           </div>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             {new Date().toLocaleDateString(uiLang === 'en' ? 'en-US' : 'zh-CN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
             {' • '}
-            <span className="font-semibold text-slate-700">
+            <span className="font-semibold text-slate-700 dark:text-slate-200">
               {totalCount - completedCount} {t('remainingTasks')}
             </span>
           </p>
@@ -273,10 +281,10 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
               <button
                 type="button"
                 onClick={onOpenFeatureIntro}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold transition cursor-pointer"
                 title="查看全功能使用简介"
               >
-                <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+                <Sparkles className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                 <span className="hidden md:inline">{uiLang === 'en' ? 'Feature Guide' : '功能指南'}</span>
               </button>
             )}
@@ -284,10 +292,10 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
               <button
                 type="button"
                 onClick={onStartTour}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200/80 text-xs font-bold transition cursor-pointer"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800 text-xs font-bold transition cursor-pointer"
                 title="开启分步气泡漫游指引"
               >
-                <Brain className="w-3.5 h-3.5 text-indigo-600" />
+                <Brain className="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
                 <span className="hidden md:inline">{uiLang === 'en' ? 'Interactive Tour' : '新手漫游'}</span>
               </button>
             )}
@@ -295,12 +303,12 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
 
           <div className="flex flex-col items-end">
             <div className="flex items-baseline gap-2">
-              <p className="text-sm font-bold text-blue-600">{progressPercent}% {t('progress')}</p>
+              <p className="text-sm font-bold text-blue-600 dark:text-blue-400">{progressPercent}% {t('progress')}</p>
               <span className="text-xs text-slate-400">({completedCount}/{totalCount})</span>
             </div>
-            <div className="w-36 bg-slate-100 h-2 rounded-full overflow-hidden mt-1.5 border border-slate-200">
+            <div className="w-36 bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden mt-1.5 border border-slate-200 dark:border-slate-700">
               <div 
-                className="bg-blue-600 h-full rounded-full transition-all duration-500" 
+                className="bg-blue-600 dark:bg-blue-500 h-full rounded-full transition-all duration-500" 
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
@@ -341,10 +349,10 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
               <Filter className="w-4 h-4 text-slate-400" />
               <button
                 onClick={() => setSelectedSubject('all')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer ${
                   selectedSubject === 'all'
-                    ? 'bg-slate-900 text-white shadow-xs'
-                    : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                    ? 'bg-slate-900 dark:bg-blue-600 text-white shadow-xs'
+                    : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
                 }`}
               >
                 {t('allSubjects')} ({tasks.length})
@@ -353,10 +361,10 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
                 <button
                   key={sub}
                   onClick={() => setSelectedSubject(sub)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap cursor-pointer ${
                     selectedSubject === sub
-                      ? 'bg-slate-900 text-white shadow-xs'
-                      : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                      ? 'bg-slate-900 dark:bg-blue-600 text-white shadow-xs'
+                      : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'
                   }`}
                 >
                   {sub}
@@ -368,17 +376,17 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
           {/* Tasks Grid */}
           <div className="space-y-4">
             {filteredTasks.length === 0 ? (
-              <div className="bg-white rounded-xl border border-slate-200 p-12 text-center">
-                <Brain className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-                <h3 className="text-base font-bold text-slate-800">
+              <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-12 text-center">
+                <Brain className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
+                <h3 className="text-base font-bold text-slate-800 dark:text-slate-200">
                   {uiLang === 'zh' ? '暂无该分类的复习任务' : uiLang === 'en' ? 'No study tasks for this category' : '暂无该分类复习任务 / No tasks'}
                 </h3>
-                <p className="text-xs text-slate-500 mt-1 mb-4">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-4">
                   {uiLang === 'zh' ? '输入你的学习内容与年级，AI 即可为你一键生成全套复习任务' : uiLang === 'en' ? 'Enter your subject and grade level to auto-generate study tasks' : '输入学习内容与年级，AI 即可一键生成全套复习任务'}
                 </p>
                 <button
                   onClick={onNavigateToGenerator}
-                  className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-bold shadow-xs hover:bg-blue-700 transition"
+                  className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-bold shadow-xs hover:bg-blue-700 transition cursor-pointer"
                 >
                   <Sparkles className="w-4 h-4" />
                   <span>{t('generatePlanBtn')}</span>
@@ -388,21 +396,21 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
               filteredTasks.map((task) => (
                 <div
                   key={task.id}
-                  className={`bg-white p-6 rounded-xl border border-slate-200 shadow-xs transition hover:shadow-md relative overflow-hidden ${
-                    !task.completed ? 'border-l-4 border-l-blue-600' : 'opacity-85'
+                  className={`bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs transition hover:shadow-md relative overflow-hidden ${
+                    !task.completed ? 'border-l-4 border-l-blue-600 dark:border-l-blue-500' : 'opacity-85'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-start gap-3.5 flex-1">
                       {/* Completion Checkbox */}
                       <button
-                        onClick={() => onToggleTask(task.id)}
-                        className="mt-1 transition hover:scale-110 text-slate-400 hover:text-blue-600 shrink-0"
+                        onClick={() => handleTaskCheck(task.id, task.completed)}
+                        className="mt-1 transition hover:scale-110 text-slate-400 hover:text-blue-600 shrink-0 cursor-pointer"
                       >
                         {task.completed ? (
-                          <CheckCircle2 className="w-6 h-6 text-emerald-500 fill-emerald-50" />
+                          <CheckCircle2 className="w-6 h-6 text-emerald-500 fill-emerald-50 dark:fill-emerald-950" />
                         ) : (
-                          <Circle className="w-6 h-6 text-slate-300 hover:text-blue-600" />
+                          <Circle className="w-6 h-6 text-slate-300 dark:text-slate-600 hover:text-blue-600" />
                         )}
                       </button>
 
@@ -416,7 +424,7 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
                           >
                             {task.completed ? 'COMPLETED' : task.taskType.toUpperCase()}
                           </span>
-                          <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
+                          <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">
                             {task.subject}
                           </span>
                           <span className="text-xs text-slate-400 flex items-center gap-1">
@@ -425,11 +433,11 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
                           </span>
                         </div>
 
-                        <h3 className={`text-base font-bold text-slate-900 ${task.completed ? 'line-through text-slate-400' : ''}`}>
+                        <h3 className={`text-base font-bold text-slate-900 dark:text-white ${task.completed ? 'line-through text-slate-400 dark:text-slate-500' : ''}`}>
                           {task.title}
                         </h3>
 
-                        <p className="text-xs text-slate-500 leading-relaxed">
+                        <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
                           {task.description}
                         </p>
 
@@ -440,7 +448,7 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
                               <button
                                 key={idx}
                                 onClick={() => onExplainConcept(kp)}
-                                className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-slate-50 border border-slate-200 text-[11px] text-slate-600 hover:border-blue-300 hover:text-blue-600 transition"
+                                className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[11px] text-slate-600 dark:text-slate-300 hover:border-blue-300 dark:hover:border-blue-600 hover:text-blue-600 dark:hover:text-blue-400 transition cursor-pointer"
                                 title="AI 概念精讲 / AI Concept Breakdown"
                               >
                                 <span>{kp}</span>
@@ -462,7 +470,7 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
         <div className="lg:col-span-5 flex flex-col gap-6">
           
           {/* AI Plan Banner */}
-          <div className="bg-slate-900 text-white p-7 rounded-2xl shadow-lg relative overflow-hidden">
+          <div className="bg-slate-900 dark:bg-slate-900 text-white p-7 rounded-2xl shadow-lg border border-slate-800 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl pointer-events-none" />
             
             <div className="flex items-center gap-2 text-blue-400 mb-2">
@@ -483,7 +491,7 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
 
             <button
               onClick={onNavigateToGenerator}
-              className="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl font-bold transition text-sm shadow-md shadow-blue-900/30 flex items-center justify-center gap-2"
+              className="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl font-bold transition text-sm shadow-md shadow-blue-900/30 flex items-center justify-center gap-2 cursor-pointer"
             >
               <span>{t('generatePlanBtn')}</span>
               <ChevronRight className="w-4 h-4" />
@@ -491,27 +499,27 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
           </div>
 
           {/* Scheduled Sessions Box */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-6">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs p-6">
             <div className="flex items-center justify-between mb-6">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                 {t('scheduledTimeline')}
               </h4>
-              <span className="text-xs font-semibold text-blue-600">Ebbinghaus Spaced</span>
+              <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">Ebbinghaus Spaced</span>
             </div>
 
-            <div className="space-y-5">
+            <div className="space-y-4">
               {timelineSessions.map((session, idx) => (
                 <div key={idx} className="flex items-center gap-4">
                   <div className="text-right w-12 shrink-0">
-                    <p className="text-sm font-bold text-slate-900">{session.time}</p>
+                    <p className="text-sm font-bold text-slate-900 dark:text-slate-100">{session.time}</p>
                     <p className="text-[10px] text-slate-400 font-semibold">{session.ampm}</p>
                   </div>
-                  <div className="w-px h-10 bg-slate-200" />
-                  <div className={`p-3.5 ${session.bg} rounded-lg flex-1 border ${session.border}`}>
-                    <p className={`text-xs font-bold ${session.textTitle}`}>
+                  <div className="w-px h-10 bg-slate-200 dark:bg-slate-800" />
+                  <div className={`p-3.5 bg-slate-50 dark:bg-slate-800/70 rounded-xl flex-1 border border-slate-200/80 dark:border-slate-700/60`}>
+                    <p className="text-xs font-bold text-slate-800 dark:text-slate-100">
                       {session.title}
                     </p>
-                    <p className={`text-[11px] ${session.textDesc}`}>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400">
                       {session.desc}
                     </p>
                   </div>
@@ -521,16 +529,16 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
           </div>
 
           {/* Memory Retention Box */}
-          <div className="bg-white p-6 rounded-xl border border-slate-200 relative overflow-hidden">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
+          <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs relative overflow-hidden">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-3">
               {t('memoryRetention')}
             </h4>
             <div className="flex justify-between items-end mb-2">
-              <p className="text-xs font-semibold text-slate-600">Retention Rate</p>
-              <p className="text-2xl font-black text-slate-900">92%</p>
+              <p className="text-xs font-semibold text-slate-600 dark:text-slate-400">Retention Rate</p>
+              <p className="text-2xl font-black text-slate-900 dark:text-white">92%</p>
             </div>
-            <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden mb-3 border border-slate-200">
-              <div className="bg-blue-600 h-full w-[92%]" />
+            <div className="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden mb-3 border border-slate-200 dark:border-slate-700">
+              <div className="bg-blue-600 dark:bg-blue-500 h-full w-[92%]" />
             </div>
             <p className="text-[11px] text-slate-400 leading-relaxed">
               {uiLang === 'zh'
@@ -547,12 +555,12 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
 
       {/* Manual Task Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
-            <h3 className="text-lg font-bold text-slate-900 mb-4">{t('addTask')}</h3>
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">{t('addTask')}</h3>
             <form onSubmit={handleCreateTask} className="space-y-4">
               <div>
-                <label className="text-xs font-bold uppercase text-slate-500 block mb-1">
+                <label className="text-xs font-bold uppercase text-slate-500 dark:text-slate-400 block mb-1">
                   {uiLang === 'zh' ? '任务名称 / 内容' : uiLang === 'en' ? 'Task Title / Details' : '任务名称 / Task Title'}
                 </label>
                 <input
@@ -561,24 +569,24 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
                   placeholder={uiLang === 'en' ? 'e.g., Review Calculus derivatives, Study 20 IELTS words' : '如：复习微积分求导公式、背诵 20 个雅思词汇'}
                   value={newTaskTitle}
                   onChange={(e) => setNewTaskTitle(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-bold uppercase text-slate-500 block mb-1">
+                  <label className="text-xs font-bold uppercase text-slate-500 dark:text-slate-400 block mb-1">
                     {uiLang === 'zh' ? '所属科目' : uiLang === 'en' ? 'Subject' : '所属科目 / Subject'}
                   </label>
                   <input
                     type="text"
                     value={newTaskSubject}
                     onChange={(e) => setNewTaskSubject(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold uppercase text-slate-500 block mb-1">
+                  <label className="text-xs font-bold uppercase text-slate-500 dark:text-slate-400 block mb-1">
                     {uiLang === 'zh' ? '预计时长 (分钟)' : uiLang === 'en' ? 'Duration (mins)' : '预计时长 / Duration'}
                   </label>
                   <input
@@ -587,7 +595,7 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
                     max={180}
                     value={newTaskDuration}
                     onChange={(e) => setNewTaskDuration(Number(e.target.value))}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
               </div>
@@ -596,13 +604,13 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 rounded-lg text-xs font-bold text-slate-500 hover:bg-slate-100"
+                  className="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
                 >
                   {uiLang === 'en' ? 'Cancel' : '取消'}
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-lg text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 shadow-xs"
+                  className="px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white hover:bg-blue-700 shadow-xs cursor-pointer"
                 >
                   {uiLang === 'en' ? 'Create Task' : '创建任务'}
                 </button>

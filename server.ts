@@ -1019,6 +1019,180 @@ app.post("/api/generate-classroom-lesson", async (req, res) => {
   }
 });
 
+// API Endpoint: AI Generate Full Exam Paper (AI 智能出卷与多题型组卷)
+app.post("/api/generate-exam-paper", async (req, res) => {
+  try {
+    const {
+      subject = "物理",
+      gradeLevel = "高三/高考",
+      semester = "上学期",
+      countryRegion = "中国大陆",
+      educationSystem = "人教版 (新高考新教材)",
+      topic = "全真综合模拟特训",
+      paperCategory = "全真模拟卷",
+      questionCount = 5,
+      difficulty = "all",
+      languageMode = "Bilingual",
+    } = req.body;
+
+    const ai = getGeminiClient();
+    const count = Math.min(Math.max(Number(questionCount) || 5, 3), 10);
+
+    const prompt = `你是一位深谙中高考与全球各大升学考试命题大纲的权威命题组组长与资深高级教师。
+请为【${gradeLevel} · ${semester} · ${countryRegion} · ${educationSystem}】的学生，量身命制一套极具真实考场水准与梯次区分度的【${subject}】全真考试试卷。
+- 试卷定位/类型：${paperCategory}
+- 核心考查主题/知识范围：${topic}
+- 目标题目数量：${count} 道
+- 目标难度：${difficulty}
+
+【命题核心铁律与题型多样性要求】：
+1. 试卷题目必须严格涵盖多种丰富题型，切忌单一选择题！包括：
+   - 'choice' (单项选择题，4个选项)
+   - 'multi_choice' (多项选择题，4个选项，至少2个正确答案)
+   - 'fill' (填空题 / 概念填空 / 计算填空)
+   - 'solution' (计算解答大题 / 证明大题 / 综合应用题)
+   - 'experiment' (实验探究题 / 材料分析题 / 阅读理解题)
+2. 试卷标题 (title & titleEn) 应规范大气（如：“2026年高三物理电磁感应与动量守恒高仿真压轴密卷” / "2026 Gaokao Physics Full Simulation Sprint Exam"）。
+3. 题目内容及解析必须兼具学术严谨性与详细推导（含一题多解或步骤赋分要点）。
+4. 必须提供双语字段（titleEn, descriptionEn, topicEn, questionEn, optionsEn, explanationEn），保证国际化与中英双语学习者无障碍研读。
+5. 为每道题合理配置分值 score (例如选择题每题 5-6 分，填空题每题 6-8 分，解答大题每题 12-18 分，总分 totalScore 合计约 100 分，及格分 passingScore 为 60 分)。
+
+请严格按照 JSON Schema 格式输出，不要包含任何 markdown 外层代码块标记之外的多余文字。`;
+
+    let data: any = {};
+    try {
+      const response = await callGeminiWithRetry(ai, {
+        contents: prompt,
+        config: {
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: Type.OBJECT,
+            properties: {
+              title: { type: Type.STRING },
+              titleEn: { type: Type.STRING },
+              subject: { type: Type.STRING },
+              gradeLevel: { type: Type.STRING },
+              publisher: { type: Type.STRING },
+              paperCategory: { type: Type.STRING },
+              durationMinutes: { type: Type.INTEGER },
+              totalScore: { type: Type.INTEGER },
+              passingScore: { type: Type.INTEGER },
+              description: { type: Type.STRING },
+              descriptionEn: { type: Type.STRING },
+              questions: {
+                type: Type.ARRAY,
+                items: {
+                  type: Type.OBJECT,
+                  properties: {
+                    topic: { type: Type.STRING },
+                    topicEn: { type: Type.STRING },
+                    question: { type: Type.STRING },
+                    questionEn: { type: Type.STRING },
+                    questionType: { type: Type.STRING }, // 'choice' | 'multi_choice' | 'fill' | 'solution' | 'experiment'
+                    options: {
+                      type: Type.ARRAY,
+                      items: { type: Type.STRING },
+                    },
+                    optionsEn: {
+                      type: Type.ARRAY,
+                      items: { type: Type.STRING },
+                    },
+                    correctIndex: { type: Type.INTEGER },
+                    correctIndices: {
+                      type: Type.ARRAY,
+                      items: { type: Type.INTEGER },
+                    },
+                    correctAnswerText: { type: Type.STRING },
+                    explanation: { type: Type.STRING },
+                    explanationEn: { type: Type.STRING },
+                    difficulty: { type: Type.STRING }, // 'easy' | 'medium' | 'hard'
+                    score: { type: Type.INTEGER },
+                    keyPoints: {
+                      type: Type.ARRAY,
+                      items: { type: Type.STRING },
+                    },
+                  },
+                  required: ["topic", "question", "questionType", "explanation", "difficulty"],
+                },
+              },
+            },
+            required: ["title", "description", "questions"],
+          },
+        },
+      });
+
+      if (response.text) {
+        data = JSON.parse(response.text);
+      }
+    } catch (apiErr: any) {
+      console.warn("Gemini JSON Schema call failed for exam paper, using fallback:", apiErr);
+      const fallbackPrompt = prompt + "\n\n请直接输出标准合法 JSON 格式。";
+      const fallbackResp = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: fallbackPrompt,
+      });
+      const rawText = fallbackResp.text || "";
+      const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        data = JSON.parse(jsonMatch[0]);
+      }
+    }
+
+    const paperId = `ai-exam-${Date.now()}`;
+    const formattedQuestions = (data.questions || []).map((q: any, idx: number) => {
+      const qType = q.questionType || (q.options && q.options.length > 0 ? "choice" : "solution");
+      return {
+        id: `${paperId}-q${idx + 1}`,
+        subject: data.subject || subject,
+        gradeStage: gradeLevel.includes("初") ? "初中" : gradeLevel.includes("高") ? "高中" : "大学/技能",
+        gradeLevel: data.gradeLevel || gradeLevel,
+        semester: semester,
+        topic: q.topic || topic,
+        topicEn: q.topicEn || `${subject} Core Topic`,
+        question: q.question || `第 ${idx + 1} 题考查 ${topic} 相关内容`,
+        questionEn: q.questionEn || q.question || `Question ${idx + 1} regarding ${topic}`,
+        options: q.options || (qType === 'choice' || qType === 'multi_choice' ? ['A. 选项1', 'B. 选项2', 'C. 选项3', 'D. 选项4'] : undefined),
+        optionsEn: q.optionsEn || (qType === 'choice' || qType === 'multi_choice' ? ['A. Option 1', 'B. Option 2', 'C. Option 3', 'D. Option 4'] : undefined),
+        correctIndex: typeof q.correctIndex === 'number' ? q.correctIndex : 0,
+        correctIndices: Array.isArray(q.correctIndices) ? q.correctIndices : (qType === 'multi_choice' ? [0, 1] : undefined),
+        correctAnswerText: q.correctAnswerText || (qType === 'fill' || qType === 'solution' ? q.explanation : undefined),
+        explanation: q.explanation || '本题考查核心概念与解题通法，请仔细对照解析推导。',
+        explanationEn: q.explanationEn || 'This question tests core competencies and systematic derivations.',
+        questionType: qType,
+        difficulty: q.difficulty || (idx % 3 === 0 ? 'easy' : idx % 3 === 1 ? 'medium' : 'hard'),
+        score: Number(q.score) || Math.round(100 / Math.max(1, (data.questions?.length || count))),
+        keyPoints: Array.isArray(q.keyPoints) && q.keyPoints.length > 0 ? q.keyPoints : [topic, `${subject}核心考点`],
+      };
+    });
+
+    const totalCalculatedScore = formattedQuestions.reduce((acc: number, cur: any) => acc + (cur.score || 10), 0);
+
+    const finalPaper = {
+      id: paperId,
+      title: data.title || `${gradeLevel}${subject}「${topic}」AI 名师特训密卷`,
+      titleEn: data.titleEn || `${gradeLevel} ${subject} "${topic}" AI Special Mock Exam`,
+      subject: data.subject || subject,
+      gradeLevel: data.gradeLevel || gradeLevel,
+      semester: semester,
+      countryRegion: countryRegion,
+      publisher: data.publisher || `${educationSystem} · AI 智能命题组`,
+      paperCategory: data.paperCategory || paperCategory,
+      difficulty: difficulty,
+      durationMinutes: Number(data.durationMinutes) || Math.max(45, formattedQuestions.length * 10),
+      totalScore: totalCalculatedScore > 0 ? totalCalculatedScore : 100,
+      passingScore: Math.round((totalCalculatedScore > 0 ? totalCalculatedScore : 100) * 0.6),
+      description: data.description || `由智学 AI 命题系统针对【${gradeLevel} ${subject}】知识点《${topic}》量身命制的仿真冲刺测试卷。`,
+      descriptionEn: data.descriptionEn || `AI-tailored simulated exam covering key syllabus topics of ${gradeLevel} ${subject}.`,
+      questions: formattedQuestions,
+    };
+
+    res.json({ success: true, paper: finalPaper });
+  } catch (error: any) {
+    console.error("Error generating AI exam paper:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // API Endpoint: Ask Teacher Interactive Question (课堂提问互动)
 app.post("/api/ask-teacher", async (req, res) => {
   try {

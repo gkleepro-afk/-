@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Clock, Play, Pause, RotateCw, X, Flame, CheckCircle2 } from 'lucide-react';
+import { Clock, Play, Pause, RotateCw, X, Flame, CheckCircle2, Sparkles } from 'lucide-react';
+import { soundEngine } from '../utils/audio';
 
 interface PomodoroModalProps {
   onClose: () => void;
@@ -10,6 +11,7 @@ export const PomodoroModal: React.FC<PomodoroModalProps> = ({ onClose, onAddStud
   const [secondsLeft, setSecondsLeft] = useState(25 * 60);
   const [isActive, setIsActive] = useState(false);
   const [sessionCount, setSessionCount] = useState(1);
+  const [justCompleted, setJustCompleted] = useState(false);
 
   useEffect(() => {
     let interval: any = null;
@@ -21,16 +23,21 @@ export const PomodoroModal: React.FC<PomodoroModalProps> = ({ onClose, onAddStud
       setIsActive(false);
       onAddStudyMinutes(25);
       setSessionCount((prev) => prev + 1);
-      alert('🎉 恭喜完成 25 分钟番茄专注！累计为您的学习记录增加 25 分钟。');
+      setJustCompleted(true);
+      soundEngine.playChime('pomodoro_complete');
     }
     return () => clearInterval(interval);
   }, [isActive, secondsLeft, onAddStudyMinutes]);
 
   const toggleTimer = () => {
+    soundEngine.playChime('button');
+    setJustCompleted(false);
     setIsActive(!isActive);
   };
 
   const resetTimer = () => {
+    soundEngine.playChime('button');
+    setJustCompleted(false);
     setIsActive(false);
     setSecondsLeft(25 * 60);
   };
@@ -74,6 +81,13 @@ export const PomodoroModal: React.FC<PomodoroModalProps> = ({ onClose, onAddStud
             style={{ width: `${progressPercent}%` }}
           />
         </div>
+
+        {justCompleted && (
+          <div className="mb-6 p-3.5 bg-emerald-500/20 border border-emerald-500/30 rounded-xl text-emerald-300 text-xs font-bold flex items-center justify-center gap-2 animate-bounce">
+            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+            <span>🎉 恭喜完成 25 分钟专注！已累计计入专注时长</span>
+          </div>
+        )}
 
         {/* Timer Controls */}
         <div className="flex items-center justify-center gap-4">

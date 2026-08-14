@@ -131,7 +131,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center z-50 p-4 overflow-y-auto">
-      <div className="bg-white rounded-2xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden my-8">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-2xl w-full shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden my-8 text-slate-900 dark:text-slate-100 transition-colors duration-200">
         
         {/* Header */}
         <div className="bg-slate-900 text-white p-6 relative">
@@ -197,20 +197,20 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
             
             {/* Section 1: Basic & Avatar */}
             <div className="space-y-4">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 pb-2 flex items-center gap-1.5">
-                <User className="w-4 h-4 text-blue-600" />
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center gap-1.5">
+                <User className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                 {t('avatarHeader')}
               </h4>
 
               {/* Avatar Selector Block */}
-              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
-                <label className="text-xs font-bold text-slate-700 block">
+              <div className="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 space-y-3">
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block">
                   {t('chooseAvatarLabel')}
                 </label>
 
                 <div className="flex flex-wrap items-center gap-3">
                   {/* Preview Avatar */}
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-2xl shadow-md border-2 border-white shrink-0 overflow-hidden">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-2xl shadow-md border-2 border-white dark:border-slate-700 shrink-0 overflow-hidden">
                     {avatarUrl ? (
                       <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
                     ) : (
@@ -232,7 +232,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                         className={`w-9 h-9 rounded-xl text-lg flex items-center justify-center transition cursor-pointer border ${
                           !avatarUrl && avatarEmoji === item.emoji
                             ? 'bg-blue-600 border-blue-600 text-white shadow-md scale-110'
-                            : 'bg-white border-slate-200 hover:bg-slate-100 text-slate-700'
+                            : 'bg-white dark:bg-slate-700 border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-650 text-slate-700 dark:text-slate-200'
                         }`}
                       >
                         {item.emoji}
@@ -242,20 +242,20 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                 </div>
 
                 {/* Optional Custom Image URL */}
-                <div className="pt-2 border-t border-slate-200/60">
+                <div className="pt-2 border-t border-slate-200/60 dark:border-slate-700">
                   <input
                     type="text"
                     value={avatarUrl}
                     onChange={(e) => setAvatarUrl(e.target.value)}
                     placeholder={uiLang === 'en' ? 'Or paste custom Avatar Image URL (optional)' : '或粘贴网络自定义头像图片 URL 地址 (可选)'}
-                    className="w-full bg-white border border-slate-200 text-slate-900 rounded-xl p-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-900 dark:text-white rounded-xl p-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">
+                  <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1">
                     {t('userNameLabel')}
                   </label>
                   <input
@@ -263,18 +263,18 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                     value={userName}
                     onChange={(e) => setUserName(e.target.value)}
                     placeholder={uiLang === 'en' ? 'e.g. Alex, Scholar' : '如：张同学、智学学子'}
-                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">
+                  <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1">
                     {t('gradeSelectLabel')}
                   </label>
                   <select
                     value={gradeLevel}
                     onChange={(e) => setGradeLevel(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="初一">{uiLang === 'en' ? 'Grade 7 / Middle School 1' : '初一 / 基础建立 (Grade 7)'}</option>
                     <option value="初二">{uiLang === 'en' ? 'Grade 8 / Middle School 2' : '初二 / 知识巩固 (Grade 8)'}</option>
@@ -288,16 +288,16 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1 flex items-center justify-between">
+                  <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1 flex items-center justify-between">
                     <span>{t('semesterSelectLabel')}</span>
-                    <span className="text-[10px] text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded font-semibold">
+                    <span className="text-[10px] text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/40 px-1.5 py-0.5 rounded font-semibold border border-blue-100 dark:border-blue-800">
                       {uiLang === 'en' ? 'Aligned' : '精准匹配考纲'}
                     </span>
                   </label>
                   <select
                     value={semester}
                     onChange={(e) => setSemester(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
                   >
                     <option value="上学期">{uiLang === 'en' ? 'Term 1 / Fall Semester' : '秋季 · 上学期 (1st Semester)'}</option>
                     <option value="下学期">{uiLang === 'en' ? 'Term 2 / Spring Semester' : '春季 · 下学期 (2nd Semester)'}</option>
@@ -309,20 +309,20 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
             {/* Section 2: Country, System & Exam Goal */}
             <div className="space-y-4">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 pb-2 flex items-center gap-1.5">
-                <Globe className="w-4 h-4 text-emerald-600" />
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center gap-1.5">
+                <Globe className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                 {t('gradeHeader')}
               </h4>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">
+                  <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1">
                     {t('countrySelectLabel')}
                   </label>
                   <select
                     value={countryRegion}
                     onChange={(e) => setCountryRegion(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="中国大陆">中国大陆 (Mainland China)</option>
                     <option value="中国香港">中国香港 (Hong Kong DSE)</option>
@@ -335,13 +335,13 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">
+                  <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1">
                     {t('eduSystemLabel')}
                   </label>
                   <select
                     value={educationSystem}
                     onChange={(e) => setEducationSystem(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="人教版 (新高考新教材)">人教版 (新高考/新中考)</option>
                     <option value="粤教版 / 广东卷">粤教版 / 广东省卷</option>
@@ -358,13 +358,13 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">
+                  <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1">
                     {t('cardLangLabel')}
                   </label>
                   <select
                     value={targetLanguage}
                     onChange={(e) => setTargetLanguage(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="英语">英语 (English)</option>
                     <option value="日语">日语 (Japanese JLPT)</option>
@@ -376,7 +376,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">
+                  <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1">
                     {t('targetExamLabel')}
                   </label>
                   <input
@@ -384,7 +384,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                     value={targetExam}
                     onChange={(e) => setTargetExam(e.target.value)}
                     placeholder={uiLang === 'en' ? 'e.g., College Prep, IELTS 7.0, Midterm' : '如：2026年全国高考、中考、雅思7.0'}
-                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
               </div>
@@ -392,21 +392,21 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
             {/* Section 3: Daily Goal & Encouragement Style */}
             <div className="space-y-4">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-100 pb-2 flex items-center gap-1.5">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-slate-800 pb-2 flex items-center gap-1.5">
                 <Heart className="w-4 h-4 text-rose-500" />
                 {t('goalHeader')}
               </h4>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1 flex items-center gap-1">
+                  <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1 flex items-center gap-1">
                     <Clock className="w-3.5 h-3.5 text-blue-500" />
                     {t('dailyGoalLabel')}
                   </label>
                   <select
                     value={dailyGoalMinutes}
                     onChange={(e) => setDailyGoalMinutes(Number(e.target.value))}
-                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value={15}>15 {uiLang === 'en' ? 'Mins (Micro Study)' : '分钟 (轻量微学习)'}</option>
                     <option value={30}>30 {uiLang === 'en' ? 'Mins (Standard Mode)' : '分钟 (标准高效模式)'}</option>
@@ -417,13 +417,13 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1">
+                  <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1">
                     {t('encouragementToneLabel')}
                   </label>
                   <select
                     value={encouragementTone}
                     onChange={(e) => setEncouragementTone(e.target.value as any)}
-                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="passionate">🔥 {uiLang === 'en' ? 'Passionate & High Score' : '激情霸气型 (冲刺高分，热血沸腾)'}</option>
                     <option value="gentle">🌸 {uiLang === 'en' ? 'Gentle & Encouraging' : '温柔陪伴型 (贴心温暖，润物无声)'}</option>
@@ -434,7 +434,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1">
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1">
                   {t('customMottoLabel')}
                 </label>
                 <textarea
@@ -442,29 +442,29 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                   value={customMotto}
                   onChange={(e) => setCustomMotto(e.target.value)}
                   placeholder={uiLang === 'en' ? 'e.g. Aim for the moon. Even if you miss, you\'ll land among the stars!' : '如：星光不问赶路人，岁月不负有心人！'}
-                  className="w-full bg-slate-50 border border-slate-200 text-slate-900 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             </div>
 
             {/* Live Dynamic Preview Card */}
-            <div className="bg-gradient-to-r from-blue-50 via-slate-50 to-indigo-50 border border-blue-200/60 p-4 rounded-xl">
-              <h5 className="text-xs font-bold text-blue-900 flex items-center gap-1.5 mb-2">
-                <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+            <div className="bg-gradient-to-r from-blue-50 via-slate-50 to-indigo-50 dark:from-slate-800/80 dark:via-slate-800/50 dark:to-indigo-950/40 border border-blue-200/60 dark:border-slate-700 p-4 rounded-xl">
+              <h5 className="text-xs font-bold text-blue-900 dark:text-blue-300 flex items-center gap-1.5 mb-2">
+                <Sparkles className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                 {uiLang === 'en' ? 'Real-time Adaptation Preview' : '适配效果实时预览'}
               </h5>
-              <div className="text-xs text-slate-600 space-y-1">
-                <p>🎯 <strong className="text-slate-800">{uiLang === 'en' ? 'Questions & Roadmap:' : '题目推荐：'}</strong> {uiLang === 'en' ? `Automatically aligned with [${countryRegion} · ${gradeLevel} · ${educationSystem}].` : `将自动优先推送符合【${countryRegion} · ${gradeLevel} · ${educationSystem}】的考点。`}</p>
-                <p>⚡ <strong className="text-slate-800">{uiLang === 'en' ? 'Exam Center:' : '试卷中心：'}</strong> {uiLang === 'en' ? `Strictly matched with target exams for [${gradeLevel}].` : `匹配【${targetExam}】的全真真题卷与 AI 组卷试题。`}</p>
+              <div className="text-xs text-slate-600 dark:text-slate-300 space-y-1">
+                <p>🎯 <strong className="text-slate-800 dark:text-white">{uiLang === 'en' ? 'Questions & Roadmap:' : '题目推荐：'}</strong> {uiLang === 'en' ? `Automatically aligned with [${countryRegion} · ${gradeLevel} · ${educationSystem}].` : `将自动优先推送符合【${countryRegion} · ${gradeLevel} · ${educationSystem}】的考点。`}</p>
+                <p>⚡ <strong className="text-slate-800 dark:text-white">{uiLang === 'en' ? 'Exam Center:' : '试卷中心：'}</strong> {uiLang === 'en' ? `Strictly matched with target exams for [${gradeLevel}].` : `匹配【${targetExam}】的全真真题卷与 AI 组卷试题。`}</p>
               </div>
             </div>
 
             {/* Submit */}
-            <div className="pt-2 flex items-center justify-end gap-3 border-t border-slate-100">
+            <div className="pt-2 flex items-center justify-end gap-3 border-t border-slate-100 dark:border-slate-800">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 text-sm font-bold transition cursor-pointer"
+                className="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 text-sm font-bold transition cursor-pointer"
               >
                 {uiLang === 'en' ? 'Cancel' : '取消'}
               </button>
@@ -492,19 +492,19 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
           <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
             
             {/* Top Summary Banner */}
-            <div className="bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-purple-500/15 border border-amber-300/40 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-purple-500/15 border border-amber-300/40 dark:border-amber-500/30 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-3.5">
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-500 flex items-center justify-center text-3xl shadow-lg shadow-amber-500/30 text-white">
                   🏆
                 </div>
                 <div>
-                  <h4 className="text-base font-black text-slate-900 flex items-center gap-2">
+                  <h4 className="text-base font-black text-slate-900 dark:text-white flex items-center gap-2">
                     <span>{uiLang === 'en' ? 'Achievement Showcase' : '智学成就勋章馆'}</span>
-                    <span className="px-2 py-0.5 bg-amber-100 text-amber-800 text-[11px] font-black rounded-full">
+                    <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 text-[11px] font-black rounded-full border border-amber-200 dark:border-amber-800">
                       {unlockedCount} / {achievementList.length} {uiLang === 'en' ? 'Unlocked' : '已解锁'}
                     </span>
                   </h4>
-                  <p className="text-xs text-slate-500 mt-1">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                     {uiLang === 'en'
                       ? 'Reach 3, 7, and 14 days of study streak to unlock exclusive shiny badges!'
                       : '连续学习达成 3天、7天、14天等里程碑，将触发酷炫成就奖励动画！'}
@@ -513,9 +513,9 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
               </div>
 
               {/* Total EXP Box */}
-              <div className="bg-white border border-amber-200 rounded-xl px-4 py-2.5 shadow-xs text-center shrink-0 w-full sm:w-auto">
-                <div className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">{uiLang === 'en' ? 'Total EXP' : '累计经验'}</div>
-                <div className="text-xl font-black text-amber-600 flex items-center justify-center gap-1">
+              <div className="bg-white dark:bg-slate-800 border border-amber-200 dark:border-amber-900/50 rounded-xl px-4 py-2.5 shadow-xs text-center shrink-0 w-full sm:w-auto">
+                <div className="text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-400 font-bold">{uiLang === 'en' ? 'Total EXP' : '累计经验'}</div>
+                <div className="text-xl font-black text-amber-600 dark:text-amber-400 flex items-center justify-center gap-1">
                   <span>⚡ {totalExp}</span>
                   <span className="text-xs font-bold text-slate-400">EXP</span>
                 </div>
@@ -525,11 +525,11 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
             {/* Streak Milestones Highlight Grid */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <h5 className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                <h5 className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
                   <Flame className="w-4 h-4 text-amber-500" />
                   <span>{uiLang === 'en' ? 'Streak Milestones (3 / 7 / 14 / 30 Days)' : '核心连续学习打卡里程碑 (3 / 7 / 14 / 30 天)'}</span>
                 </h5>
-                <span className="text-xs font-bold text-amber-600">
+                <span className="text-xs font-bold text-amber-600 dark:text-amber-400">
                   {uiLang === 'en' ? `Current Streak: ${statsFallback.streakDays} Days` : `当前连击：${statsFallback.streakDays} 天 🔥`}
                 </span>
               </div>
@@ -542,8 +542,8 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                       key={ach.id}
                       className={`relative p-4 rounded-2xl border transition-all duration-200 overflow-hidden ${
                         isCurrentUnlocked
-                          ? 'bg-gradient-to-br from-amber-50/80 via-white to-orange-50/50 border-amber-300 shadow-sm'
-                          : 'bg-slate-50 border-slate-200/80 opacity-80'
+                          ? 'bg-gradient-to-br from-amber-50/80 via-white to-orange-50/50 dark:from-amber-950/20 dark:via-slate-850 dark:to-orange-950/20 border-amber-300 dark:border-amber-700/60 shadow-sm'
+                          : 'bg-slate-50 dark:bg-slate-800/60 border-slate-200/80 dark:border-slate-700 opacity-80'
                       }`}
                     >
                       {/* Top Row: Icon & Status */}
@@ -551,16 +551,16 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                         <div className="flex items-center gap-3">
                           <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl shadow-xs border ${
                             isCurrentUnlocked
-                              ? 'bg-gradient-to-b from-amber-100 to-amber-200 border-amber-300'
-                              : 'bg-slate-200 border-slate-300 grayscale'
+                              ? 'bg-gradient-to-b from-amber-100 to-amber-200 dark:from-amber-900/60 dark:to-amber-800/60 border-amber-300 dark:border-amber-600'
+                              : 'bg-slate-200 dark:bg-slate-700 border-slate-300 dark:border-slate-600 grayscale'
                           }`}>
                             {ach.icon}
                           </div>
                           <div>
-                            <h6 className="text-sm font-bold text-slate-900 leading-tight">
+                            <h6 className="text-sm font-bold text-slate-900 dark:text-white leading-tight">
                               {uiLang === 'en' && ach.titleEn ? ach.titleEn : ach.title}
                             </h6>
-                            <div className="text-[11px] text-amber-700 font-semibold mt-0.5 flex items-center gap-1">
+                            <div className="text-[11px] text-amber-700 dark:text-amber-400 font-semibold mt-0.5 flex items-center gap-1">
                               <span>👑 {ach.rewardTitle}</span>
                               <span className="text-slate-400">·</span>
                               <span>+{ach.rewardExp} EXP</span>
@@ -570,23 +570,23 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
                         {/* Unlocked / Locked Tag */}
                         {isCurrentUnlocked ? (
-                          <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-black rounded-full flex items-center gap-1 shrink-0">
+                          <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 text-[10px] font-black rounded-full flex items-center gap-1 shrink-0 border border-emerald-200 dark:border-emerald-800">
                             <Check className="w-3 h-3" />
                             {uiLang === 'en' ? 'Unlocked' : '已解锁'}
                           </span>
                         ) : (
-                          <span className="px-2 py-0.5 bg-slate-200 text-slate-600 text-[10px] font-bold rounded-full shrink-0">
+                          <span className="px-2 py-0.5 bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-[10px] font-bold rounded-full shrink-0">
                             {ach.progress}/{ach.progressMax} {uiLang === 'en' ? 'Days' : '天'}
                           </span>
                         )}
                       </div>
 
-                      <p className="text-xs text-slate-600 leading-relaxed mb-3">
+                      <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-3">
                         {uiLang === 'en' && ach.descriptionEn ? ach.descriptionEn : ach.description}
                       </p>
 
                       {/* Progress Bar */}
-                      <div className="w-full bg-slate-200/80 rounded-full h-2 mb-3 overflow-hidden">
+                      <div className="w-full bg-slate-200/80 dark:bg-slate-700 rounded-full h-2 mb-3 overflow-hidden">
                         <div
                           className={`h-full transition-all duration-500 ${
                             isCurrentUnlocked
@@ -598,15 +598,15 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                       </div>
 
                       {/* Action buttons on Card */}
-                      <div className="flex items-center justify-between pt-1 border-t border-slate-100">
+                      <div className="flex items-center justify-between pt-1 border-t border-slate-100 dark:border-slate-750">
                         {isCurrentUnlocked && (
                           <button
                             type="button"
                             onClick={() => handleEquipTitle(ach.rewardTitle)}
                             className={`text-xs font-bold px-2.5 py-1 rounded-lg transition cursor-pointer ${
                               activeTitle === ach.rewardTitle
-                                ? 'bg-amber-100 text-amber-800 border border-amber-300'
-                                : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+                                ? 'bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700'
+                                : 'bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200'
                             }`}
                           >
                             {activeTitle === ach.rewardTitle ? '✓ 已佩戴此头衔' : '佩戴此头衔'}
@@ -618,9 +618,9 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                           <button
                             type="button"
                             onClick={() => onPreviewAchievement(ach)}
-                            className="text-xs font-bold text-amber-700 hover:text-amber-800 bg-amber-100/70 hover:bg-amber-100 px-2.5 py-1 rounded-lg transition flex items-center gap-1 cursor-pointer ml-auto"
+                            className="text-xs font-bold text-amber-700 dark:text-amber-300 hover:text-amber-800 bg-amber-100/70 dark:bg-amber-950/60 hover:bg-amber-100 px-2.5 py-1 rounded-lg transition flex items-center gap-1 cursor-pointer ml-auto border border-amber-200/80 dark:border-amber-800"
                           >
-                            <Sparkles className="w-3 h-3 text-amber-600 animate-spin" />
+                            <Sparkles className="w-3 h-3 text-amber-600 dark:text-amber-400 animate-spin" />
                             <span>{uiLang === 'en' ? 'Preview Pop-up Effect' : '预览酷炫动效'}</span>
                           </button>
                         )}
@@ -634,7 +634,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
             {/* Other Achievement Categories */}
             <div className="space-y-3">
-              <h5 className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+              <h5 className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
                 <Star className="w-4 h-4 text-purple-500" />
                 <span>{uiLang === 'en' ? 'Learning & Exam Achievements' : '学习行动与考场成就'}</span>
               </h5>
@@ -647,42 +647,42 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                       key={ach.id}
                       className={`relative p-4 rounded-2xl border transition-all duration-200 overflow-hidden ${
                         isCurrentUnlocked
-                          ? 'bg-gradient-to-br from-purple-50/60 via-white to-blue-50/50 border-purple-200 shadow-sm'
-                          : 'bg-slate-50 border-slate-200/80 opacity-80'
+                          ? 'bg-gradient-to-br from-purple-50/60 via-white to-blue-50/50 dark:from-purple-950/20 dark:via-slate-850 dark:to-blue-950/20 border-purple-200 dark:border-purple-800 shadow-sm'
+                          : 'bg-slate-50 dark:bg-slate-800/60 border-slate-200/80 dark:border-slate-700 opacity-80'
                       }`}
                     >
                       <div className="flex items-start justify-between gap-3 mb-2">
                         <div className="flex items-center gap-3">
                           <div className={`w-11 h-11 rounded-xl flex items-center justify-center text-xl shadow-xs border ${
                             isCurrentUnlocked
-                              ? 'bg-purple-100 border-purple-200'
-                              : 'bg-slate-200 border-slate-300 grayscale'
+                              ? 'bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-800'
+                              : 'bg-slate-200 dark:bg-slate-700 border-slate-300 dark:border-slate-600 grayscale'
                           }`}>
                             {ach.icon}
                           </div>
                           <div>
-                            <h6 className="text-sm font-bold text-slate-900 leading-tight">
+                            <h6 className="text-sm font-bold text-slate-900 dark:text-white leading-tight">
                               {uiLang === 'en' && ach.titleEn ? ach.titleEn : ach.title}
                             </h6>
-                            <div className="text-[11px] text-purple-700 font-semibold mt-0.5">
+                            <div className="text-[11px] text-purple-700 dark:text-purple-400 font-semibold mt-0.5">
                               +{ach.rewardExp} EXP · {ach.rewardTitle}
                             </div>
                           </div>
                         </div>
 
                         {isCurrentUnlocked ? (
-                          <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-black rounded-full flex items-center gap-1 shrink-0">
+                          <span className="px-2 py-0.5 bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 text-[10px] font-black rounded-full flex items-center gap-1 shrink-0 border border-emerald-200 dark:border-emerald-800">
                             <Check className="w-3 h-3" />
                             {uiLang === 'en' ? 'Unlocked' : '已达成'}
                           </span>
                         ) : (
-                          <span className="px-2 py-0.5 bg-slate-200 text-slate-600 text-[10px] font-bold rounded-full shrink-0">
+                          <span className="px-2 py-0.5 bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-[10px] font-bold rounded-full shrink-0">
                             {ach.progress}/{ach.progressMax}
                           </span>
                         )}
                       </div>
 
-                      <p className="text-xs text-slate-600 leading-relaxed mb-2.5">
+                      <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-2.5">
                         {uiLang === 'en' && ach.descriptionEn ? ach.descriptionEn : ach.description}
                       </p>
 
@@ -691,9 +691,9 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                           <button
                             type="button"
                             onClick={() => onPreviewAchievement(ach)}
-                            className="text-xs font-bold text-purple-700 hover:text-purple-800 bg-purple-100/70 hover:bg-purple-100 px-2.5 py-1 rounded-lg transition flex items-center gap-1 cursor-pointer"
+                            className="text-xs font-bold text-purple-700 dark:text-purple-300 hover:text-purple-800 bg-purple-100/70 dark:bg-purple-950/60 hover:bg-purple-100 px-2.5 py-1 rounded-lg transition flex items-center gap-1 cursor-pointer border border-purple-200/80 dark:border-purple-800"
                           >
-                            <Sparkles className="w-3 h-3 text-purple-600" />
+                            <Sparkles className="w-3 h-3 text-purple-600 dark:text-purple-400" />
                             <span>{uiLang === 'en' ? 'Test Pop-up' : '测试解锁弹窗'}</span>
                           </button>
                         </div>
@@ -705,11 +705,11 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
             </div>
 
             {/* Close */}
-            <div className="pt-2 flex items-center justify-end gap-3 border-t border-slate-100">
+            <div className="pt-2 flex items-center justify-end gap-3 border-t border-slate-100 dark:border-slate-800">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-6 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold transition shadow-md cursor-pointer"
+                className="px-6 py-2.5 rounded-xl bg-slate-900 dark:bg-blue-600 hover:bg-slate-800 dark:hover:bg-blue-500 text-white text-sm font-bold transition shadow-md cursor-pointer"
               >
                 {uiLang === 'en' ? 'Close Showcase' : '关闭成就馆'}
               </button>

@@ -155,21 +155,21 @@ export const CoursePreviewView: React.FC<CoursePreviewViewProps> = ({
   };
 
   return (
-    <div className="flex-1 overflow-y-auto bg-slate-50 pb-16">
+    <div className="flex-1 overflow-y-auto bg-slate-50 dark:bg-slate-950 pb-16 transition-colors duration-200">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 px-6 sm:px-8 py-6 sticky top-0 z-10">
+      <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 sm:px-8 py-6 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-3">
-              <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
                 {uiLang === 'en' ? 'Pre-Class Study Courses' : '初高中学习预习课程'}
               </h2>
-              <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center gap-1">
+              <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-800 flex items-center gap-1">
                 <Compass className="w-3.5 h-3.5" />
                 Pre-Class Syllabus
               </span>
             </div>
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
               {uiLang === 'en'
                 ? 'High-efficiency 15-min preview: connect prerequisites, grasp core theorems, and prepare quality questions.'
                 : '课前 15 分钟高效预习：打通衔接旧知、透视核心公式定理，带着高质量疑问听课。'}
@@ -190,21 +190,21 @@ export const CoursePreviewView: React.FC<CoursePreviewViewProps> = ({
 
       <div className="max-w-7xl mx-auto px-6 sm:px-8 py-8 space-y-8">
         {/* Course Previews Selector Tabs */}
-        <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs space-y-3">
+        <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
-              <Layers className="w-4 h-4 text-emerald-600" />
+            <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+              <Layers className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
               {uiLang === 'en' ? 'Select Chapter / Lesson' : '选择预习章节 / 课程案'}
             </span>
             <div className="flex items-center gap-2">
-              <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-xs">
+              <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-0.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs">
                 <button
                   type="button"
                   onClick={() => setFilterMode('matched')}
                   className={`px-2.5 py-1 rounded-md font-medium transition-all ${
                     filterMode === 'matched'
-                      ? 'bg-white text-emerald-700 shadow-xs font-bold'
-                      : 'text-slate-600 hover:text-slate-900'
+                      ? 'bg-white dark:bg-slate-700 text-emerald-700 dark:text-emerald-300 shadow-xs font-bold'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
                   {uiLang === 'en' ? `Grade: ${currentGrade}` : `【${currentGrade}】(${matchedGradePreviews.length})`}
@@ -214,8 +214,8 @@ export const CoursePreviewView: React.FC<CoursePreviewViewProps> = ({
                   onClick={() => setFilterMode('all')}
                   className={`px-2.5 py-1 rounded-md font-medium transition-all ${
                     filterMode === 'all'
-                      ? 'bg-white text-emerald-700 shadow-xs font-bold'
-                      : 'text-slate-600 hover:text-slate-900'
+                      ? 'bg-white dark:bg-slate-700 text-emerald-700 dark:text-emerald-300 shadow-xs font-bold'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
                   {uiLang === 'en' ? `All (${previews.length})` : `全部预习案 (${previews.length})`}
@@ -239,11 +239,11 @@ export const CoursePreviewView: React.FC<CoursePreviewViewProps> = ({
                   className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all shrink-0 text-left border cursor-pointer ${
                     isActive
                       ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
-                      : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200'
+                      : 'bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700'
                   }`}
                 >
                   <p className="line-clamp-1">{pTitle}</p>
-                  <span className={`text-[10px] block mt-0.5 ${isActive ? 'text-emerald-100' : 'text-slate-400'}`}>
+                  <span className={`text-[10px] block mt-0.5 ${isActive ? 'text-emerald-100' : 'text-slate-400 dark:text-slate-500'}`}>
                     {p.subject} · {p.gradeLevel}
                   </span>
                 </button>
@@ -256,7 +256,7 @@ export const CoursePreviewView: React.FC<CoursePreviewViewProps> = ({
         {activePreview && (
           <div className="space-y-8 animate-in fade-in duration-200">
             {/* Overview Banner */}
-            <div className="bg-slate-900 text-white p-6 sm:p-8 rounded-2xl shadow-lg relative overflow-hidden space-y-4">
+            <div className="bg-slate-900 dark:bg-slate-900 text-white p-6 sm:p-8 rounded-2xl shadow-lg border border-slate-800 relative overflow-hidden space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-lg text-xs font-bold border border-emerald-500/30">
@@ -315,15 +315,15 @@ export const CoursePreviewView: React.FC<CoursePreviewViewProps> = ({
             {/* Learning Objectives & Prerequisites Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Objectives */}
-              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-3">
-                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                   {uiLang === 'en' ? 'Core Learning Objectives' : '本节课核心预习目标'}
                 </h3>
                 <ul className="space-y-3">
                   {activePreview.learningObjectives.map((obj, i) => (
-                    <li key={i} className="text-xs sm:text-sm text-slate-700 flex items-start gap-2.5">
-                      <span className="w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                    <li key={i} className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2.5">
+                      <span className="w-5 h-5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5 border border-emerald-100 dark:border-emerald-800">
                         {i + 1}
                       </span>
                       <div className="leading-relaxed">
@@ -335,14 +335,14 @@ export const CoursePreviewView: React.FC<CoursePreviewViewProps> = ({
               </div>
 
               {/* Prerequisites */}
-              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-3">
-                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
-                  <BookOpen className="w-4 h-4 text-blue-600" />
+              <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+                  <BookOpen className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                   {uiLang === 'en' ? 'Prerequisite Knowledge Recall' : '课前温故衔接（知识唤醒）'}
                 </h3>
                 <ul className="space-y-3">
                   {activePreview.prerequisites.map((pre, i) => (
-                    <li key={i} className="text-xs sm:text-sm text-slate-700 flex items-start gap-2">
+                    <li key={i} className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2">
                       <span className="text-blue-500 font-bold mt-0.5">•</span>
                       <div className="leading-relaxed">
                         <span>{pre}</span>
@@ -354,33 +354,33 @@ export const CoursePreviewView: React.FC<CoursePreviewViewProps> = ({
             </div>
 
             {/* Core Definitions & Formulas */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
-              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
+            <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4">
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
                 <Zap className="w-4 h-4 text-amber-500" />
                 {uiLang === 'en' ? 'Core Concepts & Formula Breakdown' : '课本核心概念与公式剖析'}
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {activePreview.coreDefinitions.map((def, idx) => (
-                  <div key={idx} className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
+                  <div key={idx} className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/80 dark:border-slate-700 space-y-2">
                     <div className="flex items-center justify-between">
-                      <h4 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                      <h4 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                         <span className="w-2 h-2 rounded-full bg-emerald-500" />
                         {def.name}
                       </h4>
                       <button
                         onClick={() => onExplainConcept(def.name)}
-                        className="text-[11px] text-emerald-600 hover:text-emerald-800 font-bold flex items-center gap-1 cursor-pointer"
+                        className="text-[11px] text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 font-bold flex items-center gap-1 cursor-pointer"
                       >
                         <span>{uiLang === 'en' ? 'AI Explain' : 'AI 深度精讲'}</span>
                         <HelpCircle className="w-3 h-3" />
                       </button>
                     </div>
 
-                    <p className="text-xs text-slate-600 leading-relaxed">{def.explanation}</p>
+                    <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">{def.explanation}</p>
 
                     {def.keyFormula && (
-                      <div className="p-2.5 bg-white border border-slate-200 rounded-xl text-xs font-mono font-bold text-emerald-900 mt-2">
+                      <div className="p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-mono font-bold text-emerald-900 dark:text-emerald-300 mt-2">
                         💡 {uiLang === 'en' ? 'Formula/Takeaway:' : '公式/结论:'} {def.keyFormula}
                       </div>
                     )}
@@ -391,9 +391,9 @@ export const CoursePreviewView: React.FC<CoursePreviewViewProps> = ({
 
             {/* Pre-class Self-check Quiz */}
             {activePreview.selfCheckQuiz && activePreview.selfCheckQuiz.length > 0 && (
-              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
-                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">
-                  <CheckCircle2 className="w-4 h-4 text-indigo-600" />
+              <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-4">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+                  <CheckCircle2 className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
                   {uiLang === 'en' ? 'Pre-class Self-check Quiz' : '预习效果自测 (课前小试)'}
                 </h3>
 
@@ -403,8 +403,8 @@ export const CoursePreviewView: React.FC<CoursePreviewViewProps> = ({
                     const hasAnswered = selectedOpt !== undefined;
 
                     return (
-                      <div key={qIdx} className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-3">
-                        <p className="text-xs sm:text-sm font-bold text-slate-800">
+                      <div key={qIdx} className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/80 dark:border-slate-700 space-y-3">
+                        <p className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">
                           {qIdx + 1}. {q.question}
                         </p>
 
@@ -413,11 +413,11 @@ export const CoursePreviewView: React.FC<CoursePreviewViewProps> = ({
                             const isSelected = selectedOpt === optIdx;
                             const isCorrect = optIdx === q.correctIndex;
 
-                            let optStyle = 'bg-white border-slate-200 hover:border-emerald-400 text-slate-800';
+                            let optStyle = 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 hover:border-emerald-400 text-slate-800 dark:text-slate-200';
                             if (hasAnswered) {
-                              if (isCorrect) optStyle = 'bg-emerald-50 border-emerald-300 text-emerald-900 font-bold';
-                              else if (isSelected && !isCorrect) optStyle = 'bg-rose-50 border-rose-300 text-rose-900 font-bold';
-                              else optStyle = 'bg-white border-slate-200 opacity-60 text-slate-400';
+                              if (isCorrect) optStyle = 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 dark:border-emerald-700 text-emerald-900 dark:text-emerald-200 font-bold';
+                              else if (isSelected && !isCorrect) optStyle = 'bg-rose-50 dark:bg-rose-950/60 border-rose-300 dark:border-rose-700 text-rose-900 dark:text-rose-200 font-bold';
+                              else optStyle = 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 opacity-60 text-slate-400 dark:text-slate-500';
                             }
 
                             return (
@@ -433,7 +433,7 @@ export const CoursePreviewView: React.FC<CoursePreviewViewProps> = ({
                         </div>
 
                         {hasAnswered && (
-                          <div className="p-3 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-900 text-xs space-y-1">
+                          <div className="p-3 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 border border-indigo-100 dark:border-indigo-800 text-indigo-900 dark:text-indigo-200 text-xs space-y-1">
                             <span className="font-bold block">{uiLang === 'en' ? 'Explanation & Key:' : '解析与依据：'}</span>
                             <p>{q.explanation}</p>
                           </div>
@@ -447,7 +447,7 @@ export const CoursePreviewView: React.FC<CoursePreviewViewProps> = ({
 
             {/* Questions to Bring to Class */}
             {activePreview.questionsToAskTeacher && activePreview.questionsToAskTeacher.length > 0 && (
-              <div className="bg-emerald-900 text-emerald-50 p-6 rounded-2xl shadow-md space-y-3">
+              <div className="bg-emerald-900 dark:bg-emerald-950 text-emerald-50 p-6 rounded-2xl shadow-md space-y-3 border border-emerald-800">
                 <h3 className="text-sm font-bold text-white flex items-center gap-2 border-b border-emerald-800 pb-3">
                   <MessageSquare className="w-4 h-4 text-emerald-300" />
                   {uiLang === 'en' ? 'Questions to Bring to Class (Ask Teacher)' : '带疑听课清单 (推荐在课堂上提问老师)'}
@@ -473,16 +473,16 @@ export const CoursePreviewView: React.FC<CoursePreviewViewProps> = ({
       {/* AI Generate Preview Guide Modal */}
       {showGenModal && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-2xl border border-slate-100 animate-in zoom-in-95 duration-150">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-2xl border border-slate-100 dark:border-slate-800 animate-in zoom-in-95 duration-150">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
+              <div className="w-10 h-10 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 flex items-center justify-center font-bold">
                 <Sparkles className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-slate-900">
+                <h3 className="text-base font-bold text-slate-900 dark:text-white">
                   {uiLang === 'en' ? 'AI Generate Preview Guide' : 'AI 智能生成预习导学案'}
                 </h3>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   {uiLang === 'en'
                     ? `Strictly matches 【${userProfile?.gradeLevel || '高一'} · ${userProfile?.semester || '上学期'}】 textbook`
                     : `严格匹配【${userProfile?.gradeLevel || '高一'} · ${userProfile?.semester || '上学期'}】教材大纲与考点`}
@@ -492,7 +492,7 @@ export const CoursePreviewView: React.FC<CoursePreviewViewProps> = ({
 
             <div className="space-y-4">
               <div>
-                <label className="text-xs font-bold text-slate-700 block mb-1.5">
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1.5">
                   {uiLang === 'en' ? 'Subject & Topic' : '预习学科与课题名称'}
                 </label>
                 <input
@@ -500,19 +500,19 @@ export const CoursePreviewView: React.FC<CoursePreviewViewProps> = ({
                   value={genTitle}
                   onChange={(e) => setGenTitle(e.target.value)}
                   placeholder="例如：人教版高中物理：匀变速直线运动的位移与时间关系"
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs text-slate-900 font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1.5">
+                  <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1.5">
                     {uiLang === 'en' ? 'Subject' : '科目'}
                   </label>
                   <select
                     value={genSubject}
                     onChange={(e) => setGenSubject(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-medium text-slate-900 focus:outline-none"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-medium text-slate-900 dark:text-white focus:outline-none"
                   >
                     {['数学', '物理', '化学', '生物', '英语', '语文', '历史', '地理', '政治'].map((s) => (
                       <option key={s} value={s}>
@@ -523,19 +523,19 @@ export const CoursePreviewView: React.FC<CoursePreviewViewProps> = ({
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-700 block mb-1.5">
+                  <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1.5">
                     {uiLang === 'en' ? 'Textbook' : '教材版本'}
                   </label>
                   <input
                     type="text"
                     value={genPublisher}
                     onChange={(e) => setGenPublisher(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-medium text-slate-900 focus:outline-none"
+                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-medium text-slate-900 dark:text-white focus:outline-none"
                   />
                 </div>
               </div>
 
-              <div className="p-3 bg-emerald-50 border border-emerald-100 rounded-xl text-xs text-emerald-800">
+              <div className="p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-800 rounded-xl text-xs text-emerald-800 dark:text-emerald-300">
                 🔒 考纲锁定：将以【{currentGrade}】学生当前的知识体系为基础，不超纲、不跨年级，自动生成包含中英双语的预习导学案。
               </div>
             </div>
@@ -544,7 +544,7 @@ export const CoursePreviewView: React.FC<CoursePreviewViewProps> = ({
               <button
                 type="button"
                 onClick={() => setShowGenModal(false)}
-                className="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-100 rounded-xl transition cursor-pointer"
+                className="px-4 py-2 text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition cursor-pointer"
               >
                 {t('cancelBtn')}
               </button>

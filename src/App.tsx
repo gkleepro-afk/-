@@ -36,7 +36,10 @@ import {
   saveExamSubmissions,
   getStoredClassroomLessons,
   saveClassroomLessons,
-  updateCardReview
+  updateCardReview,
+  getStoredThemeMode,
+  saveThemeMode,
+  ThemeMode
 } from './utils/storage';
 
 import { GeneratedStudyPlan, StudyTask, Flashcard, QuizQuestion, UserStats, QuestionBankItem, CoursePreviewGuide, UserProfile, ExamPaperItem, ExamSubmission, ClassroomLesson, Achievement } from './types';
@@ -51,6 +54,7 @@ import { getAchievementsWithProgress } from './data/achievements';
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('roadmap');
   const [uiLang, setUiLang] = useState<UILanguage>('bilingual');
+  const [themeMode, setThemeMode] = useState<ThemeMode>(getStoredThemeMode);
   
   // Data States
   const [plans, setPlans] = useState<GeneratedStudyPlan[]>(getStoredPlans);
@@ -72,6 +76,37 @@ export default function App() {
   const [showFeatureIntro, setShowFeatureIntro] = useState<boolean>(false);
   const [showTour, setShowTour] = useState<boolean>(false);
   const [celebratingAchievement, setCelebratingAchievement] = useState<Achievement | null>(null);
+
+  // Apply dark mode to document.documentElement
+  useEffect(() => {
+    saveThemeMode(themeMode);
+    const root = document.documentElement;
+
+    const applyTheme = () => {
+      if (themeMode === 'dark') {
+        root.classList.add('dark');
+      } else if (themeMode === 'light') {
+        root.classList.remove('dark');
+      } else {
+        // System preference
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (systemPrefersDark) {
+          root.classList.add('dark');
+        } else {
+          root.classList.remove('dark');
+        }
+      }
+    };
+
+    applyTheme();
+
+    if (themeMode === 'system') {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      const listener = () => applyTheme();
+      mediaQuery.addEventListener('change', listener);
+      return () => mediaQuery.removeEventListener('change', listener);
+    }
+  }, [themeMode]);
 
   // Auto-launch Tour on very first visit
   useEffect(() => {
@@ -359,7 +394,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[#F8FAFC] font-sans text-slate-800">
+    <div className="flex h-screen w-screen overflow-hidden bg-[#F8FAFC] dark:bg-slate-950 font-sans text-slate-800 dark:text-slate-100 transition-colors duration-200">
       {/* Sidebar Navigation */}
       <Sidebar
         activeTab={activeTab}
@@ -372,6 +407,8 @@ export default function App() {
         onChangeLang={setUiLang}
         userProfile={userProfile}
         onOpenProfileModal={() => setShowProfileModal(true)}
+        themeMode={themeMode}
+        onChangeTheme={setThemeMode}
       />
 
       {/* Main View Area */}

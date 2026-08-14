@@ -149,7 +149,7 @@ export interface PhotoQuestionAnalysis {
   };
 }
 
-export type QuestionType = '单选题' | '填空题' | '解答题' | 'choice' | 'fill' | 'solution';
+export type QuestionType = '单选题' | '多选题' | '填空题' | '解答题' | '实验探究题' | 'choice' | 'multi_choice' | 'fill' | 'solution' | 'experiment';
 export type QuestionDifficulty = '基础' | '中等' | '拔高' | 'easy' | 'medium' | 'hard';
 
 export interface CoursePreviewGuide {
@@ -220,11 +220,13 @@ export interface QuestionBankItem {
   options?: string[];
   optionsEn?: string[];
   correctIndex?: number;
+  correctIndices?: number[]; // For multi-choice questions (0-indexed)
   correctAnswerText?: string;
   explanation: string;
   explanationEn?: string;
   questionType: QuestionType;
   difficulty: QuestionDifficulty;
+  score?: number; // Weighting in exam paper (e.g. 5, 10, 15)
   isSavedToMistakes?: boolean;
   userNotes?: string;
   userNote?: string;
@@ -286,6 +288,8 @@ export interface ExamPaperItem {
   semester?: string;
   countryRegion: string;
   publisher?: string;
+  paperCategory?: 'simulation' | 'final' | 'midterm' | 'real_exam' | 'elite_school' | 'special_topic' | 'ai_custom' | string;
+  difficulty?: 'easy' | 'medium' | 'hard' | 'all' | string;
   durationMinutes: number;
   totalScore: number;
   passingScore: number;
