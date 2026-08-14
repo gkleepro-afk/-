@@ -39,10 +39,14 @@ import {
   updateCardReview
 } from './utils/storage';
 
-import { GeneratedStudyPlan, StudyTask, Flashcard, QuizQuestion, UserStats, QuestionBankItem, CoursePreviewGuide, UserProfile, ExamPaperItem, ExamSubmission, ClassroomLesson } from './types';
+import { GeneratedStudyPlan, StudyTask, Flashcard, QuizQuestion, UserStats, QuestionBankItem, CoursePreviewGuide, UserProfile, ExamPaperItem, ExamSubmission, ClassroomLesson, Achievement } from './types';
 import { UILanguage } from './utils/translations';
 import { UserProfileModal } from './components/UserProfileModal';
 import { ExamCenter } from './components/ExamCenter';
+import { FeatureIntroModal } from './components/FeatureIntroModal';
+import { OnboardingTour } from './components/OnboardingTour';
+import { AchievementCelebrationModal } from './components/AchievementCelebrationModal';
+import { getAchievementsWithProgress } from './data/achievements';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('roadmap');
@@ -61,10 +65,25 @@ export default function App() {
   const [examSubmissions, setExamSubmissions] = useState<ExamSubmission[]>(getStoredExamSubmissions);
   const [classroomLessons, setClassroomLessons] = useState<ClassroomLesson[]>(getStoredClassroomLessons);
 
-  // Modal States
+  // Modal & Guide States
   const [activeConceptTerm, setActiveConceptTerm] = useState<string | null>(null);
   const [showPomodoro, setShowPomodoro] = useState<boolean>(false);
   const [showProfileModal, setShowProfileModal] = useState<boolean>(false);
+  const [showFeatureIntro, setShowFeatureIntro] = useState<boolean>(false);
+  const [showTour, setShowTour] = useState<boolean>(false);
+  const [celebratingAchievement, setCelebratingAchievement] = useState<Achievement | null>(null);
+
+  // Auto-launch Tour on very first visit
+  useEffect(() => {
+    const hasCompletedTour = localStorage.getItem('zhixue_has_completed_tour_v1');
+    if (!hasCompletedTour) {
+      // Short delay for smooth UI mounting
+      const timer = setTimeout(() => {
+        setShowTour(true);
+      }, 600);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   // Sync to local storage
   useEffect(() => {
@@ -110,6 +129,26 @@ export default function App() {
   useEffect(() => {
     saveClassroomLessons(classroomLessons);
   }, [classroomLessons]);
+
+  // Auto check for newly unlocked streak & learning achievements
+  useEffect(() => {
+    const list = getAchievementsWithProgress(stats);
+    const newlyUnlocked = list.find(
+      (a) => a.unlocked && !stats.unlockedAchievements?.includes(a.id)
+    );
+
+    if (newlyUnlocked) {
+      // Mark as unlocked and add reward exp
+      setStats((prev) => ({
+        ...prev,
+        unlockedAchievements: [...(prev.unlockedAchievements || []), newlyUnlocked.id],
+        totalExp: (prev.totalExp || 0) + newlyUnlocked.rewardExp,
+      }));
+
+      // Trigger flashy celebration modal
+      setCelebratingAchievement(newlyUnlocked);
+    }
+  }, [stats.streakDays, stats.completedTasksCount, stats.reviewedCardsCount, stats.quizzesTakenCount]);
 
   // Handlers
   const handleSaveToMistakeLog = (item: QuestionBankItem) => {
@@ -327,6 +366,8 @@ export default function App() {
         onSelectTab={setActiveTab}
         stats={stats}
         onOpenPomodoro={() => setShowPomodoro(true)}
+        onOpenFeatureIntro={() => setShowFeatureIntro(true)}
+        onStartTour={() => setShowTour(true)}
         uiLang={uiLang}
         onChangeLang={setUiLang}
         userProfile={userProfile}
@@ -346,6 +387,8 @@ export default function App() {
             uiLang={uiLang}
             userProfile={userProfile}
             onOpenProfileModal={() => setShowProfileModal(true)}
+            onOpenFeatureIntro={() => setShowFeatureIntro(true)}
+            onStartTour={() => setShowTour(true)}
           />
         )}
 
@@ -391,7 +434,9 @@ export default function App() {
               isOpen={true}
               onClose={() => setActiveTab('roadmap')}
               userProfile={userProfile}
+              userStats={stats}
               onSaveProfile={setUserProfile}
+              onPreviewAchievement={(ach) => setCelebratingAchievement(ach)}
               uiLang={uiLang}
             />
           </div>
@@ -466,13 +511,72 @@ export default function App() {
         />
       )}
 
-      {/* User Profile Modal */}
+      {/* User Profile & Achievements Modal */}
       {showProfileModal && (
         <UserProfileModal
           isOpen={showProfileModal}
           onClose={() => setShowProfileModal(false)}
           userProfile={userProfile}
+          userStats={stats}
           onSaveProfile={setUserProfile}
+          onPreviewAchievement={(ach) => setCelebratingAchievement(ach)}
+          uiLang={uiLang}
+        />
+      )}
+
+      {/* Feature Overview Guide Modal */}
+      {showFeatureIntro && (
+        <FeatureIntroModal
+          isOpen={showFeatureIntro}
+          onClose={() => setShowFeatureIntro(false)}
+          onSelectFeature={(featId) => {
+            setActiveTab(featId);
+            if (featId === 'userprofile') {
+              setShowProfileModal(true);
+            }
+          }}
+          onStartInteractiveTour={() => {
+            setShowFeatureIntro(false);
+            setShowTour(true);
+          }}
+          uiLang={uiLang}
+        />
+      )}
+
+      {/* Interactive Step-by-Step Onboarding Tour */}
+      {showTour && (
+        <OnboardingTour
+          isOpen={showTour}
+          onClose={() => setShowTour(false)}
+          onSelectTab={(tabId) => setActiveTab(tabId)}
+          onFinishTour={() => {
+            setShowTour(false);
+            // Award bonus first step achievement
+            const firstStepAch = getAchievementsWithProgress(stats).find(a => a.id === 'ach-streak-1');
+            if (firstStepAch) {
+              setCelebratingAchievement(firstStepAch);
+            }
+          }}
+          uiLang={uiLang}
+        />
+      )}
+
+      {/* Shiny Flashy Achievement Celebration Modal */}
+      {celebratingAchievement && (
+        <AchievementCelebrationModal
+          isOpen={!!celebratingAchievement}
+          achievement={celebratingAchievement}
+          onClose={() => setCelebratingAchievement(null)}
+          onClaimReward={(ach) => {
+            // Equip title if requested
+            if (ach.rewardTitle) {
+              setUserProfile((prev) => ({
+                ...prev,
+                activeTitle: ach.rewardTitle,
+              }));
+            }
+            setCelebratingAchievement(null);
+          }}
           uiLang={uiLang}
         />
       )}

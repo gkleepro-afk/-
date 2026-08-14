@@ -27,6 +27,8 @@ interface DailyRoadmapProps {
   uiLang: UILanguage;
   userProfile?: UserProfile;
   onOpenProfileModal?: () => void;
+  onOpenFeatureIntro?: () => void;
+  onStartTour?: () => void;
 }
 
 export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
@@ -39,6 +41,8 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
   uiLang,
   userProfile,
   onOpenProfileModal,
+  onOpenFeatureIntro,
+  onStartTour,
 }) => {
   const t = (key: keyof typeof TRANSLATIONS) => TRANSLATIONS[key][uiLang] || TRANSLATIONS[key].bilingual;
 
@@ -262,7 +266,33 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
           </p>
         </div>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4 sm:gap-6 flex-wrap">
+          {/* Quick Guide & Tour triggers */}
+          <div className="flex items-center gap-2">
+            {onOpenFeatureIntro && (
+              <button
+                type="button"
+                onClick={onOpenFeatureIntro}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition cursor-pointer"
+                title="查看全功能使用简介"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+                <span className="hidden md:inline">{uiLang === 'en' ? 'Feature Guide' : '功能指南'}</span>
+              </button>
+            )}
+            {onStartTour && (
+              <button
+                type="button"
+                onClick={onStartTour}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200/80 text-xs font-bold transition cursor-pointer"
+                title="开启分步气泡漫游指引"
+              >
+                <Brain className="w-3.5 h-3.5 text-indigo-600" />
+                <span className="hidden md:inline">{uiLang === 'en' ? 'Interactive Tour' : '新手漫游'}</span>
+              </button>
+            )}
+          </div>
+
           <div className="flex flex-col items-end">
             <div className="flex items-baseline gap-2">
               <p className="text-sm font-bold text-blue-600">{progressPercent}% {t('progress')}</p>
@@ -281,7 +311,7 @@ export const DailyRoadmap: React.FC<DailyRoadmapProps> = ({
 
           <button
             onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl font-bold text-sm transition shadow-sm shadow-blue-600/20"
+            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl font-bold text-sm transition shadow-sm shadow-blue-600/20 cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>{t('addTask')}</span>

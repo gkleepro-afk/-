@@ -36,7 +36,7 @@ interface GeminiCallOptions {
 }
 
 // Resilient Gemini call wrapper with automatic retry and model fallbacks for 503/429/high demand errors
-const DEFAULT_GEMINI_MODELS = ["gemini-2.0-flash", "gemini-1.5-flash", "gemini-1.5-pro"];
+const DEFAULT_GEMINI_MODELS = ["gemini-3.7-flash", "gemini-flash-latest"];
 
 async function callGeminiWithRetry(ai: GoogleGenAI, options: GeminiCallOptions) {
   const models = options.models || DEFAULT_GEMINI_MODELS;

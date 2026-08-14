@@ -98,6 +98,27 @@ export interface UserStats {
   quizzesTakenCount: number;
   averageQuizScore: number;
   subjectProgress: Record<string, number>; // subject -> mastery percentage
+  unlockedAchievements?: string[]; // Array of achievement IDs
+  claimedAchievements?: string[]; // Array of claimed achievement IDs
+  totalExp?: number;
+}
+
+export interface Achievement {
+  id: string;
+  title: string;
+  titleEn?: string;
+  description: string;
+  descriptionEn?: string;
+  icon: string; // Emoji
+  category: 'streak' | 'learning' | 'mastery' | 'exam';
+  milestoneType: 'streak_3' | 'streak_7' | 'streak_14' | 'streak_30' | 'tasks_10' | 'cards_50' | 'exam_passed';
+  requiredValue: number;
+  rewardExp: number;
+  rewardTitle: string;
+  rewardTitleEn?: string;
+  unlocked: boolean;
+  unlockedAt?: string;
+  claimed?: boolean;
 }
 
 export interface ConceptExplanation {
@@ -183,6 +204,7 @@ export interface UserProfile {
   dailyGoalMinutes: number;
   encouragementTone: 'gentle' | 'passionate' | 'humorous' | 'academic';
   customMotto: string;
+  activeTitle?: string; // e.g. '自律新星', '习惯大师', '毅力王者'
 }
 
 export interface QuestionBankItem {
